@@ -160,8 +160,8 @@ public class MyViewController implements Observer, IView {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
                 System.out.println("Height: " + newSceneHeight);
-                mazeDisplayer.setHeight((double) newSceneHeight );
-                mazeDisplayer.redrawMaze1(0, (double) newSceneHeight );
+                mazeDisplayer.setHeight((double) newSceneHeight-50 );
+                mazeDisplayer.redrawMaze1(0, (double) newSceneHeight-50 );
 
             }
         });
@@ -185,12 +185,12 @@ public class MyViewController implements Observer, IView {
     }
 
 
-    public void About(ActionEvent actionEvent) {
+    public void Properties(ActionEvent actionEvent) {
         try {
             Stage stage = new Stage();
-            stage.setTitle("AboutController");
+            stage.setTitle("PropertiesController");
             FXMLLoader fxmlLoader = new FXMLLoader();
-            Parent root = fxmlLoader.load(getClass().getResource("About.fxml").openStream());
+            Parent root = fxmlLoader.load(getClass().getResource("PropertiesController.fxml").openStream());
             Scene scene = new Scene(root, 400, 350);
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
