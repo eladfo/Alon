@@ -192,6 +192,12 @@ public class MazeDisplayer extends Canvas {
         return res;
     }
 
+    public void resetCanvas()
+    {
+        GraphicsContext gc = getGraphicsContext2D();
+        gc.clearRect(0, 0, getWidth(), getHeight());
+    }
+
     //region Properties
     private StringProperty ImageFileNameWall = new SimpleStringProperty();
     private StringProperty ImageFileNameCharacter = new SimpleStringProperty();

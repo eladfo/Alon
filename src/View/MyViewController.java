@@ -93,13 +93,13 @@ public class MyViewController implements Observer, IView {
         String strow = txtfld_rowsNum.getText();
         String stcol = txtfld_columnsNum.getText();
         if(!isNumeric(strow) || !isNumeric(stcol)){
-            showAlert("Invalid input, please try again with numbers greater then 3. ");
+            showAlert("Invalid input, please try again with numbers greater then 3.");
             return;
         }
         int row = Integer.valueOf(strow);
         int col = Integer.valueOf(stcol);
         if(row<3 || col<3){
-            showAlert("Invalid input, please try again with numbers greater then 3. ");
+            showAlert("Invalid input, please try again with numbers greater then 3.");
             return;
         }
         btn_generateMaze.setDisable(true);
@@ -120,7 +120,7 @@ public class MyViewController implements Observer, IView {
             Stage stage = new Stage();
             stage.setTitle("Saving Maze");
             FXMLLoader fxmlLoader = new FXMLLoader();
-            Parent root = fxmlLoader.load(getClass().getResource("SaveMazeController.fxml").openStream());
+            Parent root = fxmlLoader.load(getClass().getResource("SaveMaze.fxml").openStream());
             Scene scene = new Scene(root, 350, 250);
             scene.getStylesheets().add(getClass().getResource("ViewStyle.css").toExternalForm());
             stage.setScene(scene);
@@ -139,7 +139,7 @@ public class MyViewController implements Observer, IView {
             Stage stage = new Stage();
             stage.setTitle("lll");
             FXMLLoader fxmlLoader = new FXMLLoader();
-            Parent root = fxmlLoader.load(getClass().getResource("LoadMazeController.fxml").openStream());
+            Parent root = fxmlLoader.load(getClass().getResource("LoadMaze.fxml").openStream());
             Scene scene = new Scene(root, 350, 250);
             scene.getStylesheets().add(getClass().getResource("ViewStyle.css").toExternalForm());
             stage.setScene(scene);
@@ -208,7 +208,7 @@ public class MyViewController implements Observer, IView {
             Stage stage = new Stage();
             stage.setTitle("PropertiesController");
             FXMLLoader fxmlLoader = new FXMLLoader();
-            Parent root = fxmlLoader.load(getClass().getResource("PropertiesController.fxml").openStream());
+            Parent root = fxmlLoader.load(getClass().getResource("Properties.fxml").openStream());
             Scene scene = new Scene(root, 400, 400);
             scene.getStylesheets().add(getClass().getResource("ViewStyle.css").toExternalForm());
             stage.setScene(scene);
@@ -233,6 +233,11 @@ public class MyViewController implements Observer, IView {
             {
                 return false;
             }
+    }
+
+    public void resetCanvas()
+    {
+        mazeDisplayer.resetCanvas();
     }
 
     //region String Property for Binding
