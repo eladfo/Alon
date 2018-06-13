@@ -7,13 +7,13 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.PropertiesController">
+<AnchorPane prefHeight="350.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.PropertiesController">
    <children>
-      <Label layoutY="32.0" prefHeight="78.0" prefWidth="322.0" text="                     Properties:" textAlignment="CENTER">
+      <Label layoutX="163.0" layoutY="41.0" prefHeight="78.0" prefWidth="124.0" text=" Properties" textAlignment="CENTER">
          <font>
-            <Font name="System Bold" size="20.0" />
+            <Font name="System Bold" size="18.0" />
          </font></Label>
-      <GridPane layoutX="20.0" layoutY="110.0" prefHeight="181.0" prefWidth="411.0">
+      <GridPane layoutX="47.0" layoutY="109.0" prefHeight="204.0" prefWidth="357.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.0" minWidth="10.0" prefWidth="237.0" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="188.0" minWidth="10.0" prefWidth="182.0" />
@@ -24,17 +24,17 @@
           <RowConstraints maxHeight="72.0" minHeight="10.0" prefHeight="58.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label prefHeight="41.0" prefWidth="158.0" text="Kind of MazeGenerator:">
+            <Label prefHeight="41.0" prefWidth="158.0" text="Maze Generator type">
                <font>
-                  <Font name="System Bold" size="12.0" />
+                  <Font name="System Bold" size="14.0" />
                </font></Label>
-            <Label prefHeight="47.0" prefWidth="165.0" text="Kinf of SearchingAlgorithm:" GridPane.rowIndex="1">
+            <Label prefHeight="47.0" prefWidth="181.0" text="Searching Algorithm type" GridPane.rowIndex="1">
                <font>
-                  <Font name="System Bold" size="12.0" />
+                  <Font name="System Bold" size="14.0" />
                </font></Label>
-            <Label prefHeight="40.0" prefWidth="240.0" text="PoolSize (max threads is can  running):  " GridPane.rowIndex="2">
+            <Label prefHeight="40.0" prefWidth="212.0" text="Thread pool size" GridPane.rowIndex="2">
                <font>
-                  <Font name="System Bold" size="12.0" />
+                  <Font name="System Bold" size="14.0" />
                </font></Label>
             <Label fx:id="lbl_Kind_of_genarate" prefHeight="35.0" prefWidth="146.0" text="" textAlignment="CENTER" GridPane.columnIndex="1" />
             <Label fx:id="lbl_Kind_of_algo" prefHeight="42.0" prefWidth="165.0" text="" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1" />

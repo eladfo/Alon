@@ -15,8 +15,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane onKeyPressed="#KeyPressed" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="View.MyViewController">
+<BorderPane onKeyPressed="#KeyPressed" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MyViewController">
     <left>
         <VBox prefHeight="200.0" prefWidth="200.0" spacing="5.0" BorderPane.alignment="CENTER">
             <children>
@@ -42,7 +41,7 @@
                     <Button fx:id="btn_solveMaze" disable="true" onAction="#solveMaze" prefHeight="25.0" prefWidth="167.0" text="Solve Maze" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="3" />
                     <Label text="Char row:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
                     <Label text="Char column:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-                    <Label fx:id="lbl_rowsNum" text="${controller.characterPositionRow}" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                    <Label fx:id="lbl_rowsNum" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                     <Label fx:id="lbl_columnsNum" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                     <Label text="Num of steps:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
                     <Label fx:id="lbl_num_of_steps" GridPane.columnIndex="1" GridPane.rowIndex="6" />
@@ -71,22 +70,24 @@
                     <menus>
                         <Menu mnemonicParsing="false" text="File">
                             <items>
-                                <MenuItem mnemonicParsing="false" text="New" onAction="#resetCanvas" />
-                                <MenuItem mnemonicParsing="false" text="Save" onAction="#saveMazeWindow" />
-                                <MenuItem mnemonicParsing="false" text="Load" onAction="#loadMazeWindow"/>
+                                <MenuItem mnemonicParsing="false" onAction="#resetCanvas" text="New" />
+                                <MenuItem mnemonicParsing="false" onAction="#saveMazeWindow" text="Save" />
+                                <MenuItem mnemonicParsing="false" onAction="#loadMazeWindow" text="Load" />
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Options">
                             <items>
-                                <MenuItem mnemonicParsing="false" text="Properties" onAction="#Properties" />
+                                <MenuItem mnemonicParsing="false" onAction="#Properties" text="Properties" />
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="About">
                         </Menu>
                         <Menu mnemonicParsing="false" text="Help">
                         </Menu>
-                        <Menu fx:id="btn_exit" mnemonicParsing="false" onShowing="#exitApp" onHiding="#exitApp" text="Exit" >
-                        </Menu>
+                        <Menu mnemonicParsing="false" text="Exit">
+                     <items>
+                        <MenuItem fx:id="btn_exit" mnemonicParsing="false" onAction="#exitApp" text="Exit" />
+                     </items></Menu>
                     </menus>
                 </MenuBar>
             </children>
@@ -103,6 +104,6 @@
         </Pane>
     </center>
    <bottom>
-      <Label prefHeight="17.0" prefWidth="806.0" text="Label" BorderPane.alignment="CENTER" />
+      <Label prefHeight="17.0" prefWidth="806.0" text="Elad &amp; Alon - 2018 ©" BorderPane.alignment="CENTER" />
    </bottom>
 </BorderPane>

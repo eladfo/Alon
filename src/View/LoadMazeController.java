@@ -3,6 +3,8 @@ package View;
 import ViewModel.MyViewModel;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
+
+import java.io.File;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -19,8 +21,16 @@ public class LoadMazeController implements Observer {
     public void loadMaze()
     {
         String mazeName = txtfld_loadName.getText();
+        String tmpDir = "resources/SavedMazes/";
+        String tmpFile = tmpDir + mazeName;
+        File f = new File(tmpFile);
         if(mazeName.equals("")){
             showAlert("Empty maze name, please try again.");
+            return;
+        }
+        if(!f.exists())
+        {
+            showAlert("Maze name does not exist, please try again.");
             return;
         }
         viewModel.loadMaze(mazeName);

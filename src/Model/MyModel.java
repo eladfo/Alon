@@ -39,12 +39,15 @@ public class MyModel extends Observable implements IModel {
     {
         solveSearchProblemServer.start();
         mazeGeneratingServer.start();
+        System.out.println("Servers are open :)");
     }
 
     public void stopServers()
     {
         mazeGeneratingServer.stop();
         solveSearchProblemServer.stop();
+        System.out.println("Servers are closed !");
+
     }
 
     @Override

@@ -196,8 +196,12 @@ public class MazeDisplayer extends Canvas {
     {
         GraphicsContext gc = getGraphicsContext2D();
         gc.clearRect(0, 0, getWidth(), getHeight());
+        maze = null;
     }
-
+    public boolean isMazeNull()
+    {
+        return maze == null;
+    }
     //region Properties
     private StringProperty ImageFileNameWall = new SimpleStringProperty();
     private StringProperty ImageFileNameCharacter = new SimpleStringProperty();

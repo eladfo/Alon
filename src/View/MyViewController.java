@@ -49,7 +49,7 @@ public class MyViewController implements Observer, IView {
     public javafx.scene.control.Button btn_generateMaze;
     public javafx.scene.control.Button btn_solveMaze;
     public javafx.scene.control.Label lbl_num_of_steps;
-    public javafx.scene.control.Menu btn_exit;
+    public javafx.scene.control.MenuItem btn_exit;
 
     public void setViewModel(MyViewModel viewModel) {
         this.viewModel = viewModel;
@@ -112,7 +112,7 @@ public class MyViewController implements Observer, IView {
     }
 
     public void solveMaze() {
-        if(viewModel.getMaze() != null)
+        if(!mazeDisplayer.isMazeNull())
         {
             btn_solveMaze.setDisable(true);
             viewModel.solveMaze();
@@ -164,8 +164,10 @@ public class MyViewController implements Observer, IView {
     }
 
     public void KeyPressed(KeyEvent keyEvent) {
-        viewModel.moveCharacter(keyEvent.getCode());
-        keyEvent.consume();
+        if(!mazeDisplayer.isMazeNull()){
+            viewModel.moveCharacter(keyEvent.getCode());
+            keyEvent.consume();
+        }
     }
 
     public void setResizeEvent(Scene scene) {
@@ -213,7 +215,7 @@ public class MyViewController implements Observer, IView {
             stage.setTitle("PropertiesController");
             FXMLLoader fxmlLoader = new FXMLLoader();
             Parent root = fxmlLoader.load(getClass().getResource("Properties.fxml").openStream());
-            Scene scene = new Scene(root, 400, 400);
+            Scene scene = new Scene(root, 450, 350);
             scene.getStylesheets().add(getClass().getResource("ViewStyle.css").toExternalForm());
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
@@ -242,10 +244,10 @@ public class MyViewController implements Observer, IView {
     public void resetCanvas()
     {
         mazeDisplayer.resetCanvas();
-
+        btn_solveMaze.setDisable(true);
     }
 
-    public void exitApp(Event event)
+    public void exitApp()
     {
         viewModel.stopServers();
         System.exit(0);
