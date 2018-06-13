@@ -28,6 +28,12 @@ public class MyViewModel extends Observable implements Observer {
     public StringProperty characterPositionColumn = new SimpleStringProperty(""); //For Binding
     public StringProperty step = new SimpleStringProperty(""); //For Binding
 
+
+    public StringProperty lbl_Kind_of_genarate = new SimpleStringProperty(""); //For Binding
+    public StringProperty lbl_Kind_of_algo = new SimpleStringProperty(""); //For Binding
+    public StringProperty lbl_size_of_pool = new SimpleStringProperty(""); //For Binding
+
+
     public MyViewModel(IModel model){
         this.model = model;
     }
