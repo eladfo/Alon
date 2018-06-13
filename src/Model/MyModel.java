@@ -2,19 +2,14 @@ package Model;
 
 import Server.ServerStrategyGenerateMaze;
 import algorithms.mazeGenerators.Maze;
-import algorithms.mazeGenerators.MyMazeGenerator;
 import algorithms.mazeGenerators.Position;
-import algorithms.search.AState;
-import algorithms.search.BestFirstSearch;
 import algorithms.search.Solution;
+import javafx.scene.control.Alert;
 import javafx.scene.input.KeyCode;
 
 import java.io.*;
 import java.net.InetAddress;
-import java.util.ArrayList;
 import java.util.Observable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import IO.MyDecompressorInputStream;
 import Server.*;
 import Client.*;
@@ -25,7 +20,6 @@ import java.net.UnknownHostException;
  */
 public class MyModel extends Observable implements IModel {
 
-    //private ExecutorService threadPool = Executors.newCachedThreadPool();
     private Server mazeGeneratingServer;
     private Server solveSearchProblemServer;
     private Maze maze;
@@ -119,18 +113,9 @@ public class MyModel extends Observable implements IModel {
     @Override
     public void saveMaze(String name)
     {
-        if(name == "")
-            return;
         String tmpDir = "resources/SavedMazes/";
         String tmpFile = tmpDir + name;
         File f = new File(tmpFile);
-            /**if (f.exists()) {
-                FileInputStream file = new FileInputStream(tmpFile);
-                ObjectInputStream obj = new ObjectInputStream(file);
-                solution = (Solution) obj.readObject();
-                file.close();
-                obj.close();
-            } else {**/
         try {
             f.createNewFile();
             FileOutputStream outFile = new FileOutputStream(tmpFile);
@@ -170,8 +155,7 @@ public class MyModel extends Observable implements IModel {
         }
     }
 
-
-        @Override
+    @Override
     public Solution getSolution() {
         return solution;
     }
@@ -267,4 +251,5 @@ public class MyModel extends Observable implements IModel {
         boolean res =  maze.isLegal(p, 0);
         return res;
     }
+
 }

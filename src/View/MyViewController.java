@@ -28,10 +28,6 @@ import java.awt.event.MouseMotionAdapter;
 import java.util.Observable;
 import java.util.Observer;
 
-
-
-
-
 import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseListener;
 import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseMotionListener;
 
@@ -39,10 +35,10 @@ public class MyViewController implements Observer, IView {
 
     @FXML
     private MyViewModel viewModel;
+    private SaveMazeController saveMaze;
+    private LoadMazeController loadMaze;
+    private PropertiesController propertiesController;
     public MazeDisplayer mazeDisplayer;
-    public SaveMazeController saveMaze;
-    public LoadMazeController loadMaze;
-    public PropertiesController propertiesController;
     public javafx.scene.control.TextField txtfld_rowsNum;
     public javafx.scene.control.TextField txtfld_columnsNum;
     public javafx.scene.control.Label lbl_rowsNum;
@@ -94,8 +90,18 @@ public class MyViewController implements Observer, IView {
     }
 
     public void generateMaze() {
-        int row = Integer.valueOf(txtfld_rowsNum.getText());
-        int col = Integer.valueOf(txtfld_columnsNum.getText());
+        String strow = txtfld_rowsNum.getText();
+        String stcol = txtfld_columnsNum.getText();
+        if(!isNumeric(strow) || !isNumeric(stcol)){
+            showAlert("Invalid input, please try again with numbers greater then 3. ");
+            return;
+        }
+        int row = Integer.valueOf(strow);
+        int col = Integer.valueOf(stcol);
+        if(row<3 || col<3){
+            showAlert("Invalid input, please try again with numbers greater then 3. ");
+            return;
+        }
         btn_generateMaze.setDisable(true);
         btn_solveMaze.setDisable(false);
         viewModel.generateMaze(row, col);
@@ -148,7 +154,7 @@ public class MyViewController implements Observer, IView {
     }
 
     private void showAlert(String alertMessage) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setContentText(alertMessage);
         alert.show();
     }
@@ -215,6 +221,18 @@ public class MyViewController implements Observer, IView {
         } catch (Exception e) {
 
         }
+    }
+
+    private boolean isNumeric(String str){
+       try
+            {
+                Integer.parseInt( str );
+                return true;
+            }
+            catch( Exception e )
+            {
+                return false;
+            }
     }
 
     //region String Property for Binding

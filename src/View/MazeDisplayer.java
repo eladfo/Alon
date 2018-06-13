@@ -26,7 +26,6 @@ public class MazeDisplayer extends Canvas {
     private int characterPositionRow = 1;
     private int characterPositionColumn = 1;
 
-
     public void setMaze(Maze maze) {
         this.maze = maze;
         redrawMaze();
@@ -55,27 +54,18 @@ public class MazeDisplayer extends Canvas {
         if (maze != null) {
             double canvasHeight = getHeight();
             double canvasWidth = getWidth();
-
             double cellHeight = canvasHeight / maze.getM_rows();
             double cellWidth = canvasWidth / maze.getM_columns();
-
             try {
-
                 Image wallImage = new Image(new FileInputStream(ImageFileNameWall.get()));
-                //System.out.println("===============================================================");
                 Image characterImage = new Image(new FileInputStream(ImageFileNameCharacter.get()));
                 Image targetImage = new Image(new FileInputStream(ImageFileNameTarget.get()));
-
-                    GraphicsContext gc = getGraphicsContext2D();
-                    gc.clearRect(0, 0, getWidth(), getHeight());
-
+                GraphicsContext gc = getGraphicsContext2D();
+                gc.clearRect(0, 0, getWidth(), getHeight());
                 //Draw Maze
-                //System.out.println("dfsdfsdfsfs");
-
                 for (int i = 0; i < maze.getM_rows(); i++) {
                     for (int j = 0; j < maze.getM_columns(); j++) {
                         if (maze.getPositionValue(i, j) == 1) {
-                            //gc.fillRect(i * cellHeight, j * cellWidth, cellHeight, cellWidth);
                             gc.drawImage(wallImage, j * cellWidth, i * cellHeight, cellWidth, cellHeight);
                         }
                     }
@@ -84,7 +74,6 @@ public class MazeDisplayer extends Canvas {
                 //gc.setFill(Color.RED);
                 //gc.fillOval(characterPositionColumn * cellHeight, characterPositionRow * cellWidth, cellHeight, cellWidth);
                 gc.drawImage(characterImage, characterPositionColumn * cellWidth, characterPositionRow * cellHeight, cellWidth, cellHeight);
-
                 //Draw Target
                 gc.drawImage(targetImage, maze.getGoalPosition().getColumnIndex() * cellWidth, maze.getGoalPosition().getRowIndex() * cellHeight, cellWidth, cellHeight);
 
@@ -105,33 +94,21 @@ public class MazeDisplayer extends Canvas {
             }
             else
                 {
-
                  canvasHeight = getHeight();
                     canvasWidth = getWidth();
             }
-            //System.out.println("============="+canvasHeight);
             double cellHeight = canvasHeight / maze.getM_rows();
             double cellWidth = canvasWidth / maze.getM_columns();
-
             try {
-
                 Image wallImage = new Image(new FileInputStream(ImageFileNameWall.get()));
-                //System.out.(println"===============================================================");
                 Image characterImage = new Image(new FileInputStream(ImageFileNameCharacter.get()));
                 Image targetImage = new Image(new FileInputStream(ImageFileNameTarget.get()));
-
                 GraphicsContext gc = getGraphicsContext2D();
-
                 gc.clearRect(0, 0, getWidth(),  getHeight());
-
-
                 //Draw Maze
-                //System.out.println("dfsdfsdfsfs");
-
                 for (int i = 0; i < maze.getM_rows(); i++) {
                     for (int j = 0; j < maze.getM_columns(); j++) {
                         if (maze.getPositionValue(i, j) == 1) {
-                            //gc.fillRect(i * cellHeight, j * cellWidth, cellHeight, cellWidth);
                             gc.drawImage(wallImage, j * cellWidth, i * cellHeight, cellWidth, cellHeight);
                         }
                     }
@@ -150,7 +127,7 @@ public class MazeDisplayer extends Canvas {
         }
     }
 
-    public void redrawSolution() {
+    private void redrawSolution() {
         if (maze != null) {
             double canvasHeight = getHeight();
             double canvasWidth = getWidth();
@@ -186,7 +163,8 @@ public class MazeDisplayer extends Canvas {
         //}
 
     }
-    public int[] astetaToInt(AState a)
+
+    private int[] astetaToInt(AState a)
     {
         int[] res = new int[2];
         int count = 0;

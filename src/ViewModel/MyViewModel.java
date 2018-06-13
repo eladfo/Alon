@@ -33,71 +33,9 @@ public class MyViewModel extends Observable implements Observer {
     private static String mazeGenerator;
     private static String searchingAlgorithm;
 
-
-
     public StringProperty characterPositionRow = new SimpleStringProperty(""); //For Binding
     public StringProperty characterPositionColumn = new SimpleStringProperty(""); //For Binding
     public StringProperty step = new SimpleStringProperty(""); //For Binding
-
-
-    public StringProperty lbl_Kind_of_genarate = new SimpleStringProperty(""); //For Binding
-    public StringProperty lbl_Kind_of_algo = new SimpleStringProperty(""); //For Binding
-    public StringProperty lbl_size_of_pool = new SimpleStringProperty(""); //For Binding
-
-    static
-    {
-        Properties prop = new Properties();
-        InputStream input = null;
-        try {
-            String filename = "config.properties";
-            input = Server.class.getClassLoader().getResourceAsStream(filename);
-            if(input==null){
-                System.out.println("Sorry, unable to find " + filename);
-            }
-            //load a properties file from class path, inside static method
-            prop.load(input);
-
-            //get the property value and print it out
-           String poolSize = prop.getProperty("PoolSize");
-            String mazeGenerator = prop.getProperty("MazeGenerator");
-            String searchingAlgorithm = prop.getProperty("SearchingAlgorithm");
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } finally{
-            if(input!=null){
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    public static int getPoolSize() {
-        try {
-            int size = Integer.valueOf(poolSize);
-            if (size > 0)
-                return size;
-            return 1;
-        }
-        catch (NumberFormatException e) {
-            return 1;
-        }
-    }
-
-    public static String getMazeGenerator() {
-        return mazeGenerator;
-    }
-
-    public static String getSearchingAlgorithm() {
-        return searchingAlgorithm;
-    }
-
-    public MyViewModel(IModel model){
-        this.model = model;
-    }
 
     @Override
     public void update(Observable o, Object arg) {
@@ -136,6 +74,7 @@ public class MyViewModel extends Observable implements Observer {
     {
         model.saveMaze(mazeName);
     }
+
     public void moveCharacter(KeyCode movement){
         model.moveCharacter(movement);
     }
@@ -155,10 +94,76 @@ public class MyViewModel extends Observable implements Observer {
     public int getCharacterPositionColumn() {
         return characterPositionColumnIndex;
     }
+
     public void print()
     {
         System.out.println(getPoolSize());
         System.out.println(getSearchingAlgorithm());
         System.out.println(getMazeGenerator());
     }
+
+    public MyViewModel(IModel model){
+        this.model = model;
+    }
+
+
+    //Binding and Properties
+    public StringProperty lbl_Kind_of_genarate = new SimpleStringProperty(""); //For Binding
+    public StringProperty lbl_Kind_of_algo = new SimpleStringProperty(""); //For Binding
+    public StringProperty lbl_size_of_pool = new SimpleStringProperty(""); //For Binding
+
+    static
+    {
+        Properties prop = new Properties();
+        InputStream input = null;
+        try {
+            String filename = "config.properties";
+            input = Server.class.getClassLoader().getResourceAsStream(filename);
+            if(input==null){
+                System.out.println("Sorry, unable to find " + filename);
+            }
+            //load a properties file from class path, inside static method
+            prop.load(input);
+
+            //get the property value and print it out
+            String poolSize = prop.getProperty("PoolSize");
+            String mazeGenerator = prop.getProperty("MazeGenerator");
+            String searchingAlgorithm = prop.getProperty("SearchingAlgorithm");
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally{
+            if(input!=null){
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public static int getPoolSize() {
+        try {
+            int size = Integer.valueOf(poolSize);
+            if (size > 0)
+                return size;
+            return 1;
+        }
+        catch (NumberFormatException e) {
+            return 1;
+        }
+    }
+
+    public static String getMazeGenerator() {
+        return mazeGenerator;
+    }
+
+    public static String getSearchingAlgorithm() {
+        return searchingAlgorithm;
+    }
+
+    //hmmmmmm
+
+
 }

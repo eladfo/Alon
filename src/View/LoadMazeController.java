@@ -1,6 +1,7 @@
 package View;
 
 import ViewModel.MyViewModel;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import java.util.Observable;
 import java.util.Observer;
@@ -18,6 +19,10 @@ public class LoadMazeController implements Observer {
     public void loadMaze()
     {
         String mazeName = txtfld_loadName.getText();
+        if(mazeName.equals("")){
+            showAlert("Empty maze name, please try again.");
+            return;
+        }
         viewModel.loadMaze(mazeName);
         Stage stage = (Stage) btn_loadMaze.getScene().getWindow();
         stage.close();
@@ -27,5 +32,11 @@ public class LoadMazeController implements Observer {
     @Override
     public void update(Observable o, Object arg) {
 
+    }
+
+    private void showAlert(String alertMessage) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setContentText(alertMessage);
+        alert.show();
     }
 }
