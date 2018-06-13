@@ -47,9 +47,7 @@ public class Main extends Application {
                 if (result.get() == ButtonType.OK){
                     // ... user chose OK
                     // Close program
-                    System.out.println("blaaaaaaaaaa");
                     model.stopServers();
-                    System.out.println("blaaaaaaaaaa");
                 } else {
                     // ... user chose CANCEL or closed the dialog
                     windowEvent.consume();

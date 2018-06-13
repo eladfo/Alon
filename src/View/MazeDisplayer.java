@@ -27,9 +27,6 @@ public class MazeDisplayer extends Canvas {
     private int characterPositionColumn = 1;
 
 
-
-
-
     public void setMaze(Maze maze) {
         this.maze = maze;
         redrawMaze();
@@ -96,7 +93,6 @@ public class MazeDisplayer extends Canvas {
             }
         }
     }
-
 
     public void redrawMaze1(int flag , double parameter) {
         if (maze != null) {

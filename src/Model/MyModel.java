@@ -198,7 +198,6 @@ public class MyModel extends Observable implements IModel {
     {
         Position p = new Position(row, col , null);
         boolean res =  maze.isLegal(p, 0);
-        System.out.println(res);
         return res;
     }
 

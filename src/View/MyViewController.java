@@ -119,9 +119,7 @@ public class MyViewController implements Observer, IView {
 
     //region String Property for Binding
     public StringProperty characterPositionRow = new SimpleStringProperty();
-
     public StringProperty characterPositionColumn = new SimpleStringProperty();
-
     public StringProperty steps = new SimpleStringProperty();
 
 
@@ -167,7 +165,7 @@ public class MyViewController implements Observer, IView {
 
             }
         });
-
+        /**
         EventHandler<javafx.scene.input.MouseEvent> mouseHandler = new EventHandler<javafx.scene.input.MouseEvent>() {
 
             @Override
@@ -180,7 +178,7 @@ public class MyViewController implements Observer, IView {
         scene.setOnMouseClicked(mouseHandler);
         scene.setOnMouseDragged(mouseHandler);
         scene.setOnMouseEntered(mouseHandler);
-
+        **/
 
 
 
