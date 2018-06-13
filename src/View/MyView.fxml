@@ -85,7 +85,7 @@
                         </Menu>
                         <Menu mnemonicParsing="false" text="Help">
                         </Menu>
-                        <Menu mnemonicParsing="false" text="Exit">
+                        <Menu fx:id="btn_exit" mnemonicParsing="false" onShowing="#exitApp" onHiding="#exitApp" text="Exit" >
                         </Menu>
                     </menus>
                 </MenuBar>

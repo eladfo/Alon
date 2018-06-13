@@ -1,6 +1,7 @@
 package ViewModel;
 
 import Model.IModel;
+import Model.MyModel;
 import Server.Server;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.Solution;
@@ -24,10 +25,8 @@ import java.util.Properties;
 public class MyViewModel extends Observable implements Observer {
 
     private IModel model;
-
     private int characterPositionRowIndex;
     private int characterPositionColumnIndex;
-    private String s;
     public int steps;
 
     private static String poolSize;
@@ -37,6 +36,10 @@ public class MyViewModel extends Observable implements Observer {
     public StringProperty characterPositionRow = new SimpleStringProperty(""); //For Binding
     public StringProperty characterPositionColumn = new SimpleStringProperty(""); //For Binding
     public StringProperty step = new SimpleStringProperty(""); //For Binding
+
+    public MyViewModel(IModel model){
+        this.model = model;
+    }
 
     @Override
     public void update(Observable o, Object arg) {
@@ -104,10 +107,10 @@ public class MyViewModel extends Observable implements Observer {
         lbl_Kind_of_genarate.set(getMazeGenerator());
     }
 
-    public MyViewModel(IModel model){
-        this.model = model;
+    public void stopServers()
+    {
+        model.stopServers();
     }
-
 
     //Binding and Properties
     public StringProperty lbl_Kind_of_genarate = new SimpleStringProperty(""); //For Binding

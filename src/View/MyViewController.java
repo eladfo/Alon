@@ -20,8 +20,11 @@ import javafx.event.EventHandler;
 
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.event.Event;
 
+import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -46,6 +49,7 @@ public class MyViewController implements Observer, IView {
     public javafx.scene.control.Button btn_generateMaze;
     public javafx.scene.control.Button btn_solveMaze;
     public javafx.scene.control.Label lbl_num_of_steps;
+    public javafx.scene.control.Menu btn_exit;
 
     public void setViewModel(MyViewModel viewModel) {
         this.viewModel = viewModel;
@@ -238,6 +242,13 @@ public class MyViewController implements Observer, IView {
     public void resetCanvas()
     {
         mazeDisplayer.resetCanvas();
+
+    }
+
+    public void exitApp(Event event)
+    {
+        viewModel.stopServers();
+        System.exit(0);
     }
 
     //region String Property for Binding

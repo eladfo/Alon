@@ -19,4 +19,5 @@ public interface IModel {
     int getCharacterPositionRow();
     int getCharacterPositionColumn();
     int get_Num_of_steps();
+    void stopServers();
 }
