@@ -12,6 +12,7 @@ public interface IModel {
     void generateMaze(int width, int height);
     void solveMaze();
     void saveMaze(String name);
+    void loadMaze(String name);
     void moveCharacter(KeyCode movement);
     Maze getMaze();
     Solution getSolution();

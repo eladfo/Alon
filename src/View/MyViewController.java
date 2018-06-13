@@ -41,6 +41,7 @@ public class MyViewController implements Observer, IView {
     private MyViewModel viewModel;
     public MazeDisplayer mazeDisplayer;
     public SaveMazeController saveMaze;
+    public LoadMazeController loadMaze;
     public javafx.scene.control.TextField txtfld_rowsNum;
     public javafx.scene.control.TextField txtfld_columnsNum;
     public javafx.scene.control.Label lbl_rowsNum;
@@ -110,7 +111,7 @@ public class MyViewController implements Observer, IView {
     public void saveMazeWindow(ActionEvent actionEvent) {
         try {
             Stage stage = new Stage();
-            stage.setTitle("Saving_Maze");
+            stage.setTitle("Saving Maze");
             FXMLLoader fxmlLoader = new FXMLLoader();
             Parent root = fxmlLoader.load(getClass().getResource("SaveMazeController.fxml").openStream());
             Scene scene = new Scene(root, 350, 250);
@@ -121,6 +122,25 @@ public class MyViewController implements Observer, IView {
             saveMaze = fxmlLoader.getController();
             saveMaze.setViewModel(viewModel);
             viewModel.addObserver(saveMaze);
+        } catch (Exception e) {
+
+        }
+    }
+
+    public void loadMazeWindow(ActionEvent actionEvent) {
+        try {
+            Stage stage = new Stage();
+            stage.setTitle("lll");
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            Parent root = fxmlLoader.load(getClass().getResource("LoadMazeController.fxml").openStream());
+            Scene scene = new Scene(root, 350, 250);
+            scene.getStylesheets().add(getClass().getResource("ViewStyle.css").toExternalForm());
+            stage.setScene(scene);
+            stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
+            stage.show();
+            loadMaze = fxmlLoader.getController();
+            loadMaze.setViewModel(viewModel);
+            viewModel.addObserver(loadMaze);
         } catch (Exception e) {
 
         }

@@ -86,11 +86,6 @@ public class MyModel extends Observable implements IModel {
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -124,10 +119,11 @@ public class MyModel extends Observable implements IModel {
     @Override
     public void saveMaze(String name)
     {
-        try {
-            String tmpDir = "resources/SavedMazes/";
-            String tmpFile = tmpDir + name;
-            File f = new File(tmpFile);
+        if(name == "")
+            return;
+        String tmpDir = "resources/SavedMazes/";
+        String tmpFile = tmpDir + name;
+        File f = new File(tmpFile);
             /**if (f.exists()) {
                 FileInputStream file = new FileInputStream(tmpFile);
                 ObjectInputStream obj = new ObjectInputStream(file);
@@ -135,20 +131,47 @@ public class MyModel extends Observable implements IModel {
                 file.close();
                 obj.close();
             } else {**/
-
+        try {
             f.createNewFile();
             FileOutputStream outFile = new FileOutputStream(tmpFile);
             ObjectOutputStream outObj = new ObjectOutputStream(outFile);
             outObj.writeObject(maze);
             outFile.close();
             outObj.close();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     @Override
+    public void loadMaze(String name)
+    {
+        String tmpDir = "resources/SavedMazes/";
+        String tmpFile = tmpDir + name;
+        File f = new File(tmpFile);
+        try {
+            if (f.exists()) {
+                FileInputStream file = new FileInputStream(tmpFile);
+                ObjectInputStream obj = new ObjectInputStream(file);
+                maze = (Maze) obj.readObject();
+                file.close();
+                obj.close();
+                setChanged();
+                characterPositionRow = maze.getStartPosition().getRowIndex();
+                characterPositionColumn = maze.getStartPosition().getColumnIndex();
+                maze.setValueByCords(characterPositionRow, characterPositionColumn, 0);
+                notifyObservers(1);
+            } else
+                return;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+        @Override
     public Solution getSolution() {
         return solution;
     }
@@ -223,14 +246,6 @@ public class MyModel extends Observable implements IModel {
         notifyObservers(1);
     }
 
-    public boolean isLegal(int row, int col)
-    {
-        Position p = new Position(row, col , null);
-        boolean res =  maze.isLegal(p, 0);
-
-        return res;
-    }
-
     @Override
     public int getCharacterPositionRow() {
         return characterPositionRow;
@@ -244,5 +259,12 @@ public class MyModel extends Observable implements IModel {
     @Override
     public int get_Num_of_steps() {
         return steps;
+    }
+
+    public boolean isLegal(int row, int col)
+    {
+        Position p = new Position(row, col , null);
+        boolean res =  maze.isLegal(p, 0);
+        return res;
     }
 }
