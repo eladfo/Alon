@@ -15,7 +15,8 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane onKeyPressed="#KeyPressed" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MyViewController">
+<BorderPane onKeyPressed="#KeyPressed" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="View.MyViewController">
     <left>
         <VBox prefHeight="200.0" prefWidth="200.0" spacing="5.0" BorderPane.alignment="CENTER">
             <children>
@@ -71,7 +72,7 @@
                         <Menu mnemonicParsing="false" text="File">
                             <items>
                                 <MenuItem mnemonicParsing="false" text="New" />
-                                <MenuItem mnemonicParsing="false" text="Save" />
+                                <MenuItem mnemonicParsing="false" text="Save" onAction="#saveMazeWindow" />
                                 <MenuItem mnemonicParsing="false" text="Load" />
                             </items>
                         </Menu>

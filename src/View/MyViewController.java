@@ -40,6 +40,7 @@ public class MyViewController implements Observer, IView {
     @FXML
     private MyViewModel viewModel;
     public MazeDisplayer mazeDisplayer;
+    public SaveMazeController saveMaze;
     public javafx.scene.control.TextField txtfld_rowsNum;
     public javafx.scene.control.TextField txtfld_columnsNum;
     public javafx.scene.control.Label lbl_rowsNum;
@@ -98,11 +99,30 @@ public class MyViewController implements Observer, IView {
         viewModel.generateMaze(row, col);
     }
 
-    public void solveMaze(ActionEvent actionEvent) {
+    public void solveMaze() {
         if(viewModel.getMaze() != null)
         {
             btn_solveMaze.setDisable(true);
             viewModel.solveMaze();
+        }
+    }
+
+    public void saveMazeWindow(ActionEvent actionEvent) {
+        try {
+            Stage stage = new Stage();
+            stage.setTitle("Saving_Maze");
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            Parent root = fxmlLoader.load(getClass().getResource("SaveMazeController.fxml").openStream());
+            Scene scene = new Scene(root, 400, 350);
+            scene.getStylesheets().add(getClass().getResource("ViewStyle.css").toExternalForm());
+            stage.setScene(scene);
+            stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
+            stage.show();
+            saveMaze = fxmlLoader.getController();
+            saveMaze.setViewModel(viewModel);
+            viewModel.addObserver(saveMaze);
+        } catch (Exception e) {
+
         }
     }
 
@@ -115,34 +135,6 @@ public class MyViewController implements Observer, IView {
     public void KeyPressed(KeyEvent keyEvent) {
         viewModel.moveCharacter(keyEvent.getCode());
         keyEvent.consume();
-    }
-
-    //region String Property for Binding
-    public StringProperty characterPositionRow = new SimpleStringProperty();
-    public StringProperty characterPositionColumn = new SimpleStringProperty();
-    public StringProperty steps = new SimpleStringProperty();
-
-
-    public String getCharacterPositionRow() {
-        return characterPositionRow.get();
-    }
-
-    public StringProperty steps() {return characterPositionRow;}
-    public String getsteps() {
-        return steps.get();
-    }
-
-    public StringProperty characterPositionRowProperty() {
-        return characterPositionRow;
-    }
-
-
-    public String getCharacterPositionColumn() {
-        return characterPositionColumn.get();
-    }
-
-    public StringProperty characterPositionColumnProperty() {
-        return characterPositionColumn;
     }
 
     public void setResizeEvent(Scene scene) {
@@ -166,24 +158,23 @@ public class MyViewController implements Observer, IView {
             }
         });
         /**
-        EventHandler<javafx.scene.input.MouseEvent> mouseHandler = new EventHandler<javafx.scene.input.MouseEvent>() {
+         EventHandler<javafx.scene.input.MouseEvent> mouseHandler = new EventHandler<javafx.scene.input.MouseEvent>() {
 
-            @Override
-            public void handle(javafx.scene.input.MouseEvent event) {
-                System.out.println("dd");
-            }
+        @Override
+        public void handle(javafx.scene.input.MouseEvent event) {
+        System.out.println("dd");
+        }
         };
 
 
-        scene.setOnMouseClicked(mouseHandler);
-        scene.setOnMouseDragged(mouseHandler);
-        scene.setOnMouseEntered(mouseHandler);
-        **/
+         scene.setOnMouseClicked(mouseHandler);
+         scene.setOnMouseDragged(mouseHandler);
+         scene.setOnMouseEntered(mouseHandler);
+         **/
 
 
 
     }
-
 
     public void Properties(ActionEvent actionEvent) {
         try {
@@ -199,6 +190,34 @@ public class MyViewController implements Observer, IView {
 
         }
     }
+
+    //region String Property for Binding
+    public StringProperty characterPositionRow = new SimpleStringProperty();
+    public StringProperty characterPositionColumn = new SimpleStringProperty();
+    public StringProperty steps = new SimpleStringProperty();
+
+    public String getCharacterPositionRow() {
+        return characterPositionRow.get();
+    }
+
+    public StringProperty steps() {return characterPositionRow;}
+
+    public String getsteps() {
+        return steps.get();
+    }
+
+    public StringProperty characterPositionRowProperty() {
+        return characterPositionRow;
+    }
+
+    public String getCharacterPositionColumn() {
+        return characterPositionColumn.get();
+    }
+
+    public StringProperty characterPositionColumnProperty() {
+        return characterPositionColumn;
+    }
+
 
     //endregion
 

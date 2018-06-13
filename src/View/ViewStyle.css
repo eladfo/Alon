@@ -1,9 +1,9 @@
 .root{
-    -fx-background-color: bisque;
+    -fx-background-color: #f5f8ff;
 }
 
 Button {
-    -fx-text-fill: white;
+    -fx-text-fill: #efecff;
     -fx-font-family: "Arial Narrow";
     -fx-font-weight: bold;
     -fx-background-color: linear-gradient(#61a2b1, #2A5058);

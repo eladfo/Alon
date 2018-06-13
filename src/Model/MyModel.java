@@ -5,6 +5,7 @@ import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.MyMazeGenerator;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.AState;
+import algorithms.search.BestFirstSearch;
 import algorithms.search.Solution;
 import javafx.scene.input.KeyCode;
 
@@ -25,7 +26,7 @@ import java.net.UnknownHostException;
 public class MyModel extends Observable implements IModel {
 
     //private ExecutorService threadPool = Executors.newCachedThreadPool();
-    private Server  mazeGeneratingServer;
+    private Server mazeGeneratingServer;
     private Server solveSearchProblemServer;
     private Maze maze;
     private Solution solution;
@@ -121,6 +122,33 @@ public class MyModel extends Observable implements IModel {
     }
 
     @Override
+    public void saveMaze(String name)
+    {
+        try {
+            String tmpDir = "resources/SavedMazes/";
+            String tmpFile = tmpDir + name;
+            File f = new File(tmpFile);
+            /**if (f.exists()) {
+                FileInputStream file = new FileInputStream(tmpFile);
+                ObjectInputStream obj = new ObjectInputStream(file);
+                solution = (Solution) obj.readObject();
+                file.close();
+                obj.close();
+            } else {**/
+
+            f.createNewFile();
+            FileOutputStream outFile = new FileOutputStream(tmpFile);
+            ObjectOutputStream outObj = new ObjectOutputStream(outFile);
+            outObj.writeObject(maze);
+            outFile.close();
+            outObj.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public Solution getSolution() {
         return solution;
     }
@@ -131,7 +159,8 @@ public class MyModel extends Observable implements IModel {
     }
 
     @Override
-    public void moveCharacter(KeyCode movement) {
+    public void moveCharacter(KeyCode movement)
+    {
         switch (movement) {
             case NUMPAD8:
                 if(isLegal(characterPositionRow-1,characterPositionColumn)) {
@@ -211,6 +240,7 @@ public class MyModel extends Observable implements IModel {
     public int getCharacterPositionColumn() {
         return characterPositionColumn;
     }
+
     @Override
     public int get_Num_of_steps() {
         return steps;
