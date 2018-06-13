@@ -11,6 +11,7 @@ import javafx.beans.property.StringProperty;
 import javafx.scene.control.Alert;
 import javafx.scene.input.KeyCode;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Observable;
@@ -98,8 +99,9 @@ public class MyViewModel extends Observable implements Observer {
     public void print()
     {
         System.out.println(getPoolSize());
-        System.out.println(getSearchingAlgorithm());
-        System.out.println(getMazeGenerator());
+        lbl_size_of_pool.set(String.valueOf(getPoolSize()));
+        lbl_Kind_of_algo.set(getSearchingAlgorithm());
+        lbl_Kind_of_genarate.set(getMazeGenerator());
     }
 
     public MyViewModel(IModel model){
@@ -117,8 +119,9 @@ public class MyViewModel extends Observable implements Observer {
         Properties prop = new Properties();
         InputStream input = null;
         try {
-            String filename = "config.properties";
-            input = Server.class.getClassLoader().getResourceAsStream(filename);
+            String filename = "resources/config.properties";
+            input = new FileInputStream(filename);
+            //input = Server.class.getClassLoader().getResourceAsStream(filename);
             if(input==null){
                 System.out.println("Sorry, unable to find " + filename);
             }
@@ -126,9 +129,9 @@ public class MyViewModel extends Observable implements Observer {
             prop.load(input);
 
             //get the property value and print it out
-            String poolSize = prop.getProperty("PoolSize");
-            String mazeGenerator = prop.getProperty("MazeGenerator");
-            String searchingAlgorithm = prop.getProperty("SearchingAlgorithm");
+            poolSize = prop.getProperty("PoolSize");
+            mazeGenerator = prop.getProperty("MazeGenerator");
+            searchingAlgorithm = prop.getProperty("SearchingAlgorithm");
 
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -163,7 +166,6 @@ public class MyViewModel extends Observable implements Observer {
         return searchingAlgorithm;
     }
 
-    //hmmmmmm
 
 
 }
