@@ -166,11 +166,11 @@ public class MazeDisplayer extends Canvas {
                 int[] tmp = new int[2];
                 for (int i = 0; i < mazeSolutionSteps.size(); i++) {
                     tmp = astetaToInt(mazeSolutionSteps.get(i));
-                    gc.drawImage(solutionImage, tmp[1] * cellHeight, tmp[0] * cellWidth, cellHeight, cellWidth);
+                    gc.drawImage(solutionImage, tmp[1] * cellWidth, tmp[0] * cellHeight, cellWidth, cellHeight);
 
                 }
                 //Draw Target
-                gc.drawImage(targetImage, maze.getGoalPosition().getColumnIndex() * cellHeight, maze.getGoalPosition().getRowIndex() * cellWidth, cellHeight, cellWidth);
+                gc.drawImage(targetImage, maze.getGoalPosition().getColumnIndex() * cellWidth, maze.getGoalPosition().getRowIndex() * cellHeight, cellWidth, cellHeight);
 
                 //redrawMaze();
 

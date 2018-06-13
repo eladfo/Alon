@@ -160,8 +160,8 @@ public class MyViewController implements Observer, IView {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
                 System.out.println("Height: " + newSceneHeight);
-                mazeDisplayer.setHeight((double) newSceneHeight - 200);
-                mazeDisplayer.redrawMaze1(0, (double) newSceneHeight - 200);
+                mazeDisplayer.setHeight((double) newSceneHeight );
+                mazeDisplayer.redrawMaze1(0, (double) newSceneHeight );
 
             }
         });
