@@ -1,6 +1,7 @@
 package ViewModel;
 
 import Model.IModel;
+import Server.Server;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.Solution;
 import javafx.beans.property.IntegerProperty;
@@ -10,8 +11,11 @@ import javafx.beans.property.StringProperty;
 import javafx.scene.control.Alert;
 import javafx.scene.input.KeyCode;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Properties;
 
 /**
  * Created by Aviadjo on 6/14/2017.
@@ -22,7 +26,14 @@ public class MyViewModel extends Observable implements Observer {
 
     private int characterPositionRowIndex;
     private int characterPositionColumnIndex;
+    private String s;
     public int steps;
+
+    private static String poolSize;
+    private static String mazeGenerator;
+    private static String searchingAlgorithm;
+
+
 
     public StringProperty characterPositionRow = new SimpleStringProperty(""); //For Binding
     public StringProperty characterPositionColumn = new SimpleStringProperty(""); //For Binding
@@ -33,6 +44,56 @@ public class MyViewModel extends Observable implements Observer {
     public StringProperty lbl_Kind_of_algo = new SimpleStringProperty(""); //For Binding
     public StringProperty lbl_size_of_pool = new SimpleStringProperty(""); //For Binding
 
+    static
+    {
+        Properties prop = new Properties();
+        InputStream input = null;
+        try {
+            String filename = "config.properties";
+            input = Server.class.getClassLoader().getResourceAsStream(filename);
+            if(input==null){
+                System.out.println("Sorry, unable to find " + filename);
+            }
+            //load a properties file from class path, inside static method
+            prop.load(input);
+
+            //get the property value and print it out
+           String poolSize = prop.getProperty("PoolSize");
+            String mazeGenerator = prop.getProperty("MazeGenerator");
+            String searchingAlgorithm = prop.getProperty("SearchingAlgorithm");
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally{
+            if(input!=null){
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public static int getPoolSize() {
+        try {
+            int size = Integer.valueOf(poolSize);
+            if (size > 0)
+                return size;
+            return 1;
+        }
+        catch (NumberFormatException e) {
+            return 1;
+        }
+    }
+
+    public static String getMazeGenerator() {
+        return mazeGenerator;
+    }
+
+    public static String getSearchingAlgorithm() {
+        return searchingAlgorithm;
+    }
 
     public MyViewModel(IModel model){
         this.model = model;
@@ -41,6 +102,7 @@ public class MyViewModel extends Observable implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         if (o==model){
+
             if((int)arg == 1)
             {
                 characterPositionRowIndex = model.getCharacterPositionRow();
@@ -56,6 +118,7 @@ public class MyViewModel extends Observable implements Observer {
                 setChanged();
                 notifyObservers(2);
             }
+
 
 
         }
@@ -91,5 +154,11 @@ public class MyViewModel extends Observable implements Observer {
 
     public int getCharacterPositionColumn() {
         return characterPositionColumnIndex;
+    }
+    public void print()
+    {
+        System.out.println(getPoolSize());
+        System.out.println(getSearchingAlgorithm());
+        System.out.println(getMazeGenerator());
     }
 }

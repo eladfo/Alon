@@ -42,6 +42,7 @@ public class MyViewController implements Observer, IView {
     public MazeDisplayer mazeDisplayer;
     public SaveMazeController saveMaze;
     public LoadMazeController loadMaze;
+    public PropertiesController propertiesController;
     public javafx.scene.control.TextField txtfld_rowsNum;
     public javafx.scene.control.TextField txtfld_columnsNum;
     public javafx.scene.control.Label lbl_rowsNum;
@@ -207,6 +208,10 @@ public class MyViewController implements Observer, IView {
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
             stage.show();
+            propertiesController = fxmlLoader.getController();
+            propertiesController.setViewModel(viewModel);
+            viewModel.addObserver(propertiesController);
+
         } catch (Exception e) {
 
         }

@@ -9,7 +9,7 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.PropertiesController">
    <children>
-      <Label layoutX="55.0" layoutY="32.0" prefHeight="78.0" prefWidth="322.0" text="                     Properties:" textAlignment="CENTER">
+      <Label layoutY="32.0" prefHeight="78.0" prefWidth="322.0" text="                     Properties:" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="20.0" />
          </font></Label>
