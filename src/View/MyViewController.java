@@ -103,6 +103,7 @@ public class MyViewController implements Observer, IView {
                 stage.setScene(scene);
                 stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
                 stage.show();
+
                 win_window_controller = fxmlLoader.getController();
                 win_window_controller.setViewModel(viewModel);
                 viewModel.addObserver(win_window_controller);
