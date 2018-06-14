@@ -14,6 +14,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <BorderPane onKeyPressed="#KeyPressed" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MyViewController">
     <left>
@@ -45,17 +46,6 @@
                     <Label fx:id="lbl_columnsNum" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                     <Label text="Num of steps:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
                     <Label fx:id="lbl_num_of_steps" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                    <!--<Label GridPane.columnIndex="1" GridPane.rowIndex="4" text="${controller.characterPositionRow}" />-->
-                    <!--<Label GridPane.columnIndex="1" GridPane.rowIndex="5" text="${controller.characterPositionColumn}"/>-->
-<!--                    <ChoiceBox value="2 minutes" GridPane.columnIndex="1" GridPane.rowIndex="6">
-                        <items>
-                            <FXCollections fx:factory="observableArrayList">
-                                <String fx:value="2 minutes" />
-                                <String fx:value="5 minutes" />
-                                <String fx:value="15 minutes" />
-                            </FXCollections>
-                        </items>
-                    </ChoiceBox>-->
                 </GridPane>
             </children>
             <padding>
@@ -73,6 +63,7 @@
                                 <MenuItem mnemonicParsing="false" onAction="#resetCanvas" text="New" />
                                 <MenuItem mnemonicParsing="false" onAction="#saveMazeWindow" text="Save" />
                                 <MenuItem mnemonicParsing="false" onAction="#loadMazeWindow" text="Load" />
+                        <MenuItem  mnemonicParsing="false" onAction="#exitApp" text="Exit" />
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Options">
@@ -80,13 +71,10 @@
                                 <MenuItem mnemonicParsing="false" onAction="#Properties" text="Properties" />
                             </items>
                         </Menu>
-                        <Menu mnemonicParsing="false" text="About">
-                        </Menu>
                         <Menu mnemonicParsing="false" text="Help">
-                        </Menu>
-                        <Menu mnemonicParsing="false" text="Exit">
                      <items>
-                        <MenuItem fx:id="btn_exit" mnemonicParsing="false" onAction="#exitApp" text="Exit" />
+                        <MenuItem mnemonicParsing="false" text="How to play" onAction="#howToPlayWindow" />
+                        <MenuItem mnemonicParsing="false" text="About" onAction="#aboutWindow"/>
                      </items></Menu>
                     </menus>
                 </MenuBar>
@@ -104,6 +92,9 @@
         </Pane>
     </center>
    <bottom>
-      <Label prefHeight="17.0" prefWidth="806.0" text="Elad &amp; Alon - 2018 ©" BorderPane.alignment="CENTER" />
+      <Label prefHeight="17.0" prefWidth="806.0" text="Elad.F &amp; Alon.T - 2018 ©" BorderPane.alignment="CENTER">
+         <font>
+            <Font name="System Bold Italic" size="12.0" />
+         </font></Label>
    </bottom>
 </BorderPane>

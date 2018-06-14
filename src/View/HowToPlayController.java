@@ -5,7 +5,7 @@ import ViewModel.MyViewModel;
 import java.util.Observable;
 import java.util.Observer;
 
-public class AboutController implements Observer {
+public class HowToPlayController implements Observer {
 
     private MyViewModel viewModel;
 

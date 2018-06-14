@@ -13,7 +13,7 @@
                 <Font name="System Bold" size="16.0" />
             </font>
         </Label>
-        <Button fx:id="btn_loadMaze" layoutX="135.0" layoutY="168.0" mnemonicParsing="false" onAction="#loadMaze" prefHeight="35.0" prefWidth="80.0" text="Load Maze">
+        <Button fx:id="btn_loadMaze" layoutX="135.0" layoutY="167.0" mnemonicParsing="false" onAction="#loadMaze" prefHeight="35.0" prefWidth="80.0" text="Load Maze">
             <font>
                 <Font name="System Bold" size="12.0" />
             </font>

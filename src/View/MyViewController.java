@@ -15,6 +15,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.input.KeyEvent;
 import javafx.event.EventHandler;
 
@@ -30,6 +31,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Optional;
 
 import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseListener;
 import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseMotionListener;
@@ -38,10 +40,6 @@ public class MyViewController implements Observer, IView {
 
     @FXML
     private MyViewModel viewModel;
-    private Win_Window_Controller win_window_controller;
-    private SaveMazeController saveMaze;
-    private LoadMazeController loadMaze;
-    private PropertiesController propertiesController;
     public MazeDisplayer mazeDisplayer;
     public javafx.scene.control.TextField txtfld_rowsNum;
     public javafx.scene.control.TextField txtfld_columnsNum;
@@ -50,7 +48,6 @@ public class MyViewController implements Observer, IView {
     public javafx.scene.control.Button btn_generateMaze;
     public javafx.scene.control.Button btn_solveMaze;
     public javafx.scene.control.Label lbl_num_of_steps;
-    public javafx.scene.control.MenuItem btn_exit;
     public boolean win=false;
 
     public void setViewModel(MyViewModel viewModel) {
@@ -103,7 +100,7 @@ public class MyViewController implements Observer, IView {
                 stage.setScene(scene);
                 stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
                 stage.show();
-
+                Win_Window_Controller win_window_controller;
                 win_window_controller = fxmlLoader.getController();
                 win_window_controller.setViewModel(viewModel);
                 viewModel.addObserver(win_window_controller);
@@ -158,6 +155,7 @@ public class MyViewController implements Observer, IView {
         try {
             Stage stage = new Stage();
             stage.setTitle("Saving Maze");
+            stage.setResizable(false);
             FXMLLoader fxmlLoader = new FXMLLoader();
             Parent root = fxmlLoader.load(getClass().getResource("SaveMaze.fxml").openStream());
             Scene scene = new Scene(root, 350, 250);
@@ -165,6 +163,7 @@ public class MyViewController implements Observer, IView {
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
             stage.show();
+            SaveMazeController saveMaze;
             saveMaze = fxmlLoader.getController();
             saveMaze.setViewModel(viewModel);
             viewModel.addObserver(saveMaze);
@@ -177,7 +176,8 @@ public class MyViewController implements Observer, IView {
         try {
             win=false;
             Stage stage = new Stage();
-            stage.setTitle("lll");
+            stage.setTitle("Load Maze");
+            stage.setResizable(false);
             FXMLLoader fxmlLoader = new FXMLLoader();
             Parent root = fxmlLoader.load(getClass().getResource("LoadMaze.fxml").openStream());
             Scene scene = new Scene(root, 350, 250);
@@ -185,6 +185,7 @@ public class MyViewController implements Observer, IView {
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
             stage.show();
+            LoadMazeController loadMaze;
             loadMaze = fxmlLoader.getController();
             loadMaze.setViewModel(viewModel);
             viewModel.addObserver(loadMaze);
@@ -192,6 +193,72 @@ public class MyViewController implements Observer, IView {
 
         }
     }
+
+    public void howToPlayWindow() {
+        try {
+            Stage stage = new Stage();
+            stage.setTitle("How To Play");
+            stage.setResizable(false);
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            Parent root = fxmlLoader.load(getClass().getResource("HowToPlay.fxml").openStream());
+            Scene scene = new Scene(root, 350, 250);
+            scene.getStylesheets().add(getClass().getResource("ViewStyle.css").toExternalForm());
+            stage.setScene(scene);
+            stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
+            stage.show();
+            HowToPlayController htp;
+            htp = fxmlLoader.getController();
+            htp.setViewModel(viewModel);
+            viewModel.addObserver(htp);
+        } catch (Exception e) {
+        }
+    }
+
+    public void aboutWindow() {
+        try {
+            Stage stage = new Stage();
+            stage.setTitle("About");
+            stage.setResizable(false);
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            Parent root = fxmlLoader.load(getClass().getResource("About.fxml").openStream());
+            Scene scene = new Scene(root, 350, 250);
+            scene.getStylesheets().add(getClass().getResource("ViewStyle.css").toExternalForm());
+            stage.setScene(scene);
+            stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
+            stage.show();
+            AboutController about;
+            about = fxmlLoader.getController();
+            about.setViewModel(viewModel);
+            viewModel.addObserver(about);
+        } catch (Exception e) {
+
+        }
+    }
+
+    public void Properties(ActionEvent actionEvent) {
+        try {
+            Stage stage = new Stage();
+            stage.setTitle("PropertiesController");
+            stage.setResizable(false);
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            Parent root = fxmlLoader.load(getClass().getResource("Properties.fxml").openStream());
+            Scene scene = new Scene(root, 450, 350);
+            scene.getStylesheets().add(getClass().getResource("ViewStyle.css").toExternalForm());
+            stage.setScene(scene);
+            stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
+            stage.show();
+            PropertiesController propertiesController;
+            propertiesController = fxmlLoader.getController();
+            propertiesController.setViewModel(viewModel);
+            viewModel.addObserver(propertiesController);
+
+        } catch (Exception e) {
+
+        }
+    }
+
+
+    //@@@@@@@@@@@@@@@@@@@@@
 
     private void showAlert(String alertMessage) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -245,32 +312,6 @@ public class MyViewController implements Observer, IView {
         // scene.setOnMouseClicked(mouseHandler);
          //scene.setOnMouseDragged(mouseHandler);
         // scene.setOnMouseEntered(mouseHandler);
-
-
-
-
-
-
-    public void Properties(ActionEvent actionEvent) {
-        try {
-            Stage stage = new Stage();
-            stage.setTitle("PropertiesController");
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            Parent root = fxmlLoader.load(getClass().getResource("Properties.fxml").openStream());
-            Scene scene = new Scene(root, 450, 350);
-            scene.getStylesheets().add(getClass().getResource("ViewStyle.css").toExternalForm());
-            stage.setScene(scene);
-            stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
-            stage.show();
-            propertiesController = fxmlLoader.getController();
-            propertiesController.setViewModel(viewModel);
-            viewModel.addObserver(propertiesController);
-
-        } catch (Exception e) {
-
-        }
-    }
-
     private boolean isNumeric(String str){
        try
             {
@@ -291,8 +332,15 @@ public class MyViewController implements Observer, IView {
 
     public void exitApp()
     {
-        viewModel.stopServers();
-        System.exit(0);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            // ... user chose OK
+            // Close program
+            viewModel.stopServers();
+            System.exit(0);
+        }
+
     }
 
     //region String Property for Binding

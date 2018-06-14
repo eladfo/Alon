@@ -13,6 +13,10 @@ import java.util.Observable;
 import IO.MyDecompressorInputStream;
 import Server.*;
 import Client.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
+
 import java.net.UnknownHostException;
 
 /**
@@ -33,20 +37,21 @@ public class MyModel extends Observable implements IModel {
         //Raise the servers
         mazeGeneratingServer = new Server(5400, 1000, new ServerStrategyGenerateMaze());
         solveSearchProblemServer = new Server(5401, 1000, new ServerStrategySolveSearchProblem());
+        playMusic("resources/Sounds/backg.mp3");
     }
 
     public void startServers()
     {
         solveSearchProblemServer.start();
         mazeGeneratingServer.start();
-        System.out.println("Servers are open :)");
+        System.out.println("Servers are open...");
     }
 
     public void stopServers()
     {
         mazeGeneratingServer.stop();
         solveSearchProblemServer.stop();
-        System.out.println("Servers are closed !");
+        System.out.println("Servers are closed.");
 
     }
 
@@ -248,11 +253,26 @@ public class MyModel extends Observable implements IModel {
         return steps;
     }
 
-    public boolean isLegal(int row, int col)
+    private boolean isLegal(int row, int col)
     {
         Position p = new Position(row, col , null);
         boolean res =  maze.isLegal(p, 0);
         return res;
+    }
+
+    public void playMusic(String songName){
+        MediaPlayer player;
+        player = new MediaPlayer(new Media(new File(songName).toURI().toString()));
+        player.setOnEndOfMedia(()-> {
+            player.seek(Duration.ZERO);
+        });
+        Thread t = new Thread(() -> player.play());
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        t.start();
     }
 
 }
