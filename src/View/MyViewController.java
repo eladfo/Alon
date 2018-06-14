@@ -29,6 +29,7 @@ public class MyViewController implements Observer, IView {
 
     @FXML
     private MyViewModel viewModel;
+    private Stage stage;
     public MazeDisplayer mazeDisplayer;
     public javafx.scene.control.TextField txtfld_rowsNum;
     public javafx.scene.control.TextField txtfld_columnsNum;
@@ -40,9 +41,10 @@ public class MyViewController implements Observer, IView {
     public javafx.scene.control.ComboBox<String> combo_world;
     private boolean win=false;
 
-    public void setViewModel(MyViewModel viewModel) {
+    public void setViewModel(MyViewModel viewModel, Stage stage) {
         this.viewModel = viewModel;
         bindProperties(viewModel);
+        this.stage = stage;
     }
 
     private void bindProperties(MyViewModel viewModel) {
@@ -298,6 +300,15 @@ public class MyViewController implements Observer, IView {
         mazeDisplayer.setImageFileNameTarget("resources/Images/gold.png");
         mazeDisplayer.redrawMaze();
     }
+
+    public void exitFS(){
+        stage.setFullScreen(false);
+    }
+
+    public void goFS(){
+        stage.setFullScreen(true);
+    }
+
     //@@@@@@@@@@@@@@@@@@@@@
 
     private void showAlert(String alertMessage) {

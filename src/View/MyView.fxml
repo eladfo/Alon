@@ -10,6 +10,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioMenuItem?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -56,7 +57,7 @@
                     <Label fx:id="lbl_columnsNum" GridPane.columnIndex="1" GridPane.rowIndex="8" />
                     <Label text="Num of steps:" GridPane.rowIndex="9" />
                     <Label fx:id="lbl_num_of_steps" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-               <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="164.0" text="Disable Music" GridPane.columnSpan="2" GridPane.rowIndex="11" onAction="#disableMussic"/>
+               <Button mnemonicParsing="false" onAction="#disableMussic" prefHeight="25.0" prefWidth="164.0" text="Disable Music" GridPane.columnSpan="2" GridPane.rowIndex="11" />
                <ComboBox fx:id="combo_world" onAction="#themeChoose" prefHeight="25.0" prefWidth="253.0" promptText="Choose a theme :)" GridPane.columnSpan="2" GridPane.rowIndex="3">
                      <items>
                          <FXCollections fx:factory="observableArrayList">
@@ -80,7 +81,7 @@
             <children>
                 <MenuBar>
                     <menus>
-                        <Menu mnemonicParsing="false" text="File">
+                        <Menu mnemonicParsing="false" text="File" >
                             <items>
                                 <MenuItem mnemonicParsing="false" onAction="#resetCanvas" text="New" />
                                 <MenuItem mnemonicParsing="false" onAction="#saveMazeWindow" text="Save" />
@@ -91,6 +92,8 @@
                         <Menu mnemonicParsing="false" text="Options">
                             <items>
                                 <MenuItem mnemonicParsing="false" onAction="#Properties" text="Properties" />
+                                <MenuItem mnemonicParsing="false" text="Active full screen" onAction="#goFS"/>
+                                <MenuItem mnemonicParsing="false" text="Exit full screen" onAction="#exitFS" />
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Help">
@@ -106,11 +109,7 @@
     <center>
         <Pane BorderPane.alignment="CENTER">
             <children>
-                <MazeDisplayer fx:id="mazeDisplayer" height="550.0"
-                               imageFileNameCharacter="resources/Images/char.png"
-                               imageFileNameSolution="resources/Images/footprints.png"
-                               imageFileNameTarget="resources/Images/target.png"
-                               imageFileNameWall="resources/Images/wall.png" layoutX="-2.0" width="586.0" />
+                <MazeDisplayer fx:id="mazeDisplayer" height="550.0" imageFileNameCharacter="resources/Images/char.png" imageFileNameSolution="resources/Images/footprints.png" imageFileNameTarget="resources/Images/target.png" imageFileNameWall="resources/Images/wall.png" layoutX="-2.0" width="586.0" />
             </children>
             <padding>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

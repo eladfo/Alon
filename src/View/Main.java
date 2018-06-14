@@ -23,7 +23,6 @@ public class Main extends Application {
         model.addObserver(viewModel);
         //--------------
         primaryStage.setTitle("Epic Maze by Alon.T & Elad.F");
-        primaryStage.setFullScreen(false);
         FXMLLoader fxmlLoader = new FXMLLoader();
         Parent root = fxmlLoader.load(getClass().getResource("MyView.fxml").openStream());
         Scene scene = new Scene(root, 800, 700);
@@ -32,7 +31,7 @@ public class Main extends Application {
         //--------------
         MyViewController view = fxmlLoader.getController();
         view.setResizeEvent(scene);
-        view.setViewModel(viewModel);
+        view.setViewModel(viewModel, primaryStage);
         viewModel.addObserver(view);
         //--------------
         SetStageCloseEvent(primaryStage, model);
