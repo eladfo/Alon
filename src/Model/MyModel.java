@@ -262,6 +262,7 @@ public class MyModel extends Observable implements IModel {
 
     public void playMusic(String songName){
         MediaPlayer player;
+        System.out.println(songName);
         player = new MediaPlayer(new Media(new File(songName).toURI().toString()));
         player.setOnEndOfMedia(()-> {
             player.seek(Duration.ZERO);

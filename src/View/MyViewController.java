@@ -104,6 +104,7 @@ public class MyViewController implements Observer, IView {
                 win_window_controller = fxmlLoader.getController();
                 win_window_controller.setViewModel(viewModel);
                 viewModel.addObserver(win_window_controller);
+                resetCanvas();
             } catch (Exception e) {
 
             }
