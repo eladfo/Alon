@@ -3,7 +3,6 @@ package View;
 import ViewModel.MyViewModel;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.Solution;
-import javafx.beans.InvalidationListener;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
@@ -17,24 +16,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.input.KeyEvent;
-import javafx.event.EventHandler;
 
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.event.Event;
+import javafx.stage.WindowEvent;
 
-import javax.swing.*;
-import javax.swing.event.MouseInputAdapter;
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Optional;
-
-import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseListener;
-import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseMotionListener;
 
 public class MyViewController implements Observer, IView {
 
@@ -48,7 +37,8 @@ public class MyViewController implements Observer, IView {
     public javafx.scene.control.Button btn_generateMaze;
     public javafx.scene.control.Button btn_solveMaze;
     public javafx.scene.control.Label lbl_num_of_steps;
-    public boolean win=false;
+    public javafx.scene.control.ComboBox<String> combo_world;
+    private boolean win=false;
 
     public void setViewModel(MyViewModel viewModel) {
         this.viewModel = viewModel;
@@ -82,37 +72,38 @@ public class MyViewController implements Observer, IView {
         mazeDisplayer.setMaze(maze);
         int characterPositionRow = viewModel.getCharacterPositionRow();
         int characterPositionColumn = viewModel.getCharacterPositionColumn();
-        if(characterPositionRow == maze.getGoalPosition().getRowIndex() && characterPositionColumn==maze.getGoalPosition().getColumnIndex() && win==false) {
+        if(characterPositionRow == maze.getGoalPosition().getRowIndex()
+                && characterPositionColumn==maze.getGoalPosition().getColumnIndex() && win==false) {
             mazeDisplayer.setCharacterPosition(characterPositionRow, characterPositionColumn);
             this.characterPositionRow.set(characterPositionRow + "");
             this.characterPositionColumn.set(characterPositionColumn + "");
-
-
-
             try {
                 Stage stage = new Stage();
                 stage.setTitle("Win!!!!!");
                 FXMLLoader fxmlLoader = new FXMLLoader();
-                Parent root = fxmlLoader.load(getClass().getResource("Win_Window.fxml").openStream());
+                Parent root = fxmlLoader.load(getClass().getResource("Win.fxml").openStream());
                 Scene scene = new Scene(root, 480, 288);
                 stage.setResizable(false);
                 scene.getStylesheets().add(getClass().getResource("ViewStyle.css").toExternalForm());
                 stage.setScene(scene);
                 stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
                 stage.show();
-                Win_Window_Controller win_window_controller;
-                win_window_controller = fxmlLoader.getController();
-                win_window_controller.setViewModel(viewModel);
-                viewModel.addObserver(win_window_controller);
+                WinController win__controller;
+                win__controller = fxmlLoader.getController();
+                win__controller.setViewModel(viewModel);
+                viewModel.addObserver(win__controller);
                 resetCanvas();
+                viewModel.changeMusic(1);
+                stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                    public void handle(WindowEvent windowEvent) {
+                        viewModel.changeMusic(2);
+                    }});
             } catch (Exception e) {
 
             }
-
-
-            win=true;
+             win=true;
         }
-        else if(win==false)
+        else if(!win)
         {
             mazeDisplayer.setCharacterPosition(characterPositionRow, characterPositionColumn);
             this.characterPositionRow.set(characterPositionRow + "");
@@ -258,7 +249,55 @@ public class MyViewController implements Observer, IView {
         }
     }
 
+    public void themeChoose(){
+        combo_world.setOnAction(event -> {
+            String value = combo_world.getValue();
+            switch (value) {
+                case "Mario": setMario(); break;
+                case "Rick and Morty": setRickAndMorty(); break;
+                case "Hearthstone": setHearthstone(); break;
+                case "Game of thrones": setGameOfThrones(); break;
+                case "Dragon Ball": setDragonBall(); break;
+                default: break;
+            }
+         });
+    }
 
+    public void setDragonBall(){
+        mazeDisplayer.setImageFileNameCharacter("resources/Images/goku.png");
+        mazeDisplayer.setImageFileNameWall("resources/Images/ball.png");
+        mazeDisplayer.setImageFileNameTarget("resources/Images/gohan.png");
+        mazeDisplayer.redrawMaze();
+    }
+
+    public void setRickAndMorty(){
+        mazeDisplayer.setImageFileNameCharacter("resources/Images/rick.png");
+        mazeDisplayer.setImageFileNameWall("resources/Images/portal.png");
+        mazeDisplayer.setImageFileNameTarget("resources/Images/morty.png");
+        mazeDisplayer.redrawMaze();
+    }
+
+    public void setMario(){
+        mazeDisplayer.setImageFileNameCharacter("resources/Images/mario.jpg");
+        mazeDisplayer.setImageFileNameWall("resources/Images/block.png");
+        mazeDisplayer.setImageFileNameTarget("resources/Images/peach.png");
+        mazeDisplayer.redrawMaze();
+
+    }
+
+    public void setGameOfThrones(){
+        mazeDisplayer.setImageFileNameCharacter("resources/Images/jon.png");
+        mazeDisplayer.setImageFileNameWall("resources/Images/ww.jpg");
+        mazeDisplayer.setImageFileNameTarget("resources/Images/dani.png");
+        mazeDisplayer.redrawMaze();
+    }
+
+    public void setHearthstone(){
+        mazeDisplayer.setImageFileNameCharacter("resources/Images/mage.png");
+        mazeDisplayer.setImageFileNameWall("resources/Images/card.png");
+        mazeDisplayer.setImageFileNameTarget("resources/Images/gold.png");
+        mazeDisplayer.redrawMaze();
+    }
     //@@@@@@@@@@@@@@@@@@@@@
 
     private void showAlert(String alertMessage) {
@@ -342,6 +381,10 @@ public class MyViewController implements Observer, IView {
             System.exit(0);
         }
 
+    }
+
+    public void disableMussic(){
+        viewModel.changeMusic(0);
     }
 
     //region String Property for Binding

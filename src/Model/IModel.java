@@ -20,4 +20,5 @@ public interface IModel {
     int getCharacterPositionColumn();
     int get_Num_of_steps();
     void stopServers();
+    void changeMusic(int num);
 }

@@ -44,7 +44,6 @@ public class MyViewModel extends Observable implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         if (o==model){
-
             if((int)arg == 1)
             {
                 characterPositionRowIndex = model.getCharacterPositionRow();
@@ -60,7 +59,6 @@ public class MyViewModel extends Observable implements Observer {
                 setChanged();
                 notifyObservers(2);
             }
-
         }
     }
 
@@ -108,6 +106,10 @@ public class MyViewModel extends Observable implements Observer {
     public void stopServers()
     {
         model.stopServers();
+    }
+
+    public void changeMusic(int num){
+        model.changeMusic(num);
     }
 
     //Binding and Properties

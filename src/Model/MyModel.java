@@ -30,25 +30,24 @@ public class MyModel extends Observable implements IModel {
     private Solution solution;
     private int characterPositionRow = 1;
     private int characterPositionColumn = 1;
-    private int steps=0;
+    private int steps = 0;
+    private MediaPlayer player;
 
-    public MyModel()
-    {
+
+    public MyModel() {
         //Raise the servers
         mazeGeneratingServer = new Server(5400, 1000, new ServerStrategyGenerateMaze());
         solveSearchProblemServer = new Server(5401, 1000, new ServerStrategySolveSearchProblem());
         playMusic("resources/Sounds/backg.mp3");
     }
 
-    public void startServers()
-    {
+    public void startServers() {
         solveSearchProblemServer.start();
         mazeGeneratingServer.start();
         System.out.println("Servers are open...");
     }
 
-    public void stopServers()
-    {
+    public void stopServers() {
         mazeGeneratingServer.stop();
         solveSearchProblemServer.stop();
         System.out.println("Servers are closed.");
@@ -59,7 +58,7 @@ public class MyModel extends Observable implements IModel {
     public void generateMaze(int row, int col) {
         //Generate maze
         try {
-            Client client = new Client(InetAddress.getLocalHost(), 5400, new IClientStrategy(){
+            Client client = new Client(InetAddress.getLocalHost(), 5400, new IClientStrategy() {
                 @Override
                 public void clientStrategy(InputStream inFromServer, OutputStream outToServer) {
                     try {
@@ -91,8 +90,7 @@ public class MyModel extends Observable implements IModel {
     }
 
     @Override
-    public void solveMaze()
-    {
+    public void solveMaze() {
         try {
             Client client = new Client(InetAddress.getLocalHost(), 5401, new IClientStrategy() {
                 @Override
@@ -119,8 +117,7 @@ public class MyModel extends Observable implements IModel {
     }
 
     @Override
-    public void saveMaze(String name)
-    {
+    public void saveMaze(String name) {
         String tmpDir = "resources/SavedMazes/";
         String tmpFile = tmpDir + name;
         File f = new File(tmpFile);
@@ -137,8 +134,7 @@ public class MyModel extends Observable implements IModel {
     }
 
     @Override
-    public void loadMaze(String name)
-    {
+    public void loadMaze(String name) {
         String tmpDir = "resources/SavedMazes/";
         String tmpFile = tmpDir + name;
         File f = new File(tmpFile);
@@ -174,60 +170,55 @@ public class MyModel extends Observable implements IModel {
     }
 
     @Override
-    public void moveCharacter(KeyCode movement)
-    {
+    public void moveCharacter(KeyCode movement) {
         switch (movement) {
             case NUMPAD8:
-                if(isLegal(characterPositionRow-1,characterPositionColumn)) {
+                if (isLegal(characterPositionRow - 1, characterPositionColumn)) {
                     characterPositionRow--;
                     steps++;
                 }
                 break;
             case NUMPAD2:
-                if(isLegal(characterPositionRow+1,characterPositionColumn)) {
+                if (isLegal(characterPositionRow + 1, characterPositionColumn)) {
                     characterPositionRow++;
                     steps++;
                 }
                 break;
             case NUMPAD6:
-                if(isLegal(characterPositionRow,characterPositionColumn+1)) {
+                if (isLegal(characterPositionRow, characterPositionColumn + 1)) {
                     characterPositionColumn++;
                     steps++;
                 }
                 break;
             case NUMPAD4:
-                if(isLegal(characterPositionRow,characterPositionColumn-1)) {
+                if (isLegal(characterPositionRow, characterPositionColumn - 1)) {
                     characterPositionColumn--;
                     steps++;
                 }
                 break;
             case NUMPAD3:
-                if(isLegal(characterPositionRow+1,characterPositionColumn+1))
-                {
+                if (isLegal(characterPositionRow + 1, characterPositionColumn + 1)) {
                     characterPositionColumn++;
                     characterPositionRow++;
                     steps++;
                 }
                 break;
             case NUMPAD1:
-                if(isLegal(characterPositionRow+1,characterPositionColumn-1))
-                {
+                if (isLegal(characterPositionRow + 1, characterPositionColumn - 1)) {
                     characterPositionColumn--;
                     characterPositionRow++;
                     steps++;
                 }
                 break;
             case NUMPAD7:
-                if(isLegal(characterPositionRow-1,characterPositionColumn-1))
-                {
+                if (isLegal(characterPositionRow - 1, characterPositionColumn - 1)) {
                     characterPositionColumn--;
                     characterPositionRow--;
                     steps++;
                 }
                 break;
             case NUMPAD9:
-                if(isLegal(characterPositionRow-1,characterPositionColumn+1))
-                {
+                if (isLegal(characterPositionRow - 1, characterPositionColumn + 1)) {
                     characterPositionColumn++;
                     characterPositionRow--;
                     steps++;
@@ -253,18 +244,15 @@ public class MyModel extends Observable implements IModel {
         return steps;
     }
 
-    private boolean isLegal(int row, int col)
-    {
-        Position p = new Position(row, col , null);
-        boolean res =  maze.isLegal(p, 0);
+    private boolean isLegal(int row, int col) {
+        Position p = new Position(row, col, null);
+        boolean res = maze.isLegal(p, 0);
         return res;
     }
 
-    public void playMusic(String songName){
-        MediaPlayer player;
-        System.out.println(songName);
+    public void playMusic(String songName) {
         player = new MediaPlayer(new Media(new File(songName).toURI().toString()));
-        player.setOnEndOfMedia(()-> {
+        player.setOnEndOfMedia(() -> {
             player.seek(Duration.ZERO);
         });
         Thread t = new Thread(() -> player.play());
@@ -276,4 +264,17 @@ public class MyModel extends Observable implements IModel {
         t.start();
     }
 
+    public void changeMusic(int num) {
+        switch(num) {
+            case 0:
+                player.stop(); break;
+            case 1:
+                player.stop();
+                playMusic("resources/Sounds/winning.mp3"); break;
+            case 2:
+                player.stop();
+                playMusic("resources/Sounds/backg.mp3"); break;
+            default: break;
+        }
+    }
 }

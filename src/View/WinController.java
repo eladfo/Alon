@@ -5,7 +5,7 @@ import ViewModel.MyViewModel;
 import java.util.Observable;
 import java.util.Observer;
 
-public class Win_Window_Controller implements Observer
+public class WinController implements Observer
 {
     private MyViewModel viewModel;
 
