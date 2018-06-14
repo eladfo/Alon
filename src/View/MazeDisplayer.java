@@ -9,9 +9,12 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import static java.awt.Color.BLACK;
@@ -51,16 +54,25 @@ public class MazeDisplayer extends Canvas {
     }
 
     public void redrawMaze() {
+
+
+        GraphicsContext gc = getGraphicsContext2D();
+
         if (maze != null) {
             double canvasHeight = getHeight();
             double canvasWidth = getWidth();
             double cellHeight = canvasHeight / maze.getM_rows();
             double cellWidth = canvasWidth / maze.getM_columns();
+
+            if(characterPositionRow == maze.getGoalPosition().getRowIndex() && characterPositionColumn == maze.getGoalPosition().getColumnIndex())
+            {
+
+            }
+
             try {
                 Image wallImage = new Image(new FileInputStream(ImageFileNameWall.get()));
                 Image characterImage = new Image(new FileInputStream(ImageFileNameCharacter.get()));
                 Image targetImage = new Image(new FileInputStream(ImageFileNameTarget.get()));
-                GraphicsContext gc = getGraphicsContext2D();
                 gc.clearRect(0, 0, getWidth(), getHeight());
                 //Draw Maze
                 for (int i = 0; i < maze.getM_rows(); i++) {

@@ -9,15 +9,29 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+import javax.imageio.ImageIO;
+import javax.print.attribute.standard.Media;
+import javax.swing.*;
+import java.awt.*;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.time.Duration;
 import java.util.Optional;
 
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+
+
+
         MyModel model = new MyModel();
         model.startServers();
         MyViewModel viewModel = new MyViewModel(model);
@@ -37,6 +51,8 @@ public class Main extends Application {
         //--------------
         SetStageCloseEvent(primaryStage, model);
         primaryStage.show();
+
+
     }
 
     private void SetStageCloseEvent(Stage primaryStage, MyModel model) {
@@ -44,7 +60,7 @@ public class Main extends Application {
             public void handle(WindowEvent windowEvent) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 Optional<ButtonType> result = alert.showAndWait();
-                if (result.get() == ButtonType.OK){
+                if (result.get() == ButtonType.OK) {
                     // ... user chose OK
                     // Close program
 
@@ -60,4 +76,5 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
 }

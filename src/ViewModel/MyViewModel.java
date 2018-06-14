@@ -61,8 +61,6 @@ public class MyViewModel extends Observable implements Observer {
                 notifyObservers(2);
             }
 
-
-
         }
     }
 

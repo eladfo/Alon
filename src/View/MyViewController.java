@@ -38,6 +38,7 @@ public class MyViewController implements Observer, IView {
 
     @FXML
     private MyViewModel viewModel;
+    private Win_Window_Controller win_window_controller;
     private SaveMazeController saveMaze;
     private LoadMazeController loadMaze;
     private PropertiesController propertiesController;
@@ -50,6 +51,7 @@ public class MyViewController implements Observer, IView {
     public javafx.scene.control.Button btn_solveMaze;
     public javafx.scene.control.Label lbl_num_of_steps;
     public javafx.scene.control.MenuItem btn_exit;
+    public boolean win=false;
 
     public void setViewModel(MyViewModel viewModel) {
         this.viewModel = viewModel;
@@ -83,9 +85,40 @@ public class MyViewController implements Observer, IView {
         mazeDisplayer.setMaze(maze);
         int characterPositionRow = viewModel.getCharacterPositionRow();
         int characterPositionColumn = viewModel.getCharacterPositionColumn();
-        mazeDisplayer.setCharacterPosition(characterPositionRow, characterPositionColumn);
-        this.characterPositionRow.set(characterPositionRow + "");
-        this.characterPositionColumn.set(characterPositionColumn + "");
+        if(characterPositionRow == maze.getGoalPosition().getRowIndex() && characterPositionColumn==maze.getGoalPosition().getColumnIndex() && win==false) {
+            mazeDisplayer.setCharacterPosition(characterPositionRow, characterPositionColumn);
+            this.characterPositionRow.set(characterPositionRow + "");
+            this.characterPositionColumn.set(characterPositionColumn + "");
+
+
+
+            try {
+                Stage stage = new Stage();
+                stage.setTitle("Win!!!!!");
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                Parent root = fxmlLoader.load(getClass().getResource("Win_Window.fxml").openStream());
+                Scene scene = new Scene(root, 480, 288);
+                stage.setResizable(false);
+                scene.getStylesheets().add(getClass().getResource("ViewStyle.css").toExternalForm());
+                stage.setScene(scene);
+                stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
+                stage.show();
+                win_window_controller = fxmlLoader.getController();
+                win_window_controller.setViewModel(viewModel);
+                viewModel.addObserver(win_window_controller);
+            } catch (Exception e) {
+
+            }
+
+
+            win=true;
+        }
+        else if(win==false)
+        {
+            mazeDisplayer.setCharacterPosition(characterPositionRow, characterPositionColumn);
+            this.characterPositionRow.set(characterPositionRow + "");
+            this.characterPositionColumn.set(characterPositionColumn + "");
+        }
     }
 
     @Override
@@ -94,6 +127,7 @@ public class MyViewController implements Observer, IView {
     }
 
     public void generateMaze() {
+        win=false;
         String strow = txtfld_rowsNum.getText();
         String stcol = txtfld_columnsNum.getText();
         if(!isNumeric(strow) || !isNumeric(stcol)){
@@ -140,6 +174,7 @@ public class MyViewController implements Observer, IView {
 
     public void loadMazeWindow(ActionEvent actionEvent) {
         try {
+            win=false;
             Stage stage = new Stage();
             stage.setTitle("lll");
             FXMLLoader fxmlLoader = new FXMLLoader();
@@ -190,24 +225,30 @@ public class MyViewController implements Observer, IView {
 
             }
         });
-        /**
-         EventHandler<javafx.scene.input.MouseEvent> mouseHandler = new EventHandler<javafx.scene.input.MouseEvent>() {
 
-        @Override
-        public void handle(javafx.scene.input.MouseEvent event) {
-        System.out.println("dd");
-        }
+        // EventHandler<javafx.scene.input.MouseEvent> mouseHandler = new EventHandler<javafx.scene.input.MouseEvent>() {
+
+      //  @Override
+       // public void handle(javafx.scene.input.MouseEvent event)
+        //{
+
+
+          //  System.out.println(event.getX());
+           // System.out.println(event.getY());
+
+
+
+            //}
         };
 
-
-         scene.setOnMouseClicked(mouseHandler);
-         scene.setOnMouseDragged(mouseHandler);
-         scene.setOnMouseEntered(mouseHandler);
-         **/
+        // scene.setOnMouseClicked(mouseHandler);
+         //scene.setOnMouseDragged(mouseHandler);
+        // scene.setOnMouseEntered(mouseHandler);
 
 
 
-    }
+
+
 
     public void Properties(ActionEvent actionEvent) {
         try {
