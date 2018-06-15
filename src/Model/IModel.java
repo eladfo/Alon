@@ -21,4 +21,5 @@ public interface IModel {
     int get_Num_of_steps();
     void stopServers();
     void changeMusic(int num);
+    void win();
 }

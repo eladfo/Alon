@@ -58,6 +58,7 @@ public class MyModel extends Observable implements IModel {
     public void generateMaze(int row, int col) {
         //Generate maze
         try {
+            steps=0;
             Client client = new Client(InetAddress.getLocalHost(), 5400, new IClientStrategy() {
                 @Override
                 public void clientStrategy(InputStream inFromServer, OutputStream outToServer) {
@@ -276,5 +277,11 @@ public class MyModel extends Observable implements IModel {
                 playMusic("resources/Sounds/backg.mp3"); break;
             default: break;
         }
+    }
+    @Override
+    public void win()
+    {
+        setChanged();
+        notifyObservers(3);
     }
 }

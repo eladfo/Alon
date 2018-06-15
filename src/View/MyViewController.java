@@ -61,10 +61,14 @@ public class MyViewController implements Observer, IView {
                 displayMaze(viewModel.getMaze());
                 btn_generateMaze.setDisable(false);
             }
-            else
+            else if((int)arg == 1)
             {
                 displaySolution(viewModel.getSolution());
                 btn_solveMaze.setDisable(false);
+            }
+            else
+            {
+                System.out.println("dd");
             }
         }
     }
@@ -80,6 +84,10 @@ public class MyViewController implements Observer, IView {
             this.characterPositionRow.set(characterPositionRow + "");
             this.characterPositionColumn.set(characterPositionColumn + "");
             try {
+                viewModel.steps = 0;
+                this.characterPositionRow.set("");
+                this.characterPositionColumn.set("");
+
                 Stage stage = new Stage();
                 stage.setTitle("Win!!!!!");
                 FXMLLoader fxmlLoader = new FXMLLoader();
@@ -96,6 +104,7 @@ public class MyViewController implements Observer, IView {
                 viewModel.addObserver(win__controller);
                 resetCanvas();
                 viewModel.changeMusic(1);
+
                 stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
                     public void handle(WindowEvent windowEvent) {
                         viewModel.changeMusic(2);
@@ -104,6 +113,8 @@ public class MyViewController implements Observer, IView {
 
             }
              win=true;
+            viewModel.win();
+
         }
         else if(!win)
         {
@@ -120,6 +131,8 @@ public class MyViewController implements Observer, IView {
 
     public void generateMaze() {
         win=false;
+        steps.set("0");
+        viewModel.steps=0;
         String strow = txtfld_rowsNum.getText();
         String stcol = txtfld_columnsNum.getText();
         if(!isNumeric(strow) || !isNumeric(stcol)){
@@ -309,7 +322,7 @@ public class MyViewController implements Observer, IView {
         stage.setFullScreen(true);
     }
 
-    //@@@@@@@@@@@@@@@@@@@@@
+
 
     private void showAlert(String alertMessage) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -330,17 +343,17 @@ public class MyViewController implements Observer, IView {
         scene.widthProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
-                System.out.println("Width: " + newSceneWidth);
-                mazeDisplayer.setWidth((double) newSceneWidth - 200);
-                mazeDisplayer.redrawMaze1(1, newSceneWidth.doubleValue() - 200);
+                //System.out.println("Width: " + newSceneWidth);
+                mazeDisplayer.setWidth((double) newSceneWidth - 175);
+                mazeDisplayer.redrawMaze1(1, newSceneWidth.doubleValue() - 175);
             }
         });
         scene.heightProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
-                System.out.println("Height: " + newSceneHeight);
-                mazeDisplayer.setHeight((double) newSceneHeight-50 );
-                mazeDisplayer.redrawMaze1(0, (double) newSceneHeight-50 );
+                //System.out.println("Height: " + newSceneHeight);
+                mazeDisplayer.setHeight((double) newSceneHeight-45 );
+                mazeDisplayer.redrawMaze1(0, (double) newSceneHeight-45 );
 
             }
         });

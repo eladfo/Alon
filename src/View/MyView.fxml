@@ -109,7 +109,7 @@
     <center>
         <Pane BorderPane.alignment="CENTER">
             <children>
-                <MazeDisplayer fx:id="mazeDisplayer" height="550.0" imageFileNameCharacter="resources/Images/char.png" imageFileNameSolution="resources/Images/footprints.png" imageFileNameTarget="resources/Images/target.png" imageFileNameWall="resources/Images/wall.png" layoutX="-2.0" width="586.0" />
+                <MazeDisplayer fx:id="mazeDisplayer" height="655.0" imageFileNameCharacter="resources/Images/char.png" imageFileNameSolution="resources/Images/footprints.png" imageFileNameTarget="resources/Images/target.png" imageFileNameWall="resources/Images/wall.png" layoutX="-2.0" width="625.0" />
             </children>
             <padding>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -117,7 +117,7 @@
         </Pane>
     </center>
    <bottom>
-      <Label prefHeight="17.0" prefWidth="806.0" text="Elad.F &amp; Alon.T - 2018 ©" BorderPane.alignment="BOTTOM_LEFT">
+      <Label prefHeight="20.0" prefWidth="800.0" text="Elad.F &amp; Alon.T - 2018 ©" BorderPane.alignment="BOTTOM_LEFT">
          <font>
             <Font name="System Bold Italic" size="12.0" />
          </font></Label>
