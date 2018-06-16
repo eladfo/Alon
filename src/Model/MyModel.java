@@ -251,7 +251,7 @@ public class MyModel extends Observable implements IModel {
         return res;
     }
 
-    public void playMusic(String songName) {
+    private void playMusic(String songName) {
         player = new MediaPlayer(new Media(new File(songName).toURI().toString()));
         player.setOnEndOfMedia(() -> {
             player.seek(Duration.ZERO);
@@ -275,6 +275,10 @@ public class MyModel extends Observable implements IModel {
             case 2:
                 player.stop();
                 playMusic("resources/Sounds/backg.mp3"); break;
+            case 3:
+                player.pause(); break;
+            case 4:
+                player.play(); break;
             default: break;
         }
     }

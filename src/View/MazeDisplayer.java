@@ -140,12 +140,16 @@ public class MazeDisplayer extends Canvas {
             try {
                 Image solutionImage = new Image(new FileInputStream(ImageFileNameSolution.get()));
                 Image targetImage = new Image(new FileInputStream(ImageFileNameTarget.get()));
+                Image characterImage = new Image(new FileInputStream(ImageFileNameCharacter.get()));
                 ArrayList<AState> mazeSolutionSteps = solution.getSolutionPath();
                 int[] tmp = new int[2];
                 for (int i = 0; i < mazeSolutionSteps.size(); i++) {
                     tmp = astetaToInt(mazeSolutionSteps.get(i));
                     gc.drawImage(solutionImage, tmp[1] * cellWidth, tmp[0] * cellHeight, cellWidth, cellHeight);
+                    //sleep(500);
                 }
+                //Draw Char
+                gc.drawImage(characterImage, characterPositionColumn * cellWidth, characterPositionRow * cellHeight, cellWidth, cellHeight);
                 //Draw Target
                 gc.drawImage(targetImage, maze.getGoalPosition().getColumnIndex() * cellWidth, maze.getGoalPosition().getRowIndex() * cellHeight, cellWidth, cellHeight);
             } catch (FileNotFoundException e) {
@@ -187,6 +191,7 @@ public class MazeDisplayer extends Canvas {
         gc.clearRect(0, 0, getWidth(), getHeight());
         maze = null;
     }
+
     public boolean isMazeNull()
     {
         return maze == null;
@@ -208,8 +213,7 @@ public class MazeDisplayer extends Canvas {
         this.ImageFileNameWall.set(imageFileNameWall);
     }
 
-    public String getImageFileNameCharacter() {
-        return "resources/Images/character1.jpg";
+    public String getImageFileNameCharacter() {return ImageFileNameCharacter.get();
     }
 
     public void setImageFileNameCharacter(String imageFileNameCharacter) {

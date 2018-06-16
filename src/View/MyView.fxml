@@ -10,7 +10,6 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.RadioMenuItem?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -20,14 +19,15 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.control.ToggleButton?>
 <BorderPane onKeyPressed="#KeyPressed" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MyViewController">
     <left>
         <VBox prefHeight="560.0" prefWidth="175.0" spacing="5.0" BorderPane.alignment="CENTER">
             <children>
                 <GridPane prefHeight="444.0" prefWidth="165.0">
                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="89.0" minWidth="10.0" prefWidth="89.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="78.0" minWidth="10.0" prefWidth="76.0" />
                     </columnConstraints>
                     <rowConstraints>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -45,27 +45,27 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
-                    <Label text="Maze rows:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                    <Label text="Maze columns:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                    <TextField fx:id="txtfld_rowsNum" alignment="CENTER" disable="false" text="50" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                    <TextField fx:id="txtfld_columnsNum" alignment="CENTER" disable="false" prefHeight="25.0" prefWidth="75.0" text="50" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <Label text="Maze Rows" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <Label text="Maze Columns" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <TextField fx:id="txtfld_rowsNum" alignment="CENTER" text="15" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <TextField fx:id="txtfld_columnsNum" alignment="CENTER" prefHeight="25.0" prefWidth="75.0" text="15" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                     <Button fx:id="btn_generateMaze" onAction="#generateMaze" prefHeight="25.0" prefWidth="167.0" text="Generate Maze" GridPane.columnSpan="2" GridPane.rowIndex="4" />
                     <Button fx:id="btn_solveMaze" disable="true" onAction="#solveMaze" prefHeight="25.0" prefWidth="167.0" text="Solve Maze" GridPane.columnSpan="2" GridPane.rowIndex="5" />
-                    <Label text="Char row:" GridPane.rowIndex="7" />
-                    <Label text="Char column:" GridPane.rowIndex="8" />
+                    <Label text="Char Row" GridPane.rowIndex="7" />
+                    <Label text="Char Column" GridPane.rowIndex="8" />
                     <Label fx:id="lbl_rowsNum" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                     <Label fx:id="lbl_columnsNum" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                    <Label text="Num of steps:" GridPane.rowIndex="9" />
+                    <Label text="Num Of Steps" GridPane.rowIndex="9" />
                     <Label fx:id="lbl_num_of_steps" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-               <Button mnemonicParsing="false" onAction="#disableMussic" prefHeight="25.0" prefWidth="164.0" text="Disable Music" GridPane.columnSpan="2" GridPane.rowIndex="11" />
-               <ComboBox fx:id="combo_world" onAction="#themeChoose" prefHeight="25.0" prefWidth="253.0" promptText="Choose a theme :)" GridPane.columnSpan="2" GridPane.rowIndex="3">
+               <ToggleButton fx:id="tglbtn_music" mnemonicParsing="false" onAction="#onOffMusic" prefHeight="25.0" prefWidth="164.0" text="Disable Music" GridPane.columnSpan="2" GridPane.rowIndex="11" />
+               <ComboBox fx:id="combo_world" disable="true" onAction="#themeChoose" prefHeight="25.0" prefWidth="253.0" promptText="Select a theme :)" GridPane.columnSpan="2" GridPane.rowIndex="3">
                      <items>
                          <FXCollections fx:factory="observableArrayList">
                              <String fx:value="Mario" />
-                             <String fx:value="Hearthstone" />
+                             <String fx:value="Dragon Ball" />
                              <String fx:value="Game of thrones" />
                              <String fx:value="Rick and Morty" />
-                             <String fx:value="Dragon Ball" />
+                             <String fx:value="Hearthstone" />
                          </FXCollections>
                      </items>
                </ComboBox>
@@ -81,7 +81,7 @@
             <children>
                 <MenuBar>
                     <menus>
-                        <Menu mnemonicParsing="false" text="File" >
+                        <Menu mnemonicParsing="false" text="File">
                             <items>
                                 <MenuItem mnemonicParsing="false" onAction="#resetCanvas" text="New" />
                                 <MenuItem mnemonicParsing="false" onAction="#saveMazeWindow" text="Save" />
@@ -92,8 +92,8 @@
                         <Menu mnemonicParsing="false" text="Options">
                             <items>
                                 <MenuItem mnemonicParsing="false" onAction="#Properties" text="Properties" />
-                                <MenuItem mnemonicParsing="false" text="Active full screen" onAction="#goFS"/>
-                                <MenuItem mnemonicParsing="false" text="Exit full screen" onAction="#exitFS" />
+                                <MenuItem mnemonicParsing="false" onAction="#goFS" text="Active full screen" />
+                                <MenuItem mnemonicParsing="false" onAction="#exitFS" text="Exit full screen" />
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Help">

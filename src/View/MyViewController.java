@@ -15,12 +15,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.input.KeyEvent;
 
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+import java.io.File;
+import java.net.MalformedURLException;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Optional;
@@ -39,6 +42,7 @@ public class MyViewController implements Observer, IView {
     public javafx.scene.control.Button btn_solveMaze;
     public javafx.scene.control.Label lbl_num_of_steps;
     public javafx.scene.control.ComboBox<String> combo_world;
+    public javafx.scene.control.ToggleButton tglbtn_music;
     private boolean win=false;
 
     public void setViewModel(MyViewModel viewModel, Stage stage) {
@@ -61,7 +65,7 @@ public class MyViewController implements Observer, IView {
                 displayMaze(viewModel.getMaze());
                 btn_generateMaze.setDisable(false);
             }
-            else if((int)arg == 1)
+            else if((int)arg == 2)
             {
                 displaySolution(viewModel.getSolution());
                 btn_solveMaze.setDisable(false);
@@ -147,6 +151,7 @@ public class MyViewController implements Observer, IView {
         }
         btn_generateMaze.setDisable(true);
         btn_solveMaze.setDisable(false);
+        combo_world.setDisable(false);
         viewModel.generateMaze(row, col);
     }
 
@@ -166,7 +171,7 @@ public class MyViewController implements Observer, IView {
             FXMLLoader fxmlLoader = new FXMLLoader();
             Parent root = fxmlLoader.load(getClass().getResource("SaveMaze.fxml").openStream());
             Scene scene = new Scene(root, 350, 250);
-            scene.getStylesheets().add(getClass().getResource("ViewStyle.css").toExternalForm());
+            scene.getStylesheets().add(new File("resources/ViewStyle.css").toURI().toURL().toExternalForm());
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
             stage.show();
@@ -188,7 +193,7 @@ public class MyViewController implements Observer, IView {
             FXMLLoader fxmlLoader = new FXMLLoader();
             Parent root = fxmlLoader.load(getClass().getResource("LoadMaze.fxml").openStream());
             Scene scene = new Scene(root, 350, 250);
-            scene.getStylesheets().add(getClass().getResource("ViewStyle.css").toExternalForm());
+            scene.getStylesheets().add(new File("resources/ViewStyle.css").toURI().toURL().toExternalForm());
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
             stage.show();
@@ -209,7 +214,7 @@ public class MyViewController implements Observer, IView {
             FXMLLoader fxmlLoader = new FXMLLoader();
             Parent root = fxmlLoader.load(getClass().getResource("HowToPlay.fxml").openStream());
             Scene scene = new Scene(root, 350, 250);
-            scene.getStylesheets().add(getClass().getResource("ViewStyle.css").toExternalForm());
+            scene.getStylesheets().add(new File("resources/ViewStyle.css").toURI().toURL().toExternalForm());
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
             stage.show();
@@ -229,7 +234,7 @@ public class MyViewController implements Observer, IView {
             FXMLLoader fxmlLoader = new FXMLLoader();
             Parent root = fxmlLoader.load(getClass().getResource("About.fxml").openStream());
             Scene scene = new Scene(root, 350, 250);
-            scene.getStylesheets().add(getClass().getResource("ViewStyle.css").toExternalForm());
+            scene.getStylesheets().add(new File("resources/ViewStyle.css").toURI().toURL().toExternalForm());
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
             stage.show();
@@ -250,7 +255,7 @@ public class MyViewController implements Observer, IView {
             FXMLLoader fxmlLoader = new FXMLLoader();
             Parent root = fxmlLoader.load(getClass().getResource("Properties.fxml").openStream());
             Scene scene = new Scene(root, 450, 350);
-            scene.getStylesheets().add(getClass().getResource("ViewStyle.css").toExternalForm());
+            scene.getStylesheets().add(new File("resources/ViewStyle.css").toURI().toURL().toExternalForm());
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
             stage.show();
@@ -278,21 +283,21 @@ public class MyViewController implements Observer, IView {
          });
     }
 
-    public void setDragonBall(){
+    private void setDragonBall(){
         mazeDisplayer.setImageFileNameCharacter("resources/Images/goku.png");
         mazeDisplayer.setImageFileNameWall("resources/Images/ball.png");
         mazeDisplayer.setImageFileNameTarget("resources/Images/gohan.png");
         mazeDisplayer.redrawMaze();
     }
 
-    public void setRickAndMorty(){
+    private void setRickAndMorty(){
         mazeDisplayer.setImageFileNameCharacter("resources/Images/rick.png");
         mazeDisplayer.setImageFileNameWall("resources/Images/portal.png");
         mazeDisplayer.setImageFileNameTarget("resources/Images/morty.png");
         mazeDisplayer.redrawMaze();
     }
 
-    public void setMario(){
+    private void setMario(){
         mazeDisplayer.setImageFileNameCharacter("resources/Images/mario.jpg");
         mazeDisplayer.setImageFileNameWall("resources/Images/block.png");
         mazeDisplayer.setImageFileNameTarget("resources/Images/peach.png");
@@ -300,17 +305,17 @@ public class MyViewController implements Observer, IView {
 
     }
 
-    public void setGameOfThrones(){
+    private void setGameOfThrones(){
         mazeDisplayer.setImageFileNameCharacter("resources/Images/jon.png");
         mazeDisplayer.setImageFileNameWall("resources/Images/ww.jpg");
         mazeDisplayer.setImageFileNameTarget("resources/Images/dani.png");
         mazeDisplayer.redrawMaze();
     }
 
-    public void setHearthstone(){
+    private void setHearthstone(){
         mazeDisplayer.setImageFileNameCharacter("resources/Images/mage.png");
         mazeDisplayer.setImageFileNameWall("resources/Images/card.png");
-        mazeDisplayer.setImageFileNameTarget("resources/Images/gold.png");
+        mazeDisplayer.setImageFileNameTarget("resources/Images/coin.png");
         mazeDisplayer.redrawMaze();
     }
 
@@ -322,7 +327,17 @@ public class MyViewController implements Observer, IView {
         stage.setFullScreen(true);
     }
 
-
+    public void onOffMusic(ActionEvent actionEvent){
+        if (((ToggleButton)actionEvent.getSource()).isSelected()){
+            tglbtn_music.setText("Enable Music");
+            viewModel.changeMusic(3);
+        }
+        else {
+            tglbtn_music.setText("Disable Music");
+            //tglbtn_music.setStyle(".buttonHover");
+            viewModel.changeMusic(4);
+        }
+    }
 
     private void showAlert(String alertMessage) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -405,10 +420,6 @@ public class MyViewController implements Observer, IView {
             System.exit(0);
         }
 
-    }
-
-    public void disableMussic(){
-        viewModel.changeMusic(0);
     }
 
     //region String Property for Binding
