@@ -3,6 +3,7 @@ package View;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.AState;
 import algorithms.search.Solution;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.canvas.Canvas;
@@ -10,6 +11,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 import javax.imageio.ImageIO;
+import javax.xml.bind.SchemaOutputResolver;
 import java.awt.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -138,6 +140,7 @@ public class MazeDisplayer extends Canvas {
     private void redrawSolution() {
         if (maze != null) {
             try {
+                setMaze(maze);
                 Image solutionImage = new Image(new FileInputStream(ImageFileNameSolution.get()));
                 Image targetImage = new Image(new FileInputStream(ImageFileNameTarget.get()));
                 Image characterImage = new Image(new FileInputStream(ImageFileNameCharacter.get()));
@@ -258,4 +261,28 @@ public class MazeDisplayer extends Canvas {
 
     //endregion
 
+    public Double get_player_position_hight()
+    {
+        return (cellHeight*characterPositionRow + 25);
+    }
+
+    public Double get_player_position_width()
+    {
+        System.out.println(characterPositionRow);
+        return (cellWidth* characterPositionColumn + 175);
+    }
+    public Double get_cellHeight()
+    {
+        return cellHeight;
+    }
+    public Double get_cellWidth()
+    {
+        return cellWidth;
+    }
+    public boolean is_free(int row , int col)
+    {
+        if(maze.getPositionValue(row,col) == 0)
+            return true;
+        return false;
+    }
 }

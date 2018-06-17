@@ -23,5 +23,6 @@ public interface IModel {
     void changeMusic(int num);
     void win();
     void saveMaze1(String name);
-    public void loadMaze1(String name);
+    void loadMaze1(String name);
+    void moveCharacterByMouse(int movement);
 }

@@ -85,6 +85,9 @@ public class MyViewModel extends Observable implements Observer {
     public void moveCharacter(KeyCode movement){
         model.moveCharacter(movement);
     }
+    public void moveCharacterByMouse(int movement){
+        model.moveCharacterByMouse(movement);
+    }
 
     public Maze getMaze() {
         return model.getMaze();

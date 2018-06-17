@@ -325,4 +325,65 @@ public class MyModel extends Observable implements IModel {
     {
         setChanged();
     }
+
+    public void moveCharacterByMouse(int movement)
+    {
+        switch (movement) {
+            case 1:
+                if (isLegal(characterPositionRow - 1, characterPositionColumn)) {
+                    characterPositionRow--;
+                    steps++;
+                }
+                break;
+            case 3:
+                if (isLegal(characterPositionRow + 1, characterPositionColumn)) {
+                    characterPositionRow++;
+                    steps++;
+                }
+                break;
+            case 2:
+                if (isLegal(characterPositionRow, characterPositionColumn + 1)) {
+                    characterPositionColumn++;
+                    steps++;
+                }
+                break;
+            case 4:
+                if (isLegal(characterPositionRow, characterPositionColumn - 1)) {
+                    characterPositionColumn--;
+                    steps++;
+                }
+                break;
+            case 6:
+                if (isLegal(characterPositionRow + 1, characterPositionColumn + 1)) {
+                    characterPositionColumn++;
+                    characterPositionRow++;
+                    steps++;
+                }
+                break;
+            case 7:
+                if (isLegal(characterPositionRow + 1, characterPositionColumn - 1)) {
+                    characterPositionColumn--;
+                    characterPositionRow++;
+                    steps++;
+                }
+                break;
+            case 8:
+                if (isLegal(characterPositionRow - 1, characterPositionColumn - 1)) {
+                    characterPositionColumn--;
+                    characterPositionRow--;
+                    steps++;
+                }
+                break;
+            case 5:
+                if (isLegal(characterPositionRow - 1, characterPositionColumn + 1)) {
+                    characterPositionColumn++;
+                    characterPositionRow--;
+                    steps++;
+                }
+                break;
+        }
+        setChanged();
+        notifyObservers(1);
+    }
+
 }
