@@ -59,11 +59,7 @@ public class MyViewModel extends Observable implements Observer {
                 setChanged();
                 notifyObservers(2);
             }
-            else
-            {
-                setChanged();
-                notifyObservers(3);
-            }
+
 
         }
     }
@@ -178,7 +174,6 @@ public class MyViewModel extends Observable implements Observer {
     public void win()
     {
         steps=0;
-        model.win();
     }
 
 }

@@ -70,10 +70,7 @@ public class MyViewController implements Observer, IView {
                 displaySolution(viewModel.getSolution());
                 btn_solveMaze.setDisable(false);
             }
-            else
-            {
-                System.out.println("dd");
-            }
+
         }
     }
 
@@ -83,22 +80,22 @@ public class MyViewController implements Observer, IView {
         int characterPositionRow = viewModel.getCharacterPositionRow();
         int characterPositionColumn = viewModel.getCharacterPositionColumn();
         if(characterPositionRow == maze.getGoalPosition().getRowIndex()
-                && characterPositionColumn==maze.getGoalPosition().getColumnIndex() && win==false) {
+                && characterPositionColumn==maze.getGoalPosition().getColumnIndex() && win==false)
+        {
             mazeDisplayer.setCharacterPosition(characterPositionRow, characterPositionColumn);
             this.characterPositionRow.set(characterPositionRow + "");
             this.characterPositionColumn.set(characterPositionColumn + "");
             try {
                 viewModel.steps = 0;
-                this.characterPositionRow.set("");
-                this.characterPositionColumn.set("");
-
+                //this.characterPositionRow.set("");
+                //this.characterPositionColumn.set("");
                 Stage stage = new Stage();
                 stage.setTitle("Win!!!!!");
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 Parent root = fxmlLoader.load(getClass().getResource("Win.fxml").openStream());
                 Scene scene = new Scene(root, 480, 288);
                 stage.setResizable(false);
-                scene.getStylesheets().add(getClass().getResource("ViewStyle.css").toExternalForm());
+                scene.getStylesheets().add(new File("resources/ViewStyle.css").toURI().toURL().toExternalForm());
                 stage.setScene(scene);
                 stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
                 stage.show();

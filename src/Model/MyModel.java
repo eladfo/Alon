@@ -19,9 +19,7 @@ import javafx.util.Duration;
 
 import java.net.UnknownHostException;
 
-/**
- * Created by Aviadjo on 6/14/2017.
- */
+
 public class MyModel extends Observable implements IModel {
 
     private Server mazeGeneratingServer;
@@ -286,6 +284,5 @@ public class MyModel extends Observable implements IModel {
     public void win()
     {
         setChanged();
-        notifyObservers(3);
     }
 }
