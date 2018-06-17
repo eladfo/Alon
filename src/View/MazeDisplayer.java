@@ -45,14 +45,16 @@ public class MazeDisplayer extends Canvas {
         }
 
     }
-public void set()
-{
+
+    public void set()
+    {
     if(maze != null) {
         cellHeight = getHeight() / maze.getM_rows();
         cellWidth = getWidth() / maze.getM_columns();
         redrawMaze();
     }
 }
+
     public void setSolution(Solution solution) {
         this.solution = solution;
         redrawSolution();
@@ -96,7 +98,6 @@ public void set()
             }
         }
     }
-
 
     private void redrawSolution() {
         if (maze != null) {
