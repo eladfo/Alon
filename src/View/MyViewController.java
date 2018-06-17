@@ -275,6 +275,7 @@ public class MyViewController implements Observer, IView {
                 case "Rogue": setRogue(); break;
                 case "Game of thrones": setGameOfThrones(); break;
                 case "Dragon Ball": setDragonBall(); break;
+
                 default: break;
             }
          });
