@@ -326,13 +326,13 @@ public class MyViewController implements Observer, IView {
 
     public void exitFS(){
         stage.setFullScreen(false);
-        mazeDisplayer.redrawMaze1(1 , 1 );
+        mazeDisplayer.redrawMaze( );
 
     }
 
     public void goFS(){
         stage.setFullScreen(true);
-        mazeDisplayer.redrawMaze1(1 , 1 );
+        mazeDisplayer.redrawMaze( );
     }
 
     public void onOffMusic(ActionEvent actionEvent){
@@ -367,7 +367,7 @@ public class MyViewController implements Observer, IView {
             public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
                 //System.out.println("Width: " + newSceneWidth);
                 mazeDisplayer.setWidth((double) newSceneWidth - 175);
-                mazeDisplayer.redrawMaze1(1, newSceneWidth.doubleValue() - 175);
+                mazeDisplayer.redrawMaze();
                 mazeDisplayer.set();
             }
         });
@@ -376,7 +376,7 @@ public class MyViewController implements Observer, IView {
             public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
                 //System.out.println("Height: " + newSceneHeight);
                 mazeDisplayer.setHeight((double) newSceneHeight - 45);
-                mazeDisplayer.redrawMaze1(0, (double) newSceneHeight - 45);
+                mazeDisplayer.redrawMaze();
                 mazeDisplayer.set();
 
             }

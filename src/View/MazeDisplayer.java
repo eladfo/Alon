@@ -97,49 +97,6 @@ public void set()
         }
     }
 
-    public void redrawMaze1(int flag , double parameter) {
-        if (maze != null) {
-            double canvasHeight;
-            double canvasWidth;
-            if(flag==1) {
-                System.out.println(getHeight());
-                canvasHeight = getHeight();
-                canvasWidth = getWidth();
-            }
-            else
-                {
-                 canvasHeight = getHeight();
-                    canvasWidth = getWidth();
-            }
-            double cellHeight = canvasHeight / maze.getM_rows();
-            double cellWidth = canvasWidth / maze.getM_columns();
-            try {
-                Image wallImage = new Image(new FileInputStream(ImageFileNameWall.get()));
-                Image characterImage = new Image(new FileInputStream(ImageFileNameCharacter.get()));
-                Image targetImage = new Image(new FileInputStream(ImageFileNameTarget.get()));
-                GraphicsContext gc = getGraphicsContext2D();
-                gc.clearRect(0, 0, getWidth(),  getHeight());
-                //Draw Maze
-                for (int i = 0; i < maze.getM_rows(); i++) {
-                    for (int j = 0; j < maze.getM_columns(); j++) {
-                        if (maze.getPositionValue(i, j) == 1) {
-                            gc.drawImage(wallImage, j * cellWidth, i * cellHeight, cellWidth, cellHeight);
-                        }
-                    }
-                }
-                //Draw Character
-                //gc.setFill(Color.RED);
-                //gc.fillOval(characterPositionColumn * cellHeight, characterPositionRow * cellWidth, cellHeight, cellWidth);
-                gc.drawImage(characterImage, characterPositionColumn * cellWidth, characterPositionRow * cellHeight, cellWidth, cellHeight);
-
-                //Draw Target
-                gc.drawImage(targetImage, maze.getGoalPosition().getColumnIndex() * cellWidth, maze.getGoalPosition().getRowIndex() * cellHeight, cellWidth, cellHeight);
-
-            } catch (FileNotFoundException e) {
-                //e.printStackTrace();
-            }
-        }
-    }
 
     private void redrawSolution() {
         if (maze != null) {
