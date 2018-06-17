@@ -551,6 +551,7 @@ public class MyViewController implements Observer, IView {
     public StringProperty steps = new SimpleStringProperty();
 
 
+
     public String getCharacterPositionRow() {
         return characterPositionRow.get();
     }
