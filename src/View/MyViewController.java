@@ -271,7 +271,8 @@ public class MyViewController implements Observer, IView {
             switch (value) {
                 case "Mario": setMario(); break;
                 case "Rick and Morty": setRickAndMorty(); break;
-                case "Hearthstone": setHearthstone(); break;
+                case "Mage": setHearthstone(); break;
+                case "Rogue": setRogue(); break;
                 case "Game of thrones": setGameOfThrones(); break;
                 case "Dragon Ball": setDragonBall(); break;
                 default: break;
@@ -310,8 +311,15 @@ public class MyViewController implements Observer, IView {
 
     private void setHearthstone(){
         mazeDisplayer.setImageFileNameCharacter("resources/Images/mage.png");
-        mazeDisplayer.setImageFileNameWall("resources/Images/card.png");
-        mazeDisplayer.setImageFileNameTarget("resources/Images/coin.png");
+        mazeDisplayer.setImageFileNameWall("resources/Images/card2.png");
+        mazeDisplayer.setImageFileNameTarget("resources/Images/coin1.png");
+        mazeDisplayer.redrawMaze();
+    }
+
+    private void setRogue(){
+        mazeDisplayer.setImageFileNameCharacter("resources/Images/rogue.png");
+        mazeDisplayer.setImageFileNameWall("resources/Images/card4.png");
+        mazeDisplayer.setImageFileNameTarget("resources/Images/roguecoin.png");
         mazeDisplayer.redrawMaze();
     }
 

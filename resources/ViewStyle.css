@@ -1,8 +1,8 @@
 .root {
-    -fx-background-image: url(Images/green_bkg.jpg);
+    -fx-background-image: url(Images/hs4.jpg);
     -fx-background-position: center;
     -fx-background-repeat: no-repeat;
-    -fx-background-size: cover, auto;
+    -fx-background-size: stretch;
 }
 .mainView {
     -fx-background-size: stretch;

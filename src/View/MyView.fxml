@@ -65,7 +65,8 @@
                              <String fx:value="Dragon Ball" />
                              <String fx:value="Game of thrones" />
                              <String fx:value="Rick and Morty" />
-                             <String fx:value="Hearthstone" />
+                             <String fx:value="Mage" />
+                             <String fx:value="Rogue" />
                          </FXCollections>
                      </items>
                </ComboBox>
