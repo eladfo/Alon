@@ -487,7 +487,6 @@ public class MyViewController implements Observer, IView {
        int res=0;
        double temp = 25;
        boolean found =false;
-
        while(temp<mazeDisplayer.getHeight() +25 && found == false)
        {
 
