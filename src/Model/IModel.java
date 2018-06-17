@@ -22,4 +22,6 @@ public interface IModel {
     void stopServers();
     void changeMusic(int num);
     void win();
+    void saveMaze1(String name);
+    public void loadMaze1(String name);
 }

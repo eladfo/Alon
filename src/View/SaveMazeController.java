@@ -2,7 +2,10 @@ package View;
 
 import ViewModel.MyViewModel;
 import javafx.scene.control.Alert;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
+import java.io.File;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -33,9 +36,19 @@ public class SaveMazeController implements Observer {
 
     }
 
-    private void showAlert(String alertMessage) {
+    public void showAlert(String alertMessage) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setContentText(alertMessage);
         alert.show();
+    }
+    public void save()
+    {
+        String path;
+        FileChooser file_chooser = new FileChooser();
+        File file = file_chooser.showSaveDialog(null);
+        if(file != null)
+        {
+            viewModel.saveMaze1(file.getPath());
+        }
     }
 }

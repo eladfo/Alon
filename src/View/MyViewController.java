@@ -18,6 +18,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.input.KeyEvent;
 
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -161,7 +162,9 @@ public class MyViewController implements Observer, IView {
     }
 
     public void saveMazeWindow(ActionEvent actionEvent) {
+       /*
         try {
+            /*
             Stage stage = new Stage();
             stage.setTitle("Saving Maze");
             stage.setResizable(false);
@@ -179,10 +182,21 @@ public class MyViewController implements Observer, IView {
         } catch (Exception e) {
 
         }
+        */
+
+        FileChooser file_chooser = new FileChooser();
+        file_chooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Maze File","*.maze"));
+        File file = file_chooser.showSaveDialog(null);
+        if(file != null)
+        {
+            viewModel.saveMaze1(file.getPath());
+        }
     }
 
     public void loadMazeWindow(ActionEvent actionEvent) {
+         /*
         try {
+
             win=false;
             Stage stage = new Stage();
             stage.setTitle("Load Maze");
@@ -200,6 +214,14 @@ public class MyViewController implements Observer, IView {
             viewModel.addObserver(loadMaze);
         } catch (Exception e) {
 
+        }
+         */
+        FileChooser file_chooser = new FileChooser();
+        file_chooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Maze Files","*.maze"));
+        File file = file_chooser.showOpenDialog(null);
+        if(file != null)
+        {
+            viewModel.loadMaze1(file.getPath());
         }
     }
 

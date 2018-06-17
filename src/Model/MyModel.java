@@ -132,10 +132,50 @@ public class MyModel extends Observable implements IModel {
         }
     }
 
+    public void saveMaze1(String name) {
+        String tmpFile = name;
+        File f = new File(tmpFile);
+        try {
+            f.createNewFile();
+            FileOutputStream outFile = new FileOutputStream(tmpFile);
+            ObjectOutputStream outObj = new ObjectOutputStream(outFile);
+            outObj.writeObject(maze);
+            outFile.close();
+            outObj.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void loadMaze(String name) {
         String tmpDir = "resources/SavedMazes/";
         String tmpFile = tmpDir + name;
+        File f = new File(tmpFile);
+        try {
+            if (f.exists()) {
+                FileInputStream file = new FileInputStream(tmpFile);
+                ObjectInputStream obj = new ObjectInputStream(file);
+                maze = (Maze) obj.readObject();
+                file.close();
+                obj.close();
+                setChanged();
+                characterPositionRow = maze.getStartPosition().getRowIndex();
+                characterPositionColumn = maze.getStartPosition().getColumnIndex();
+                maze.setValueByCords(characterPositionRow, characterPositionColumn, 0);
+                notifyObservers(1);
+            } else
+                return;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void loadMaze1(String name) {
+        String tmpFile = name;
         File f = new File(tmpFile);
         try {
             if (f.exists()) {

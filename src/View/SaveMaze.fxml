@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="250.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.SaveMazeController">
+<AnchorPane prefHeight="250.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.SaveMazeController">
    <children>
       <Label layoutX="76.0" layoutY="62.0" text="Enter maze's name to Save">
          <font>
@@ -19,5 +19,6 @@
          </font>
       </Button>
       <TextField fx:id="txtfld_mazeName" layoutX="102.0" layoutY="113.0" />
+      <Button layoutX="6.0" layoutY="168.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="113.0" text="chosee location"  onAction="#save"/>
    </children>
 </AnchorPane>
