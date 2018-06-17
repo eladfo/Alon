@@ -37,8 +37,8 @@ public class MyModel extends Observable implements IModel {
         //Raise the servers
         mazeGeneratingServer = new Server(5400, 1000, new ServerStrategyGenerateMaze());
         solveSearchProblemServer = new Server(5401, 1000, new ServerStrategySolveSearchProblem());
-        playBackgMusic("resources/Sounds/backg.mp3");
-        playWinMusic("resources/Sounds/winning.mp3");
+        playBackgMusic("resources/Sounds/hs_Soundtrack.mp3");
+        playWinMusic("resources/Sounds/hs_Win.mp3");
     }
 
     public void startServers() {
