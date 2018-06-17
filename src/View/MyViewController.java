@@ -359,6 +359,7 @@ public class MyViewController implements Observer, IView {
                 //System.out.println("Width: " + newSceneWidth);
                 mazeDisplayer.setWidth((double) newSceneWidth - 175);
                 mazeDisplayer.redrawMaze1(1, newSceneWidth.doubleValue() - 175);
+                mazeDisplayer.set();
             }
         });
         scene.heightProperty().addListener(new ChangeListener<Number>() {
@@ -367,6 +368,7 @@ public class MyViewController implements Observer, IView {
                 //System.out.println("Height: " + newSceneHeight);
                 mazeDisplayer.setHeight((double) newSceneHeight - 45);
                 mazeDisplayer.redrawMaze1(0, (double) newSceneHeight - 45);
+                mazeDisplayer.set();
 
             }
         });
@@ -382,9 +384,13 @@ public class MyViewController implements Observer, IView {
 
                 if(event.getEventType().getName()=="MOUSE_PRESSED")
                 {
+
+
                     hight_press = event.getY();
                     width_press = event.getX();
-
+                    System.out.println(hight_press);
+                    System.out.println(width_press);
+                    System.out.println("=============================");
                     double hight_player = mazeDisplayer.get_player_position_hight();
                     double width_player = mazeDisplayer.get_player_position_width();
 
@@ -393,7 +399,9 @@ public class MyViewController implements Observer, IView {
 
                     if(hight_click >= hight_player && hight_click <= hight_player+mazeDisplayer.get_cellHeight() )
                         if(width_click >= width_player && width_click<= width_player+mazeDisplayer.get_cellWidth())
-                            flag=true;
+                    {
+                        flag = true;
+                    }
                 }
                 if(event.getEventType().getName()=="MOUSE_RELEASED") {
                     flag = false;
@@ -401,11 +409,7 @@ public class MyViewController implements Observer, IView {
 
                 if(flag)
                 {
-                    System.out.println(event.getX());
-                    System.out.println(mazeDisplayer.getWidth()+175);
-                    System.out.println("==========");
-                    System.out.println(event.getY());
-                    System.out.println(mazeDisplayer.getHeight()+25);
+
                     if(event.getX()>= 175 && event.getX() <=mazeDisplayer.getWidth()+175 && event.getY()>= 25 && event.getY() <=mazeDisplayer.getHeight()+25 )
                     {
                         int x = found_cordinate_row(event.getY());
@@ -416,57 +420,41 @@ public class MyViewController implements Observer, IView {
                                 if(mazeDisplayer.is_free(x,y))
                                 {
                                     if(mazeDisplayer.getCharacterPositionRow() == x-1 && mazeDisplayer.getCharacterPositionColumn() == y) {
-                                        System.out.println("down");
                                         viewModel.moveCharacterByMouse(3);
                                     }
                                     else if(mazeDisplayer.getCharacterPositionRow() == x && mazeDisplayer.getCharacterPositionColumn() == y -1) {
                                         viewModel.moveCharacterByMouse(2);
-                                        System.out.println("right");
                                     }
                                     else if(mazeDisplayer.getCharacterPositionRow() == x+1 && mazeDisplayer.getCharacterPositionColumn() == y) {
                                         viewModel.moveCharacterByMouse(1);
-                                        System.out.println("up");
                                     }
                                     else if(mazeDisplayer.getCharacterPositionRow() == x && mazeDisplayer.getCharacterPositionColumn() == y+1) {
 
                                         viewModel.moveCharacterByMouse(4);
-                                        System.out.println("left");
                                     }
                                     else if(mazeDisplayer.getCharacterPositionRow() == x+1 && mazeDisplayer.getCharacterPositionColumn() == y-1) {
 
                                         viewModel.moveCharacterByMouse(5);
-                                        System.out.println("up right");
                                     }
                                     else if(mazeDisplayer.getCharacterPositionRow() == x-1 && mazeDisplayer.getCharacterPositionColumn() == y-1) {
 
                                         viewModel.moveCharacterByMouse(6);
-                                        System.out.println("down right");
                                     }
                                     else if(mazeDisplayer.getCharacterPositionRow() == x -1&& mazeDisplayer.getCharacterPositionColumn() == y+1) {
 
                                         viewModel.moveCharacterByMouse(7);
-                                        System.out.println("down left");
                                     }
                                     else if(mazeDisplayer.getCharacterPositionRow() == x+1 && mazeDisplayer.getCharacterPositionColumn() == y+1) {
 
                                         viewModel.moveCharacterByMouse(8);
-                                        System.out.println("up left");
                                     }
 
                                 }
-                                else
-                                    System.out.println("false3");
-                            else
-                                    System.out.println("false2");
 
-
-                        else
-                                    System.out.println("false1");
 
 
                     }
-                    else
-                        System.out.println("false0");
+
                 }
 
 
