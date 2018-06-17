@@ -71,12 +71,14 @@ public class MyViewModel extends Observable implements Observer {
     public void solveMaze(){ model.solveMaze(); }
 
     public void loadMaze(String name){ model.loadMaze(name); }
+
     public void loadMaze1(String name){ model.loadMaze1(name); }
 
     public void saveMaze(String mazeName)
     {
         model.saveMaze(mazeName);
     }
+
     public void saveMaze1(String mazeName)
     {
         model.saveMaze1(mazeName);
@@ -85,6 +87,7 @@ public class MyViewModel extends Observable implements Observer {
     public void moveCharacter(KeyCode movement){
         model.moveCharacter(movement);
     }
+
     public void moveCharacterByMouse(int movement){
         model.moveCharacterByMouse(movement);
     }

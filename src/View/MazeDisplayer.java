@@ -64,11 +64,7 @@ public class MazeDisplayer extends Canvas {
 
     public void redrawMaze() {
         if (maze != null) {
-            if(characterPositionRow == maze.getGoalPosition().getRowIndex() && characterPositionColumn == maze.getGoalPosition().getColumnIndex())
-            {
-
-            }
-            try {
+           try {
                 Image wallImage = new Image(new FileInputStream(ImageFileNameWall.get()));
                 Image characterImage = new Image(new FileInputStream(ImageFileNameCharacter.get()));
                 Image targetImage = new Image(new FileInputStream(ImageFileNameTarget.get()));
@@ -82,11 +78,9 @@ public class MazeDisplayer extends Canvas {
                     }
                 }
                 //Draw Character
-                //gc.fillOval(characterPositionColumn * cellHeight, characterPositionRow * cellWidth, cellHeight, cellWidth);
                 gc.drawImage(characterImage, characterPositionColumn * cellWidth, characterPositionRow * cellHeight, cellWidth, cellHeight);
                 //Draw Target
                 gc.drawImage(targetImage, maze.getGoalPosition().getColumnIndex() * cellWidth, maze.getGoalPosition().getRowIndex() * cellHeight, cellWidth, cellHeight);
-
             } catch (FileNotFoundException e) {
                 //e.printStackTrace();
             }
@@ -222,15 +216,6 @@ public class MazeDisplayer extends Canvas {
     public void setImageFileNameCharacter(String imageFileNameCharacter) {
 
         this.ImageFileNameCharacter.set(imageFileNameCharacter);
-        /**if (maze != null)
-            try {
-                Image characterImage = new Image(new FileInputStream(ImageFileNameCharacter.get()));
-                gc.clearRect(characterPositionColumn * cellWidth, characterPositionRow * cellHeight, cellWidth, cellHeight);
-                gc.drawImage(characterImage, characterPositionColumn * cellWidth, characterPositionRow * cellHeight, cellWidth, cellHeight);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-         **/
     }
 
     public String getImageFileNameTarget() {
@@ -275,10 +260,12 @@ public class MazeDisplayer extends Canvas {
     {
         return cellHeight;
     }
+
     public Double get_cellWidth()
     {
         return cellWidth;
     }
+
     public boolean is_free(int row , int col)
     {
         if(maze.getPositionValue(row,col) == 0)

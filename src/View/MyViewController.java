@@ -93,13 +93,11 @@ public class MyViewController implements Observer, IView {
             this.characterPositionColumn.set(characterPositionColumn + "");
             try {
                 viewModel.steps = 0;
-                //this.characterPositionRow.set("");
-                //this.characterPositionColumn.set("");
                 Stage stage = new Stage();
                 stage.setTitle("Win!!!!!");
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 Parent root = fxmlLoader.load(getClass().getResource("Win.fxml").openStream());
-                Scene scene = new Scene(root, 480, 288);
+                Scene scene = new Scene(root, 468, 280);
                 stage.setResizable(false);
                 scene.getStylesheets().add(new File("resources/ViewStyle.css").toURI().toURL().toExternalForm());
                 stage.setScene(scene);
@@ -110,18 +108,25 @@ public class MyViewController implements Observer, IView {
                 win__controller.setViewModel(viewModel);
                 viewModel.addObserver(win__controller);
                 resetCanvas();
-                viewModel.changeMusic(1);
-
+                if(!tglbtn_music.isSelected())
+                    viewModel.changeMusic(1);
                 stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
                     public void handle(WindowEvent windowEvent) {
                         viewModel.changeMusic(2);
+                        if(!tglbtn_music.isSelected())
+                        {
+                            viewModel.changeMusic(4);
+                        }
+                        else
+                        {
+                            viewModel.changeMusic(3);
+                        }
                     }});
             } catch (Exception e) {
 
             }
              win=true;
-            viewModel.win();
-
+             viewModel.win();
         }
         else if(!win)
         {
@@ -167,60 +172,27 @@ public class MyViewController implements Observer, IView {
     }
 
     public void saveMazeWindow(ActionEvent actionEvent) {
-       /*
-        try {
-            /*
-            Stage stage = new Stage();
-            stage.setTitle("Saving Maze");
-            stage.setResizable(false);
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            Parent root = fxmlLoader.load(getClass().getResource("SaveMaze.fxml").openStream());
-            Scene scene = new Scene(root, 350, 250);
-            scene.getStylesheets().add(new File("resources/ViewStyle.css").toURI().toURL().toExternalForm());
-            stage.setScene(scene);
-            stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
-            stage.show();
-            SaveMazeController saveMaze;
-            saveMaze = fxmlLoader.getController();
-            saveMaze.setViewModel(viewModel);
-            viewModel.addObserver(saveMaze);
-        } catch (Exception e) {
-
-        }
-        */
-
         FileChooser file_chooser = new FileChooser();
         file_chooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Maze File","*.maze"));
         File file = file_chooser.showSaveDialog(null);
-        if(file != null)
+        if(file!= null && !mazeDisplayer.isMazeNull())
         {
             viewModel.saveMaze1(file.getPath());
+        }
+        else
+        {
+            if (file == null){
+                return;}
+            else
+            {
+                showAlert("Maze does not exist. Try Generate a maze before saving.");
+                return;
+            }
         }
     }
 
     public void loadMazeWindow(ActionEvent actionEvent) {
-         /*
-        try {
-
-            win=false;
-            Stage stage = new Stage();
-            stage.setTitle("Load Maze");
-            stage.setResizable(false);
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            Parent root = fxmlLoader.load(getClass().getResource("LoadMaze.fxml").openStream());
-            Scene scene = new Scene(root, 350, 250);
-            scene.getStylesheets().add(new File("resources/ViewStyle.css").toURI().toURL().toExternalForm());
-            stage.setScene(scene);
-            stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
-            stage.show();
-            LoadMazeController loadMaze;
-            loadMaze = fxmlLoader.getController();
-            loadMaze.setViewModel(viewModel);
-            viewModel.addObserver(loadMaze);
-        } catch (Exception e) {
-
-        }
-         */
+        win = false;
         FileChooser file_chooser = new FileChooser();
         file_chooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Maze Files","*.maze"));
         File file = file_chooser.showOpenDialog(null);
@@ -361,7 +333,6 @@ public class MyViewController implements Observer, IView {
         }
         else {
             tglbtn_music.setText("Disable Music");
-            //tglbtn_music.setStyle(".buttonHover");
             viewModel.changeMusic(4);
         }
     }
@@ -514,8 +485,8 @@ public class MyViewController implements Observer, IView {
     }
 
 
-   public  int found_cordinate_row(double value)
-   {
+    public  int found_cordinate_row(double value)
+    {
        int res=0;
        double temp = 25;
        boolean found =false;
@@ -529,7 +500,7 @@ public class MyViewController implements Observer, IView {
            temp = temp+mazeDisplayer.get_cellHeight();
        }
        return res;
-   }
+    }
 
     public  int found_cordinate_col(double value)
     {

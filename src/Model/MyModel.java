@@ -9,6 +9,7 @@ import javafx.scene.input.KeyCode;
 
 import java.io.*;
 import java.net.InetAddress;
+import java.util.ArrayList;
 import java.util.Observable;
 import IO.MyDecompressorInputStream;
 import Server.*;
@@ -29,14 +30,15 @@ public class MyModel extends Observable implements IModel {
     private int characterPositionRow = 1;
     private int characterPositionColumn = 1;
     private int steps = 0;
-    private MediaPlayer player;
-
+    private MediaPlayer winPlayer;
+    private MediaPlayer backPlayer;
 
     public MyModel() {
         //Raise the servers
         mazeGeneratingServer = new Server(5400, 1000, new ServerStrategyGenerateMaze());
         solveSearchProblemServer = new Server(5401, 1000, new ServerStrategySolveSearchProblem());
-        playMusic("resources/Sounds/backg.mp3");
+        playBackgMusic("resources/Sounds/backg.mp3");
+        playWinMusic("resources/Sounds/winning.mp3");
     }
 
     public void startServers() {
@@ -289,34 +291,58 @@ public class MyModel extends Observable implements IModel {
         return res;
     }
 
-    private void playMusic(String songName) {
-        player = new MediaPlayer(new Media(new File(songName).toURI().toString()));
-        player.setOnEndOfMedia(() -> {
-            player.seek(Duration.ZERO);
+    private void playWinMusic(String songName) {
+        winPlayer = new MediaPlayer(new Media(new File(songName).toURI().toString()));
+        winPlayer.setOnEndOfMedia(() -> {
+            winPlayer.seek(Duration.ZERO);
         });
-        Thread t = new Thread(() -> player.play());
+        Thread t = new Thread(() -> winPlayer.play());
         try {
             t.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         t.start();
+        try {
+            t.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        winPlayer.stop();
+    }
+
+    private void playBackgMusic(String songName) {
+        backPlayer = new MediaPlayer(new Media(new File(songName).toURI().toString()));
+        backPlayer.setOnEndOfMedia(() -> {
+            backPlayer.seek(Duration.ZERO);
+        });
+        Thread t1 = new Thread(() -> backPlayer.play());
+        try {
+            t1.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        t1.start();
     }
 
     public void changeMusic(int num) {
         switch(num) {
             case 0:
-                player.stop(); break;
+                backPlayer.stop(); break;
             case 1:
-                player.stop();
-                playMusic("resources/Sounds/winning.mp3"); break;
+                backPlayer.pause();
+                winPlayer.play();
+                break;
             case 2:
-                player.stop();
-                playMusic("resources/Sounds/backg.mp3"); break;
+                winPlayer.stop();
+                backPlayer.play();
+                break;
             case 3:
-                player.pause(); break;
+                backPlayer.pause();
+                winPlayer.stop();
+                break;
             case 4:
-                player.play(); break;
+                backPlayer.play(); break;
             default: break;
         }
     }
