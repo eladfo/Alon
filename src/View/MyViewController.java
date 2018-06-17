@@ -229,7 +229,7 @@ public class MyViewController implements Observer, IView {
             stage.setResizable(false);
             FXMLLoader fxmlLoader = new FXMLLoader();
             Parent root = fxmlLoader.load(getClass().getResource("About.fxml").openStream());
-            Scene scene = new Scene(root, 350, 250);
+            Scene scene = new Scene(root, 700, 393);
             scene.getStylesheets().add(new File("resources/ViewStyle.css").toURI().toURL().toExternalForm());
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
