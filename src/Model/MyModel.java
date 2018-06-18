@@ -44,13 +44,13 @@ public class MyModel extends Observable implements IModel {
     public void startServers() {
         solveSearchProblemServer.start();
         mazeGeneratingServer.start();
-        System.out.println("Servers are open...");
+      //  System.out.println("Servers are open...");
     }
 
     public void stopServers() {
         mazeGeneratingServer.stop();
         solveSearchProblemServer.stop();
-        System.out.println("Servers are closed.");
+       // System.out.println("Servers are closed.");
 
     }
 
@@ -117,23 +117,6 @@ public class MyModel extends Observable implements IModel {
         }
     }
 
-    @Override
-    public void saveMaze(String name) {
-        String tmpDir = "resources/SavedMazes/";
-        String tmpFile = tmpDir + name;
-        File f = new File(tmpFile);
-        try {
-            f.createNewFile();
-            FileOutputStream outFile = new FileOutputStream(tmpFile);
-            ObjectOutputStream outObj = new ObjectOutputStream(outFile);
-            outObj.writeObject(maze);
-            outFile.close();
-            outObj.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void saveMaze1(String name) {
         String tmpFile = name;
         File f = new File(tmpFile);
@@ -145,32 +128,6 @@ public class MyModel extends Observable implements IModel {
             outFile.close();
             outObj.close();
         } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void loadMaze(String name) {
-        String tmpDir = "resources/SavedMazes/";
-        String tmpFile = tmpDir + name;
-        File f = new File(tmpFile);
-        try {
-            if (f.exists()) {
-                FileInputStream file = new FileInputStream(tmpFile);
-                ObjectInputStream obj = new ObjectInputStream(file);
-                maze = (Maze) obj.readObject();
-                file.close();
-                obj.close();
-                setChanged();
-                characterPositionRow = maze.getStartPosition().getRowIndex();
-                characterPositionColumn = maze.getStartPosition().getColumnIndex();
-                maze.setValueByCords(characterPositionRow, characterPositionColumn, 0);
-                notifyObservers(1);
-            } else
-                return;
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }

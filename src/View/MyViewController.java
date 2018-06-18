@@ -397,9 +397,9 @@ public class MyViewController implements Observer, IView {
 
                     hight_press = event.getY();
                     width_press = event.getX();
-                    System.out.println(hight_press);
-                    System.out.println(width_press);
-                    System.out.println("=============================");
+                   // System.out.println(hight_press);
+                   // System.out.println(width_press);
+                   // System.out.println("=============================");
                     double hight_player = mazeDisplayer.get_player_position_hight();
                     double width_player = mazeDisplayer.get_player_position_width();
 
@@ -423,7 +423,7 @@ public class MyViewController implements Observer, IView {
                     {
                         int x = found_cordinate_row(event.getY());
                         int y = found_cordinate_col(event.getX());
-                        System.out.println(x+"       " +y);
+                       // System.out.println(x+"       " +y);
                         if(mazeDisplayer.getCharacterPositionRow() == x || mazeDisplayer.getCharacterPositionRow()+1 == x || mazeDisplayer.getCharacterPositionRow()-1 == x)
                             if(mazeDisplayer.getCharacterPositionColumn() == y || mazeDisplayer.getCharacterPositionColumn()+1 == y || mazeDisplayer.getCharacterPositionColumn()-1 == y)
                                 if(mazeDisplayer.is_free(x,y))

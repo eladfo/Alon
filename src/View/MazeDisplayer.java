@@ -221,7 +221,6 @@ public class MazeDisplayer extends Canvas {
 
     public Double get_player_position_width()
     {
-        System.out.println(characterPositionRow);
         return (cellWidth* characterPositionColumn + 175);
     }
     public Double get_cellHeight()

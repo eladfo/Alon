@@ -70,14 +70,11 @@ public class MyViewModel extends Observable implements Observer {
 
     public void solveMaze(){ model.solveMaze(); }
 
-    public void loadMaze(String name){ model.loadMaze(name); }
+
 
     public void loadMaze1(String name){ model.loadMaze1(name); }
 
-    public void saveMaze(String mazeName)
-    {
-        model.saveMaze(mazeName);
-    }
+
 
     public void saveMaze1(String mazeName)
     {
@@ -139,7 +136,7 @@ public class MyViewModel extends Observable implements Observer {
             input = new FileInputStream(filename);
             //input = Server.class.getClassLoader().getResourceAsStream(filename);
             if(input==null){
-                System.out.println("Sorry, unable to find " + filename);
+               // System.out.println("Sorry, unable to find " + filename);
             }
             //load a properties file from class path, inside static method
             prop.load(input);
