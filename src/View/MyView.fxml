@@ -110,7 +110,7 @@
     <center>
         <Pane BorderPane.alignment="CENTER">
             <children>
-                <MazeDisplayer fx:id="mazeDisplayer" height="655.0" imageFileNameCharacter="resources/Images/char.png" imageFileNameSolution="resources/Images/footprints.png" imageFileNameTarget="resources/Images/target.png" imageFileNameWall="resources/Images/wall.png" layoutX="-2.0" width="625.0" />
+                <MazeDisplayer fx:id="mazeDisplayer" height="655.0" imageFileNameCharacter="/Images/char.png" imageFileNameSolution="/Images/footprints.png" imageFileNameTarget="/Images/target.png" imageFileNameWall="/Images/wall.png" layoutX="-2.0" width="625.0" />
             </children>
             <padding>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

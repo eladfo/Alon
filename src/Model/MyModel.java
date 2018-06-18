@@ -9,6 +9,8 @@ import javafx.scene.input.KeyCode;
 
 import java.io.*;
 import java.net.InetAddress;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Observable;
 import IO.MyDecompressorInputStream;
@@ -30,15 +32,19 @@ public class MyModel extends Observable implements IModel {
     private int characterPositionRow = 1;
     private int characterPositionColumn = 1;
     private int steps = 0;
-    private MediaPlayer winPlayer;
-    private MediaPlayer backPlayer;
+    public MediaPlayer winPlayer;
+    public MediaPlayer backPlayer;
 
     public MyModel() {
-        //Raise the servers
+        ///Raise the servers
         mazeGeneratingServer = new Server(5400, 1000, new ServerStrategyGenerateMaze());
         solveSearchProblemServer = new Server(5401, 1000, new ServerStrategySolveSearchProblem());
-        playBackgMusic("resources/Sounds/hs_Soundtrack.mp3");
-        playWinMusic("resources/Sounds/hs_Win.mp3");
+
+
+       playBackgMusic("  ");
+
+
+       playWinMusic("  ");
     }
 
     public void startServers() {
@@ -249,7 +255,8 @@ public class MyModel extends Observable implements IModel {
     }
 
     private void playWinMusic(String songName) {
-        winPlayer = new MediaPlayer(new Media(new File(songName).toURI().toString()));
+        winPlayer = new MediaPlayer(new Media(getClass().getResource("/Sounds/hs_Win.mp3").toString()));
+
         winPlayer.setOnEndOfMedia(() -> {
             winPlayer.seek(Duration.ZERO);
         });
@@ -266,10 +273,13 @@ public class MyModel extends Observable implements IModel {
             e.printStackTrace();
         }
         winPlayer.stop();
+
     }
 
     private void playBackgMusic(String songName) {
-        backPlayer = new MediaPlayer(new Media(new File(songName).toURI().toString()));
+
+        backPlayer = new MediaPlayer ( new Media(getClass().getResource("/Sounds/hs_Soundtrack.mp3").toString()));
+
         backPlayer.setOnEndOfMedia(() -> {
             backPlayer.seek(Duration.ZERO);
         });

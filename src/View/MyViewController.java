@@ -18,6 +18,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.input.KeyEvent;
 
+import javafx.scene.input.ScrollEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -99,7 +100,7 @@ public class MyViewController implements Observer, IView {
                 Parent root = fxmlLoader.load(getClass().getResource("Win.fxml").openStream());
                 Scene scene = new Scene(root, 468, 280);
                 stage.setResizable(false);
-                scene.getStylesheets().add(new File("resources/ViewStyle.css").toURI().toURL().toExternalForm());
+                scene.getStylesheets().add(getClass().getResource("/ViewStyle.css").toExternalForm());
                 stage.setScene(scene);
                 stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
                 stage.show();
@@ -210,7 +211,7 @@ public class MyViewController implements Observer, IView {
             FXMLLoader fxmlLoader = new FXMLLoader();
             Parent root = fxmlLoader.load(getClass().getResource("HowToPlay.fxml").openStream());
             Scene scene = new Scene(root, 350, 250);
-            scene.getStylesheets().add(new File("resources/ViewStyle.css").toURI().toURL().toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/ViewStyle.css").toExternalForm());
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
             stage.show();
@@ -230,7 +231,7 @@ public class MyViewController implements Observer, IView {
             FXMLLoader fxmlLoader = new FXMLLoader();
             Parent root = fxmlLoader.load(getClass().getResource("About.fxml").openStream());
             Scene scene = new Scene(root, 700, 393);
-            scene.getStylesheets().add(new File("resources/ViewStyle.css").toURI().toURL().toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/ViewStyle.css").toExternalForm());
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
             stage.show();
@@ -251,7 +252,7 @@ public class MyViewController implements Observer, IView {
             FXMLLoader fxmlLoader = new FXMLLoader();
             Parent root = fxmlLoader.load(getClass().getResource("Properties.fxml").openStream());
             Scene scene = new Scene(root, 450, 350);
-            scene.getStylesheets().add(new File("resources/ViewStyle.css").toURI().toURL().toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/ViewStyle.css").toExternalForm());
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
             stage.show();
@@ -281,45 +282,45 @@ public class MyViewController implements Observer, IView {
     }
 
     private void setDragonBall(){
-        mazeDisplayer.setImageFileNameCharacter("resources/Images/goku.png");
-        mazeDisplayer.setImageFileNameWall("resources/Images/ball.png");
-        mazeDisplayer.setImageFileNameTarget("resources/Images/gohan.png");
+        mazeDisplayer.setImageFileNameCharacter("/Images/goku.png");
+        mazeDisplayer.setImageFileNameWall("/Images/ball.png");
+        mazeDisplayer.setImageFileNameTarget("/Images/gohan.png");
         mazeDisplayer.redrawMaze();
     }
 
     private void setRickAndMorty(){
-        mazeDisplayer.setImageFileNameCharacter("resources/Images/rick.png");
-        mazeDisplayer.setImageFileNameWall("resources/Images/portal.png");
-        mazeDisplayer.setImageFileNameTarget("resources/Images/morty.png");
+        mazeDisplayer.setImageFileNameCharacter("/Images/rick.png");
+        mazeDisplayer.setImageFileNameWall("/Images/portal.png");
+        mazeDisplayer.setImageFileNameTarget("/Images/morty.png");
         mazeDisplayer.redrawMaze();
     }
 
     private void setMario(){
-        mazeDisplayer.setImageFileNameCharacter("resources/Images/mario.jpg");
-        mazeDisplayer.setImageFileNameWall("resources/Images/block.png");
-        mazeDisplayer.setImageFileNameTarget("resources/Images/peach.png");
+        mazeDisplayer.setImageFileNameCharacter("/Images/mario.jpg");
+        mazeDisplayer.setImageFileNameWall("/Images/block.png");
+        mazeDisplayer.setImageFileNameTarget("/Images/peach.png");
         mazeDisplayer.redrawMaze();
 
     }
 
     private void setGameOfThrones(){
-        mazeDisplayer.setImageFileNameCharacter("resources/Images/jon.png");
-        mazeDisplayer.setImageFileNameWall("resources/Images/ww.jpg");
-        mazeDisplayer.setImageFileNameTarget("resources/Images/dani.png");
+        mazeDisplayer.setImageFileNameCharacter("/Images/jon.png");
+        mazeDisplayer.setImageFileNameWall("/Images/ww.jpg");
+        mazeDisplayer.setImageFileNameTarget("/Images/dani.png");
         mazeDisplayer.redrawMaze();
     }
 
     private void setHearthstone(){
-        mazeDisplayer.setImageFileNameCharacter("resources/Images/mage.png");
-        mazeDisplayer.setImageFileNameWall("resources/Images/card2.png");
-        mazeDisplayer.setImageFileNameTarget("resources/Images/coin1.png");
+        mazeDisplayer.setImageFileNameCharacter("/Images/mage.png");
+        mazeDisplayer.setImageFileNameWall("/Images/card2.png");
+        mazeDisplayer.setImageFileNameTarget("/Images/coin1.png");
         mazeDisplayer.redrawMaze();
     }
 
     private void setRogue(){
-        mazeDisplayer.setImageFileNameCharacter("resources/Images/rogue.png");
-        mazeDisplayer.setImageFileNameWall("resources/Images/card4.png");
-        mazeDisplayer.setImageFileNameTarget("resources/Images/roguecoin.png");
+        mazeDisplayer.setImageFileNameCharacter("/Images/rogue.png");
+        mazeDisplayer.setImageFileNameWall("/Images/card4.png");
+        mazeDisplayer.setImageFileNameTarget("/Images/roguecoin.png");
         mazeDisplayer.redrawMaze();
     }
 
@@ -389,7 +390,7 @@ public class MyViewController implements Observer, IView {
 
             @Override
             public void handle(javafx.scene.input.MouseEvent event) {
-
+               // System.out.println(event.getEventType().getName());
                 if(event.getEventType().getName()=="MOUSE_PRESSED")
                 {
 
@@ -470,11 +471,30 @@ public class MyViewController implements Observer, IView {
             }
         };
 
-        //scene.setOnMouseClicked(mouseHandler);
+
+        EventHandler<javafx.scene.input.ScrollEvent> mouseHandler1 = new EventHandler<javafx.scene.input.ScrollEvent>() {
+            @Override
+            public void handle(ScrollEvent event) {
+                ///System.out.println(event.getDeltaX);
+
+            }
+        };
+
+
+        scene.setOnScroll(mouseHandler1);
+
+        scene.setOnMouseClicked(mouseHandler);
+
+        //=======
+
         scene.setOnMouseDragged(mouseHandler);
-        //scene.setOnMouseEntered(mouseHandler);
-       // scene.setOnMouseExited(mouseHandler);
-        //scene.setOnMouseMoved(mouseHandler);
+
+        //===
+        scene.setOnMouseEntered(mouseHandler);
+        scene.setOnMouseExited(mouseHandler);
+       // scene.setOnMouseMoved(mouseHandler);
+        //=================
+
         scene.setOnMousePressed(mouseHandler);
         scene.setOnMouseReleased(mouseHandler);
 

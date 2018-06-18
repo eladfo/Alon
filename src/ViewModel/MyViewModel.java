@@ -107,10 +107,10 @@ public class MyViewModel extends Observable implements Observer {
 
     public void print()
     {
-        System.out.println(getPoolSize());
-        lbl_size_of_pool.set(String.valueOf(getPoolSize()));
-        lbl_Kind_of_algo.set(getSearchingAlgorithm());
-        lbl_Kind_of_genarate.set(getMazeGenerator());
+
+        lbl_size_of_pool.set(String.valueOf(Server.getPoolSize()));
+        lbl_Kind_of_algo.set(Server.getSearchingAlgorithm());
+        lbl_Kind_of_genarate.set(Server.getMazeGenerator());
     }
 
     public void stopServers()
@@ -127,57 +127,7 @@ public class MyViewModel extends Observable implements Observer {
     public StringProperty lbl_Kind_of_algo = new SimpleStringProperty(""); //For Binding
     public StringProperty lbl_size_of_pool = new SimpleStringProperty(""); //For Binding
 
-    static
-    {
-        Properties prop = new Properties();
-        InputStream input = null;
-        try {
-            String filename = "resources/config.properties";
-            input = new FileInputStream(filename);
-            //input = Server.class.getClassLoader().getResourceAsStream(filename);
-            if(input==null){
-               // System.out.println("Sorry, unable to find " + filename);
-            }
-            //load a properties file from class path, inside static method
-            prop.load(input);
 
-            //get the property value and print it out
-            poolSize = prop.getProperty("PoolSize");
-            mazeGenerator = prop.getProperty("MazeGenerator");
-            searchingAlgorithm = prop.getProperty("SearchingAlgorithm");
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } finally{
-            if(input!=null){
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    public static int getPoolSize() {
-        try {
-            int size = Integer.valueOf(poolSize);
-            if (size > 0)
-                return size;
-            return 1;
-        }
-        catch (NumberFormatException e) {
-            return 1;
-        }
-    }
-
-    public static String getMazeGenerator() {
-        return mazeGenerator;
-    }
-
-    public static String getSearchingAlgorithm() {
-        return searchingAlgorithm;
-    }
 
     public void win()
     {

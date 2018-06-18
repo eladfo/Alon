@@ -17,6 +17,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.security.PrivateKey;
 import java.util.ArrayList;
 
 import static java.awt.Color.BLACK;
@@ -25,15 +26,19 @@ import static java.lang.Thread.sleep;
 /**
  * Created by Aviadjo on 3/9/2017.
  */
-public class MazeDisplayer extends Canvas {
+public class MazeDisplayer extends Canvas{
 
-    private Maze maze;
-    private Solution solution;
-    private int characterPositionRow = 1;
-    private int characterPositionColumn = 1;
-    private double cellHeight;
-    private double cellWidth;
-    private GraphicsContext gc = getGraphicsContext2D();
+    private  Maze maze;
+    public   Solution solution;
+    private  int characterPositionRow = 1;
+    private  int characterPositionColumn = 1;
+    private  double cellHeight;
+    private  double cellWidth;
+    public GraphicsContext gc = getGraphicsContext2D();
+    private  Thread t_pain;
+    private  int[] tmp = new int[2];
+    public  String sol;
+
 
 
     public void setMaze(Maze maze) {
@@ -76,10 +81,9 @@ public class MazeDisplayer extends Canvas {
 
     public void redrawMaze() {
         if (maze != null) {
-           try {
-                Image wallImage = new Image(new FileInputStream(ImageFileNameWall.get()));
-                Image characterImage = new Image(new FileInputStream(ImageFileNameCharacter.get()));
-                Image targetImage = new Image(new FileInputStream(ImageFileNameTarget.get()));
+                Image wallImage = new Image(this.getClass().getResourceAsStream(ImageFileNameWall.get()));
+                Image characterImage = new Image(this.getClass().getResourceAsStream(ImageFileNameCharacter.get()));
+                Image targetImage = new Image(this.getClass().getResourceAsStream(ImageFileNameTarget.get()));
                 gc.clearRect(0, 0, getWidth(), getHeight());
                 //Draw Maze
                 for (int i = 0; i < maze.getM_rows(); i++) {
@@ -93,33 +97,35 @@ public class MazeDisplayer extends Canvas {
                 gc.drawImage(characterImage, characterPositionColumn * cellWidth, characterPositionRow * cellHeight, cellWidth, cellHeight);
                 //Draw Target
                 gc.drawImage(targetImage, maze.getGoalPosition().getColumnIndex() * cellWidth, maze.getGoalPosition().getRowIndex() * cellHeight, cellWidth, cellHeight);
-            } catch (FileNotFoundException e) {
-                //e.printStackTrace();
-            }
+
         }
     }
 
-    private void redrawSolution() {
+    public void redrawSolution() {
         if (maze != null) {
-            try {
+           {
                 setMaze(maze);
-                Image solutionImage = new Image(new FileInputStream(ImageFileNameSolution.get()));
-                Image targetImage = new Image(new FileInputStream(ImageFileNameTarget.get()));
-                Image characterImage = new Image(new FileInputStream(ImageFileNameCharacter.get()));
-                ArrayList<AState> mazeSolutionSteps = solution.getSolutionPath();
-                int[] tmp = new int[2];
-                for (int i = 0; i < mazeSolutionSteps.size(); i++) {
-                    tmp = astetaToInt(mazeSolutionSteps.get(i));
-                    gc.drawImage(solutionImage, tmp[1] * cellWidth, tmp[0] * cellHeight, cellWidth, cellHeight);
-                    //sleep(500);
-                }
-                //Draw Char
-                gc.drawImage(characterImage, characterPositionColumn * cellWidth, characterPositionRow * cellHeight, cellWidth, cellHeight);
-                //Draw Target
-                gc.drawImage(targetImage, maze.getGoalPosition().getColumnIndex() * cellWidth, maze.getGoalPosition().getRowIndex() * cellHeight, cellWidth, cellHeight);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+                //Image solutionImage = new Image(this.getClass().getResourceAsStream(ImageFileNameSolution.get()));
+                Image targetImage = new Image(this.getClass().getResourceAsStream(ImageFileNameTarget.get()));
+                Image characterImage = new Image(this.getClass().getResourceAsStream(ImageFileNameCharacter.get()));
+
+//Draw Char
+               gc.drawImage(characterImage, characterPositionColumn * cellWidth, characterPositionRow * cellHeight, cellWidth, cellHeight);
+               //Draw Target
+               gc.drawImage(targetImage, maze.getGoalPosition().getColumnIndex() * cellWidth, maze.getGoalPosition().getRowIndex() * cellHeight, cellWidth, cellHeight);
+               sol = ImageFileNameSolution.get();
+               Image solutionImage = new Image(this.getClass().getResourceAsStream(sol));
+               ArrayList<AState> mazeSolutionSteps = solution.getSolutionPath();
+               for (int i = 0; i < mazeSolutionSteps.size(); i++) {
+                   tmp = astetaToInt(mazeSolutionSteps.get(i));
+                   gc.drawImage(solutionImage, tmp[1] * cellWidth, tmp[0] * cellHeight, cellWidth, cellHeight);
+
+               }
+
+
+           }
+
+
         }
     }
 
@@ -239,4 +245,7 @@ public class MazeDisplayer extends Canvas {
             return true;
         return false;
     }
+
+
 }
+
