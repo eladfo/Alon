@@ -266,9 +266,8 @@ public class MyViewController implements Observer, IView {
     }
 
     public void themeChoose(){
-        combo_world.setOnAction(event -> {
-            String value = combo_world.getValue();
-            switch (value) {
+        String value1 = combo_world.getValue();
+        switch (value1) {
                 case "Mario": setMario(); break;
                 case "Rick and Morty": setRickAndMorty(); break;
                 case "Mage": setHearthstone(); break;
@@ -278,7 +277,7 @@ public class MyViewController implements Observer, IView {
 
                 default: break;
             }
-         });
+
     }
 
     private void setDragonBall(){
