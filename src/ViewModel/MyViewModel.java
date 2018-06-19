@@ -44,7 +44,7 @@ public class MyViewModel extends Observable implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         if (o==model){
-            if((int)arg == 1)
+            if((int)arg == 1 ||(int)arg == 3  )
             {
                 characterPositionRowIndex = model.getCharacterPositionRow();
                 characterPositionRow.set(characterPositionRowIndex + "");
@@ -53,12 +53,17 @@ public class MyViewModel extends Observable implements Observer {
                 steps = model.get_Num_of_steps();
                 step.set(steps + "");
                 setChanged();
-                notifyObservers(1);
+                if((int)arg == 1)
+                    notifyObservers(1);
+                else
+                    notifyObservers(3);
+
             }
             else  if((int)arg ==2) {
                 setChanged();
                 notifyObservers(2);
             }
+
 
 
         }

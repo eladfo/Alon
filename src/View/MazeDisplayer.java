@@ -28,16 +28,18 @@ import static java.lang.Thread.sleep;
  */
 public class MazeDisplayer extends Canvas{
 
-    private  Maze maze;
+    public  Maze maze;
     public   Solution solution;
     private  int characterPositionRow = 1;
     private  int characterPositionColumn = 1;
-    private  double cellHeight;
-    private  double cellWidth;
+    public   double cellHeight;
+    public   double cellWidth;
     public GraphicsContext gc = getGraphicsContext2D();
     private  Thread t_pain;
     private  int[] tmp = new int[2];
     public  String sol;
+    public double last_offset_hight ;
+    public double last_offset_width ;
 
 
 
@@ -46,8 +48,10 @@ public class MazeDisplayer extends Canvas{
             this.maze = maze;
             cellHeight = getHeight() / maze.getM_rows();
             cellWidth = getWidth() / maze.getM_columns();
-            redrawMaze();
-        }
+            last_offset_hight=0;
+            last_offset_width=0;
+            redrawMaze_with_ofset(0,0);
+    }
 
     }
 
@@ -56,7 +60,8 @@ public class MazeDisplayer extends Canvas{
     if(maze != null) {
         cellHeight = getHeight() / maze.getM_rows();
         cellWidth = getWidth() / maze.getM_columns();
-        redrawMaze();
+        redrawMaze_with_ofset(0 , 0);
+
     }
 }
 
@@ -68,38 +73,101 @@ public class MazeDisplayer extends Canvas{
     public void setCharacterPosition(int row, int column) {
         characterPositionRow = row;
         characterPositionColumn = column;
-        redrawMaze();
+        redrawMaze_with_ofset(0,0);
     }
 
-    public int getCharacterPositionRow() {
-        return characterPositionRow;
+    public double getCharacterPositionRow(double ofset_width,double ofset_hight) {
+        return characterPositionRow ;
     }
 
-    public int getCharacterPositionColumn() {
+    public double getCharacterPositionColumn(double ofset_width,double ofset_hight) {
         return characterPositionColumn;
     }
 
-    public void redrawMaze() {
-        if (maze != null) {
-                Image wallImage = new Image(this.getClass().getResourceAsStream(ImageFileNameWall.get()));
-                Image characterImage = new Image(this.getClass().getResourceAsStream(ImageFileNameCharacter.get()));
-                Image targetImage = new Image(this.getClass().getResourceAsStream(ImageFileNameTarget.get()));
-                gc.clearRect(0, 0, getWidth(), getHeight());
-                //Draw Maze
-                for (int i = 0; i < maze.getM_rows(); i++) {
-                    for (int j = 0; j < maze.getM_columns(); j++) {
-                        if (maze.getPositionValue(i, j) == 1) {
-                            gc.drawImage(wallImage, j * cellWidth, i * cellHeight, cellWidth, cellHeight);
-                        }
+
+    public void redrawMaze_with_ofset(double offset_hight , double offset_width) {
+        if (maze != null && offset_hight==0 && offset_width==0 ) {
+            Image wallImage = new Image(this.getClass().getResourceAsStream(ImageFileNameWall.get()));
+            Image characterImage = new Image(this.getClass().getResourceAsStream(ImageFileNameCharacter.get()));
+            Image targetImage = new Image(this.getClass().getResourceAsStream(ImageFileNameTarget.get()));
+
+            gc.clearRect(0   , 0  , getWidth(), getHeight());
+            //Draw Maze
+            for (int i = 0; i < maze.getM_rows(); i++) {
+                for (int j = 0; j < maze.getM_columns(); j++) {
+                    if (maze.getPositionValue(i, j) == 1) {
+                        gc.drawImage(wallImage,  last_offset_width + offset_width + j * cellWidth, last_offset_hight + offset_hight + i * cellHeight, cellWidth, cellHeight);
                     }
                 }
-                //Draw Character
-                gc.drawImage(characterImage, characterPositionColumn * cellWidth, characterPositionRow * cellHeight, cellWidth, cellHeight);
-                //Draw Target
-                gc.drawImage(targetImage, maze.getGoalPosition().getColumnIndex() * cellWidth, maze.getGoalPosition().getRowIndex() * cellHeight, cellWidth, cellHeight);
+            }
+            //Draw Character
+            gc.drawImage(characterImage,   last_offset_width + offset_width + characterPositionColumn * cellWidth, last_offset_hight + offset_hight + characterPositionRow * cellHeight, cellWidth, cellHeight);
+            //Draw Target
+            gc.drawImage(targetImage,   last_offset_width + offset_width + maze.getGoalPosition().getColumnIndex()  * cellWidth, last_offset_hight + offset_hight + maze.getGoalPosition().getRowIndex() * cellHeight, cellWidth, cellHeight);
+
+        }
+
+        else if (maze!= null){
+            Image wallImage = new Image(this.getClass().getResourceAsStream(ImageFileNameWall.get()));
+            Image characterImage = new Image(this.getClass().getResourceAsStream(ImageFileNameCharacter.get()));
+            Image targetImage = new Image(this.getClass().getResourceAsStream(ImageFileNameTarget.get()));
+
+            gc.clearRect(0   , 0  , getWidth(), getHeight());
+            //Draw Maze
+            for (int i = 0; i < maze.getM_rows(); i++) {
+                for (int j = 0; j < maze.getM_columns(); j++) {
+                    if (maze.getPositionValue(i, j) == 1) {
+                        gc.drawImage(wallImage,   offset_width + j * cellWidth,   offset_hight + i * cellHeight, cellWidth, cellHeight);
+                    }
+                }
+            }
+            //Draw Character
+            gc.drawImage(characterImage,   offset_width + characterPositionColumn * cellWidth,   offset_hight + characterPositionRow * cellHeight, cellWidth, cellHeight);
+            //Draw Target
+            gc.drawImage(targetImage,  offset_width + maze.getGoalPosition().getColumnIndex()  * cellWidth,   offset_hight + maze.getGoalPosition().getRowIndex() * cellHeight, cellWidth, cellHeight);
+
+        }
+        if(offset_hight!= 0 || offset_width != 0) {
+            last_offset_hight =   offset_hight;
+            last_offset_width =   offset_width;
+        }
+    }
+
+    public void redrawMaze_with_zoom(double zoom) {
+        if(zoom==1) {
+            cellWidth =  cellWidth * 2;
+            cellHeight =  cellHeight * 2;
+            last_offset_hight=0;
+            last_offset_width=0;
+        }
+        else
+        {
+            cellWidth =  cellWidth * 0.5;
+            cellHeight =  cellHeight * 0.5;
+            last_offset_hight=0;
+            last_offset_width=0;
+        }
+        if (maze != null) {
+            Image wallImage = new Image(this.getClass().getResourceAsStream(ImageFileNameWall.get()));
+            Image characterImage = new Image(this.getClass().getResourceAsStream(ImageFileNameCharacter.get()));
+            Image targetImage = new Image(this.getClass().getResourceAsStream(ImageFileNameTarget.get()));
+            gc.clearRect(0   , 0  , getWidth(), getHeight());
+            //Draw Maze
+            for (int i = 0; i < maze.getM_rows(); i++) {
+                for (int j = 0; j < maze.getM_columns(); j++) {
+                    if (maze.getPositionValue(i, j) == 1) {
+                        gc.drawImage(wallImage,     j * cellWidth ,    i * cellHeight, cellWidth, cellHeight);
+                    }
+                }
+            }
+            //Draw Character
+            gc.drawImage(characterImage,   characterPositionColumn * cellWidth,   characterPositionRow * cellHeight, cellWidth, cellHeight);
+            //Draw Target
+            gc.drawImage(targetImage,   maze.getGoalPosition().getColumnIndex() * cellWidth,   maze.getGoalPosition().getRowIndex() * cellHeight, cellWidth, cellHeight);
 
         }
     }
+
 
     public void redrawSolution() {
         if (maze != null) {
@@ -220,14 +288,14 @@ public class MazeDisplayer extends Canvas{
 
     //endregion
 
-    public Double get_player_position_hight()
+    public Double get_player_position_hight(double ofset_hight,double ofset_width)
     {
-        return (cellHeight*characterPositionRow + 25);
+        return (cellHeight*characterPositionRow + 25 +  + ofset_hight);
     }
 
-    public Double get_player_position_width()
+    public Double get_player_position_width(double ofset_hight,double ofset_width)
     {
-        return (cellWidth* characterPositionColumn + 175);
+        return (cellWidth* characterPositionColumn + 175 +  + ofset_width);
     }
     public Double get_cellHeight()
     {

@@ -24,7 +24,6 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         MyModel model = new MyModel();
-
         model.startServers();
         MyViewModel viewModel = new MyViewModel(model);
         model.addObserver(viewModel);
@@ -32,10 +31,11 @@ public class Main extends Application {
         primaryStage.setTitle("Epic Maze by Alon.T & Elad.F");
         FXMLLoader fxmlLoader = new FXMLLoader();
         Parent root = fxmlLoader.load(getClass().getResource("MyView.fxml").openStream());
-        Scene scene = new Scene(root, 800, 700);
+        Scene scene = new Scene(root, 400, 350);
         scene.getStylesheets().add(getClass().getResource("/ViewStyle.css").toExternalForm());
         //scene.getStylesheets().add(new File("resources/ViewStyle.css").toURI().toURL().toExternalForm());
         primaryStage.setScene(scene);
+
         //--------------
         MyViewController view = fxmlLoader.getController();
         view.setResizeEvent(scene);

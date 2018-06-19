@@ -19,7 +19,7 @@ public interface IModel {
     int get_Num_of_steps();
     void stopServers();
     void changeMusic(int num);
-    void win();
+   // void win();
     void saveMaze1(String name);
     void loadMaze1(String name);
     void moveCharacterByMouse(int movement);

@@ -90,7 +90,7 @@ public class MyModel extends Observable implements IModel {
             characterPositionRow = maze.getStartPosition().getRowIndex();
             characterPositionColumn = maze.getStartPosition().getColumnIndex();
             maze.setValueByCords(characterPositionRow, characterPositionColumn, 0);
-            notifyObservers(1);
+            notifyObservers(3);
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
@@ -312,11 +312,6 @@ public class MyModel extends Observable implements IModel {
                 backPlayer.play(); break;
             default: break;
         }
-    }
-    @Override
-    public void win()
-    {
-        setChanged();
     }
 
     public void moveCharacterByMouse(int movement)
