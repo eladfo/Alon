@@ -1,38 +1,21 @@
 package ViewModel;
 
 import Model.IModel;
-import Model.MyModel;
 import Server.Server;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.Solution;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.scene.control.Alert;
 import javafx.scene.input.KeyCode;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Properties;
 
-/**
- * Created by Aviadjo on 6/14/2017.
- */
 public class MyViewModel extends Observable implements Observer {
 
     private IModel model;
     private int characterPositionRowIndex;
     private int characterPositionColumnIndex;
     public int steps;
-
-    private static String poolSize;
-    private static String mazeGenerator;
-    private static String searchingAlgorithm;
-
     public StringProperty characterPositionRow = new SimpleStringProperty(""); //For Binding
     public StringProperty characterPositionColumn = new SimpleStringProperty(""); //For Binding
     public StringProperty step = new SimpleStringProperty(""); //For Binding
@@ -63,9 +46,6 @@ public class MyViewModel extends Observable implements Observer {
                 setChanged();
                 notifyObservers(2);
             }
-
-
-
         }
     }
 
@@ -75,11 +55,7 @@ public class MyViewModel extends Observable implements Observer {
 
     public void solveMaze(){ model.solveMaze(); }
 
-
-
     public void loadMaze1(String name){ model.loadMaze1(name); }
-
-
 
     public void saveMaze1(String mazeName)
     {
@@ -112,7 +88,6 @@ public class MyViewModel extends Observable implements Observer {
 
     public void print()
     {
-
         lbl_size_of_pool.set(String.valueOf(Server.getPoolSize()));
         lbl_Kind_of_algo.set(Server.getSearchingAlgorithm());
         lbl_Kind_of_genarate.set(Server.getMazeGenerator());
@@ -127,12 +102,12 @@ public class MyViewModel extends Observable implements Observer {
         model.changeMusic(num);
     }
 
+    public void changeWinMusic(int i){model.changeWinMusic(i);}
+
     //Binding and Properties
     public StringProperty lbl_Kind_of_genarate = new SimpleStringProperty(""); //For Binding
     public StringProperty lbl_Kind_of_algo = new SimpleStringProperty(""); //For Binding
     public StringProperty lbl_size_of_pool = new SimpleStringProperty(""); //For Binding
-
-
 
     public void win()
     {

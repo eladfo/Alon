@@ -1,14 +1,9 @@
 package View;
 
 import ViewModel.MyViewModel;
-import javafx.stage.Stage;
-
 import java.util.Observable;
 import java.util.Observer;
 
-/**
- * Created by aviadd on 6/18/2017.
- */
 public class PropertiesController implements Observer
 {
     private MyViewModel viewModel;
@@ -21,6 +16,7 @@ public class PropertiesController implements Observer
         bindProperties(viewModel);
 
     }
+
     private void bindProperties(MyViewModel viewModel)
     {
         lbl_Kind_of_genarate.textProperty().bind(viewModel.lbl_Kind_of_genarate);
@@ -28,7 +24,6 @@ public class PropertiesController implements Observer
         lbl_size_of_pool.textProperty().bind(viewModel.lbl_size_of_pool) ;
         viewModel.print();
     }
-
 
     @Override
     public void update(Observable o, Object arg)

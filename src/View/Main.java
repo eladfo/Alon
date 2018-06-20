@@ -9,13 +9,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-
-import java.io.File;
-import java.net.URISyntaxException;
 import java.util.Optional;
 
 public class Main extends Application {
@@ -28,21 +23,18 @@ public class Main extends Application {
         MyViewModel viewModel = new MyViewModel(model);
         model.addObserver(viewModel);
         //--------------
-        primaryStage.setTitle("Epic Maze by Alon.T & Elad.F");
+        primaryStage.setTitle("EPIC Maze by Alon.T & Elad.F");
         FXMLLoader fxmlLoader = new FXMLLoader();
         Parent root = fxmlLoader.load(getClass().getResource("MyView.fxml").openStream());
-        Scene scene = new Scene(root, 400, 350);
+        Scene scene = new Scene(root, 800, 700);
         scene.getStylesheets().add(getClass().getResource("/ViewStyle.css").toExternalForm());
-        //scene.getStylesheets().add(new File("resources/ViewStyle.css").toURI().toURL().toExternalForm());
         primaryStage.setScene(scene);
-
         //--------------
         MyViewController view = fxmlLoader.getController();
         view.setResizeEvent(scene);
         view.setViewModel(viewModel, primaryStage);
         viewModel.addObserver(view);
         //--------------
-        //
         SetStageCloseEvent(primaryStage, model);
         primaryStage.show();
     }
@@ -55,7 +47,6 @@ public class Main extends Application {
                 if (result.get() == ButtonType.OK){
                     // ... user chose OK
                     // Close program
-
                     model.stopServers();
                 } else {
                     // ... user chose CANCEL or closed the dialog
@@ -63,7 +54,6 @@ public class Main extends Application {
                 }
             }
         });
-        
     }
 
     public static void main(String[] args) {

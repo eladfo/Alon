@@ -4,6 +4,7 @@
     -fx-background-repeat: no-repeat;
     -fx-background-size: stretch;
 }
+
 .mainView {
     -fx-background-size: stretch;
 }
@@ -12,8 +13,9 @@ Button {
     -fx-text-fill: #f5f8ff;
     -fx-font-family: "";
     -fx-font-weight: bold;
+    -fx-font-style: italic;
     -fx-background-color: linear-gradient(#61a2b1, #2A5058);
-    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-effect: dropshadow( three-pass-box , rgb(245, 248, 255), 5, 0.0 , 0 , 1 );
 }
 
 
@@ -31,8 +33,9 @@ ToggleButton{
     -fx-text-fill: #f5f8ff;
     -fx-font-family: "";
     -fx-font-weight: bold;
+    -fx-font-style: italic;
     -fx-background-color: linear-gradient(#61a2b1, #2A5058);
-    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-effect: dropshadow( three-pass-box , rgb(245, 248, 255), 5, 0.0 , 0 , 1 );
 }
 
 ToggleButton:hover{
@@ -48,6 +51,18 @@ ToggleButton:hover{
 Label{
     -fx-text-fill: #f5f8ff;
     -fx-font-family: "";
-    -fx-font-weight: bold italic;
+    -fx-font-weight: bold;
+    -fx-font-style: italic;
+    -fx-font-size: 12px
 
+}
+
+ComboBox{
+    -fx-font-weight: bold;
+    -fx-font-style: italic;
+}
+
+.menu{
+    -fx-font-weight: 700;
+    -fx-font-style: italic;
 }

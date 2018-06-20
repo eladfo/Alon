@@ -23,10 +23,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import org.w3c.dom.events.MouseEvent;
-
 import java.io.File;
-import java.net.MalformedURLException;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Optional;
@@ -47,22 +44,23 @@ public class MyViewController implements Observer, IView {
     public javafx.scene.control.ComboBox<String> combo_world;
     public javafx.scene.control.ToggleButton tglbtn_music;
 
-    public double hight_press;
-    public double width_press;
-    public boolean flag;
+    private double hight_press;
+    private double width_press;
+    private boolean flag;
     private boolean win=false;
     private double ofset_hight=0;
     private double ofset_width=0;
     private boolean initial =false;
-
-
     private int x_old;
     private int y_old;
+    private int songPlayingNum;
+
 
     public void setViewModel(MyViewModel viewModel, Stage stage) {
         this.viewModel = viewModel;
         bindProperties(viewModel);
         this.stage = stage;
+        this.songPlayingNum = 0;
     }
 
     private void bindProperties(MyViewModel viewModel) {
@@ -95,7 +93,7 @@ public class MyViewController implements Observer, IView {
 
     @Override
     public void displayMaze(Maze maze) {
-        if(initial==false) {
+        if(!initial) {
             mazeDisplayer.setMaze(maze);
             initial=true;
         }
@@ -104,17 +102,17 @@ public class MyViewController implements Observer, IView {
         if(characterPositionRow == maze.getGoalPosition().getRowIndex()
                 && characterPositionColumn==maze.getGoalPosition().getColumnIndex() && win==false)
         {
-            mazeDisplayer.setCharacterPosition(characterPositionRow, characterPositionColumn);
+            mazeDisplayer.setCharPos(characterPositionRow, characterPositionColumn);
             this.characterPositionRow.set(characterPositionRow + "");
             this.characterPositionColumn.set(characterPositionColumn + "");
             try {
                 viewModel.steps = 0;
                 Stage stage = new Stage();
-                stage.setTitle("Win!!!!!");
+                stage.setTitle("!!! Victory !!!");
                 initial=false;
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 Parent root = fxmlLoader.load(getClass().getResource("Win.fxml").openStream());
-                Scene scene = new Scene(root, 468, 280);
+                Scene scene = new Scene(root, 590, 328);
                 stage.setResizable(false);
                 scene.getStylesheets().add(getClass().getResource("/ViewStyle.css").toExternalForm());
                 stage.setScene(scene);
@@ -126,28 +124,26 @@ public class MyViewController implements Observer, IView {
                 viewModel.addObserver(win__controller);
                 resetCanvas();
                 if(!tglbtn_music.isSelected())
-                    viewModel.changeMusic(1);
+                    viewModel.changeWinMusic(0);
                 stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
                     public void handle(WindowEvent windowEvent) {
-                        viewModel.changeMusic(2);
                         if(!tglbtn_music.isSelected())
                         {
-                            viewModel.changeMusic(4);
+                            viewModel.changeWinMusic(1);
                         }
                         else
                         {
-                            viewModel.changeMusic(3);
+                            viewModel.changeWinMusic(2);
                         }
                     }});
             } catch (Exception e) {
-
             }
              win=true;
              viewModel.win();
         }
         else if(!win)
         {
-            mazeDisplayer.setCharacterPosition(characterPositionRow, characterPositionColumn);
+            mazeDisplayer.setCharPos(characterPositionRow, characterPositionColumn);
             this.characterPositionRow.set(characterPositionRow + "");
             this.characterPositionColumn.set(characterPositionColumn + "");
         }
@@ -203,19 +199,20 @@ public class MyViewController implements Observer, IView {
                 return;}
             else
             {
-                showAlert("Maze does not exist. Try Generate a maze before saving.");
+                showAlert("Maze does not exist. Try generate a maze before saving.");
                 return;
             }
         }
     }
 
     public void loadMazeWindow(ActionEvent actionEvent) {
-        win = false;
         FileChooser file_chooser = new FileChooser();
         file_chooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Maze Files","*.maze"));
         File file = file_chooser.showOpenDialog(null);
         if(file != null)
         {
+            win = false;
+            initial = false;
             viewModel.loadMaze1(file.getPath());
         }
     }
@@ -227,11 +224,17 @@ public class MyViewController implements Observer, IView {
             stage.setResizable(false);
             FXMLLoader fxmlLoader = new FXMLLoader();
             Parent root = fxmlLoader.load(getClass().getResource("HowToPlay.fxml").openStream());
-            Scene scene = new Scene(root, 350, 250);
+            Scene scene = new Scene(root, 896, 494);
             scene.getStylesheets().add(getClass().getResource("/ViewStyle.css").toExternalForm());
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
             stage.show();
+            viewModel.changeMusic(6);
+            stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                public void handle(WindowEvent windowEvent) {
+                    viewModel.changeMusic(songPlayingNum);
+                    isTglBtnMusicOn();
+                }});
             HowToPlayController htp;
             htp = fxmlLoader.getController();
             htp.setViewModel(viewModel);
@@ -247,7 +250,7 @@ public class MyViewController implements Observer, IView {
             stage.setResizable(false);
             FXMLLoader fxmlLoader = new FXMLLoader();
             Parent root = fxmlLoader.load(getClass().getResource("About.fxml").openStream());
-            Scene scene = new Scene(root, 700, 393);
+            Scene scene = new Scene(root, 896, 494);
             scene.getStylesheets().add(getClass().getResource("/ViewStyle.css").toExternalForm());
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
@@ -257,7 +260,6 @@ public class MyViewController implements Observer, IView {
             about.setViewModel(viewModel);
             viewModel.addObserver(about);
         } catch (Exception e) {
-
         }
     }
 
@@ -286,80 +288,113 @@ public class MyViewController implements Observer, IView {
     public void themeChoose(){
         String value1 = combo_world.getValue();
         switch (value1) {
-                case "Mario": setMario(); break;
-                case "Rick and Morty": setRickAndMorty(); break;
-                case "Mage": setHearthstone(); break;
-                case "Rogue": setRogue(); break;
-                case "Game of thrones": setGameOfThrones(); break;
-                case "Dragon Ball": setDragonBall(); break;
-
-                default: break;
-            }
-
+            case "Mario": setMario(); break;
+            case "Rick and Morty": setRickAndMorty(); break;
+            case "Mage": setMage(); break;
+            case "Rogue": setRogue(); break;
+            case "Game of thrones": setGameOfThrones(); break;
+            case "Dragon Ball": setDragonBall(); break;
+            default: break;
+        }
     }
 
     private void setDragonBall(){
+        songPlayingNum = 3;
+        viewModel.changeMusic(3);
+        isTglBtnMusicOn();
         mazeDisplayer.setImageFileNameCharacter("/Images/goku.png");
         mazeDisplayer.setImageFileNameWall("/Images/ball.png");
         mazeDisplayer.setImageFileNameTarget("/Images/gohan.png");
-        mazeDisplayer.redrawMaze_with_ofset(0,0);
+        mazeDisplayer.redrawMaze_offset(0,0);
     }
 
     private void setRickAndMorty(){
+        songPlayingNum = 1;
+        viewModel.changeMusic(1);
+        isTglBtnMusicOn();
         mazeDisplayer.setImageFileNameCharacter("/Images/rick.png");
         mazeDisplayer.setImageFileNameWall("/Images/portal.png");
         mazeDisplayer.setImageFileNameTarget("/Images/morty.png");
-        mazeDisplayer.redrawMaze_with_ofset(0,0);
+        mazeDisplayer.redrawMaze_offset(0,0);
     }
 
     private void setMario(){
+        songPlayingNum = 4;
+        viewModel.changeMusic(4);
+        isTglBtnMusicOn();
         mazeDisplayer.setImageFileNameCharacter("/Images/mario.jpg");
         mazeDisplayer.setImageFileNameWall("/Images/block.png");
         mazeDisplayer.setImageFileNameTarget("/Images/peach.png");
-        mazeDisplayer.redrawMaze_with_ofset(0,0);
+        mazeDisplayer.redrawMaze_offset(0,0);
 
     }
 
     private void setGameOfThrones(){
+        songPlayingNum = 2;
+        viewModel.changeMusic(2);
+        isTglBtnMusicOn();
         mazeDisplayer.setImageFileNameCharacter("/Images/jon.png");
         mazeDisplayer.setImageFileNameWall("/Images/ww.jpg");
         mazeDisplayer.setImageFileNameTarget("/Images/dani.png");
-        mazeDisplayer.redrawMaze_with_ofset(0,0);
+        mazeDisplayer.redrawMaze_offset(0,0);
     }
 
-    private void setHearthstone(){
+    private void setMage(){
+        if (songPlayingNum != 0)
+        {
+            viewModel.changeMusic(0);
+            songPlayingNum = 0;
+        }
+        isTglBtnMusicOn();
         mazeDisplayer.setImageFileNameCharacter("/Images/mage.png");
         mazeDisplayer.setImageFileNameWall("/Images/card2.png");
         mazeDisplayer.setImageFileNameTarget("/Images/coin1.png");
-        mazeDisplayer.redrawMaze_with_ofset(0,0);
+        mazeDisplayer.redrawMaze_offset(0,0);
     }
 
     private void setRogue(){
+        if (songPlayingNum != 0)
+        {
+            viewModel.changeMusic(0);
+            songPlayingNum = 0;
+        }
+        isTglBtnMusicOn();
         mazeDisplayer.setImageFileNameCharacter("/Images/rogue.png");
         mazeDisplayer.setImageFileNameWall("/Images/card4.png");
         mazeDisplayer.setImageFileNameTarget("/Images/roguecoin.png");
-        mazeDisplayer.redrawMaze_with_ofset(0,0);
+        mazeDisplayer.redrawMaze_offset(0,0);
     }
 
     public void exitFS(){
         stage.setFullScreen(false);
-        mazeDisplayer.redrawMaze_with_ofset(0,0);
+        mazeDisplayer.redrawMaze_offset(0,0);
 
     }
 
     public void goFS(){
         stage.setFullScreen(true);
-        mazeDisplayer.redrawMaze_with_ofset(0,0);
+        mazeDisplayer.redrawMaze_offset(0,0);
     }
 
     public void onOffMusic(ActionEvent actionEvent){
         if (((ToggleButton)actionEvent.getSource()).isSelected()){
             tglbtn_music.setText("Enable Music");
-            viewModel.changeMusic(3);
+            viewModel.changeMusic(111);
         }
         else {
             tglbtn_music.setText("Disable Music");
-            viewModel.changeMusic(4);
+            viewModel.changeMusic(100);
+        }
+    }
+
+    private void isTglBtnMusicOn(){
+        if(tglbtn_music.isSelected())
+        {
+            viewModel.changeMusic(111);
+        }
+        else
+        {
+            viewModel.changeMusic(100);
         }
     }
 
@@ -377,227 +412,150 @@ public class MyViewController implements Observer, IView {
     }
 
     public void setResizeEvent(Scene scene) {
-        long width = 0;
-        long height = 0;
         scene.widthProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
-
-                //System.out.println("Width: " + newSceneWidth);
                 mazeDisplayer.setWidth((double) newSceneWidth - 175);
                 mazeDisplayer.setMaze(mazeDisplayer.maze);
-                mazeDisplayer.redrawMaze_with_ofset(0,0);
+                mazeDisplayer.redrawMaze_offset(0,0);
                 mazeDisplayer.set();
             }
         });
         scene.heightProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
-                //System.out.println("Height: " + newSceneHeight);
                 mazeDisplayer.setHeight((double) newSceneHeight - 45);
                 mazeDisplayer.setMaze(mazeDisplayer.maze);
-                mazeDisplayer.redrawMaze_with_ofset(0,0);
+                mazeDisplayer.redrawMaze_offset(0,0);
                 mazeDisplayer.set();
-
             }
         });
-
-
-
         EventHandler<javafx.scene.input.MouseEvent> mouseHandler = new EventHandler<javafx.scene.input.MouseEvent>() {
-
-
-
             @Override
             public void handle(javafx.scene.input.MouseEvent event) {
-                 // System.out.println(event.getEventType().getName());
-                //System.out.println(event.isControlDown());
-
-
                 if(event.getEventType().getName()=="MOUSE_PRESSED")
                 {
-
-
                     hight_press = event.getY();
                     width_press = event.getX();
                     x_old = found_cordinate_row(hight_press,ofset_hight,ofset_width);
                     y_old = found_cordinate_col(width_press,ofset_hight,ofset_width);
-
-                   // System.out.println(hight_press);
-                   // System.out.println(width_press);
-                   // System.out.println("=============================");
                     double hight_player = mazeDisplayer.get_player_position_hight(ofset_hight,ofset_width);
                     double width_player = mazeDisplayer.get_player_position_width(ofset_hight,ofset_width);
-
                     double hight_click = hight_press ;
                     double width_click = width_press ;
-
-                    System.out.println(hight_player);
-                    System.out.println(width_player);
-                    System.out.println("=========");
-                    System.out.println(hight_click);
-                    System.out.println(width_click);
-
-                    if(hight_click >= hight_player && hight_click <= hight_player+mazeDisplayer.get_cellHeight() )
-                        if(width_click >= width_player && width_click<= width_player+mazeDisplayer.get_cellWidth())
+                    if(hight_click >= hight_player && hight_click <= hight_player+mazeDisplayer.getCellHeight() )
+                        if(width_click >= width_player && width_click<= width_player+mazeDisplayer.getCellWidth())
                     {
-                        System.out.println("I touch in the image!!!!");
+                        //System.out.println("I touch in the image!!!!");
                         flag = true;
                     }
                 }
-
-                if(flag==false && mazeDisplayer.maze!=null && !all_the_picture_draw(mazeDisplayer.get_cellWidth(),mazeDisplayer.get_cellHeight()) && event.getEventType().getName()=="MOUSE_DRAGGED" )
+                if(flag==false && mazeDisplayer.maze!=null && !all_the_picture_draw(mazeDisplayer.getCellWidth(),mazeDisplayer.getCellHeight()) && event.getEventType().getName()=="MOUSE_DRAGGED" )
                 {
                     if(event.getX()>= 175 && event.getX() <=mazeDisplayer.getWidth()+175 && event.getY()>= 25 && event.getY() <=mazeDisplayer.getHeight()+25 ) {
-
-
                         int x = found_cordinate_row(event.getY(),ofset_hight,ofset_width);
                         int y = found_cordinate_col(event.getX(),ofset_hight,ofset_width);
-
                         if (x > x_old )
                         {
-
-                            if(mazeDisplayer.last_offset_hight + ofset_hight + mazeDisplayer.get_cellHeight()>25 ) {
-                                System.out.println("1");
+                            if(mazeDisplayer.last_offset_height + ofset_hight + mazeDisplayer.getCellHeight()>25 ) {
                                 return;
                             }
                            // System.out.println("down!");
-                            mazeDisplayer.redrawMaze_with_ofset( ofset_hight + mazeDisplayer.get_cellHeight() ,  ofset_width);
+                            mazeDisplayer.redrawMaze_offset( ofset_hight + mazeDisplayer.getCellHeight() ,  ofset_width);
                             x_old=x;
-                            ofset_hight= ofset_hight + mazeDisplayer.get_cellHeight();
+                            ofset_hight= ofset_hight + mazeDisplayer.getCellHeight();
                         }
                         else if (x < x_old)
                         {
-                           // System.out.println(mazeDisplayer.last_offset_hight + ofset_hight - mazeDisplayer.get_cellHeight() + mazeDisplayer.maze.getM_rows() * mazeDisplayer.cellHeight );
-                            //System.out.println( mazeDisplayer.getHeight() - 25);
-                            if( mazeDisplayer.last_offset_hight + ofset_hight - mazeDisplayer.get_cellHeight() + mazeDisplayer.maze.getM_rows() * mazeDisplayer.cellHeight <0)
-                            {
-                                System.out.println("2");
+                            if( mazeDisplayer.last_offset_height + ofset_hight - mazeDisplayer.getCellHeight() + mazeDisplayer.maze.getM_rows() * mazeDisplayer.cellHeight <0) {
                                 return;
                             }
-
                             //System.out.println("up!");
-                            mazeDisplayer.redrawMaze_with_ofset(ofset_hight - mazeDisplayer.get_cellHeight() ,  ofset_width);
+                            mazeDisplayer.redrawMaze_offset(ofset_hight - mazeDisplayer.getCellHeight() ,  ofset_width);
                             x_old=x;
-                            ofset_hight= ofset_hight -  mazeDisplayer.get_cellHeight();
+                            ofset_hight= ofset_hight -  mazeDisplayer.getCellHeight();
                         }
                         else if (y > y_old)
                         {
                             //System.out.println("right!");
-                            if(mazeDisplayer.last_offset_width + ofset_width-mazeDisplayer.get_cellWidth()>0){
-                                //System.out.println("3");
+                            if(mazeDisplayer.last_offset_width + ofset_width-mazeDisplayer.getCellWidth()>0){
                                 return;
                             }
-                            mazeDisplayer.redrawMaze_with_ofset( ofset_hight ,ofset_width + mazeDisplayer.get_cellWidth());
+                            mazeDisplayer.redrawMaze_offset( ofset_hight ,ofset_width + mazeDisplayer.getCellWidth());
                             y_old=y;
-                            ofset_width = ofset_width + mazeDisplayer.get_cellWidth();
+                            ofset_width = ofset_width + mazeDisplayer.getCellWidth();
                         }
                         else if (y < y_old)
                         {
                            // System.out.println("left!");
                            // System.out.println(mazeDisplayer.getWidth());
-                           // System.out.println(mazeDisplayer.last_offset_width + ofset_width-mazeDisplayer.get_cellWidth() + mazeDisplayer.maze.getM_columns() * mazeDisplayer.cellWidth );
-                            if( mazeDisplayer.last_offset_width + ofset_width-mazeDisplayer.get_cellWidth() + mazeDisplayer.maze.getM_columns() * mazeDisplayer.cellWidth < 0 /*mazeDisplayer.getWidth()-200*/ || mazeDisplayer.last_offset_width + ofset_width-mazeDisplayer.get_cellWidth() + mazeDisplayer.maze.getM_columns() * mazeDisplayer.cellWidth < -175)
-                           {//System.out.println("4");
+                           // System.out.println(mazeDisplayer.last_offset_width + ofset_width-mazeDisplayer.getCellWidth() + mazeDisplayer.maze.getM_columns() * mazeDisplayer.cellWidth );
+                            if( mazeDisplayer.last_offset_width + ofset_width-mazeDisplayer.getCellWidth() + mazeDisplayer.maze.getM_columns() * mazeDisplayer.cellWidth < 0 /*mazeDisplayer.getWidth()-200*/ || mazeDisplayer.last_offset_width + ofset_width-mazeDisplayer.getCellWidth() + mazeDisplayer.maze.getM_columns() * mazeDisplayer.cellWidth < -175) {
                                return;}
-                            mazeDisplayer.redrawMaze_with_ofset(ofset_hight ,  ofset_width-mazeDisplayer.get_cellWidth());
+                            mazeDisplayer.redrawMaze_offset(ofset_hight ,  ofset_width-mazeDisplayer.getCellWidth());
                             y_old=y;
-                            ofset_width= ofset_width -  mazeDisplayer.get_cellWidth();
+                            ofset_width= ofset_width -  mazeDisplayer.getCellWidth();
                         }
-                        //System.out.println(x +"          "+y);
-
                     }
                 }
                 if(event.getEventType().getName()=="MOUSE_RELEASED") {
                     flag = false;
                 }
-
                 if(flag) {
-
                     if (event.getX() >= 175 && event.getX() <= mazeDisplayer.getWidth() + 175 && event.getY() >= 25 && event.getY() <= mazeDisplayer.getHeight() + 25) {
-
                         int x = found_cordinate_row(event.getY(),ofset_width,ofset_hight);
                         int y = found_cordinate_col(event.getX(),ofset_width,ofset_hight);
-                        System.out.println(x+"       " +y);
-
-                        if (mazeDisplayer.getCharacterPositionRow(ofset_width,ofset_hight) == x || mazeDisplayer.getCharacterPositionRow(ofset_width,ofset_hight) + 1 == x || mazeDisplayer.getCharacterPositionRow(ofset_width,ofset_hight) - 1 == x && mazeDisplayer.getCharacterPositionColumn(ofset_width,ofset_hight) == y || mazeDisplayer.getCharacterPositionColumn(ofset_width,ofset_hight) + 1 == y || mazeDisplayer.getCharacterPositionColumn(ofset_width,ofset_hight) - 1 == y)
-
+                        if (mazeDisplayer.getCharPosRow(ofset_width,ofset_hight) == x || mazeDisplayer.getCharPosRow(ofset_width,ofset_hight) + 1 == x || mazeDisplayer.getCharPosRow(ofset_width,ofset_hight) - 1 == x && mazeDisplayer.getCharPosCol(ofset_width,ofset_hight) == y || mazeDisplayer.getCharPosCol(ofset_width,ofset_hight) + 1 == y || mazeDisplayer.getCharPosCol(ofset_width,ofset_hight) - 1 == y)
                             if (mazeDisplayer.is_free(x, y)) {
-                                System.out.println("bbbbbbb");
-                                if (mazeDisplayer.getCharacterPositionRow(ofset_width,ofset_hight) == x - 1 && mazeDisplayer.getCharacterPositionColumn(ofset_width,ofset_hight) == y) {
+                                if (mazeDisplayer.getCharPosRow(ofset_width,ofset_hight) == x - 1 && mazeDisplayer.getCharPosCol(ofset_width,ofset_hight) == y) {
                                     viewModel.moveCharacterByMouse(3);
-                                } else if (mazeDisplayer.getCharacterPositionRow(ofset_width,ofset_hight) == x && mazeDisplayer.getCharacterPositionColumn(ofset_width,ofset_hight) == y - 1) {
+                                } else if (mazeDisplayer.getCharPosRow(ofset_width,ofset_hight) == x && mazeDisplayer.getCharPosCol(ofset_width,ofset_hight) == y - 1) {
                                     viewModel.moveCharacterByMouse(2);
-                                } else if (mazeDisplayer.getCharacterPositionRow(ofset_width,ofset_hight) == x + 1 && mazeDisplayer.getCharacterPositionColumn(ofset_width,ofset_hight) == y) {
+                                } else if (mazeDisplayer.getCharPosRow(ofset_width,ofset_hight) == x + 1 && mazeDisplayer.getCharPosCol(ofset_width,ofset_hight) == y) {
                                     viewModel.moveCharacterByMouse(1);
-                                } else if (mazeDisplayer.getCharacterPositionRow(ofset_width,ofset_hight) == x && mazeDisplayer.getCharacterPositionColumn(ofset_width,ofset_hight) == y + 1) {
-
+                                } else if (mazeDisplayer.getCharPosRow(ofset_width,ofset_hight) == x && mazeDisplayer.getCharPosCol(ofset_width,ofset_hight) == y + 1) {
                                     viewModel.moveCharacterByMouse(4);
-                                } else if (mazeDisplayer.getCharacterPositionRow(ofset_width,ofset_hight) == x + 1 && mazeDisplayer.getCharacterPositionColumn(ofset_width,ofset_hight) == y - 1) {
-
+                                } else if (mazeDisplayer.getCharPosRow(ofset_width,ofset_hight) == x + 1 && mazeDisplayer.getCharPosCol(ofset_width,ofset_hight) == y - 1) {
                                     viewModel.moveCharacterByMouse(5);
-                                } else if (mazeDisplayer.getCharacterPositionRow(ofset_width,ofset_hight) == x - 1 && mazeDisplayer.getCharacterPositionColumn(ofset_width,ofset_hight) == y - 1) {
-
+                                } else if (mazeDisplayer.getCharPosRow(ofset_width,ofset_hight) == x - 1 && mazeDisplayer.getCharPosCol(ofset_width,ofset_hight) == y - 1) {
                                     viewModel.moveCharacterByMouse(6);
-                                } else if (mazeDisplayer.getCharacterPositionRow(ofset_width,ofset_hight) == x - 1 && mazeDisplayer.getCharacterPositionColumn(ofset_width,ofset_hight) == y + 1) {
-
+                                } else if (mazeDisplayer.getCharPosRow(ofset_width,ofset_hight) == x - 1 && mazeDisplayer.getCharPosCol(ofset_width,ofset_hight) == y + 1) {
                                     viewModel.moveCharacterByMouse(7);
-                                } else if (mazeDisplayer.getCharacterPositionRow(ofset_width,ofset_hight) == x + 1 && mazeDisplayer.getCharacterPositionColumn(ofset_width,ofset_hight) == y + 1) {
-
+                                } else if (mazeDisplayer.getCharPosRow(ofset_width,ofset_hight) == x + 1 && mazeDisplayer.getCharPosCol(ofset_width,ofset_hight) == y + 1) {
                                     viewModel.moveCharacterByMouse(8);
                                 }
                             }
                     }
-
                 }
-                    }
-
-
-
-
-
+            }
             };
-
-
         EventHandler<javafx.scene.input.ScrollEvent> mouseHandler1 = new EventHandler<javafx.scene.input.ScrollEvent>() {
             @Override
             public void handle(ScrollEvent event) {
                 if(event.isControlDown())
                 {
                     if(event.getTextDeltaY()>0) {
-                        System.out.println("Zoom in!");
+                        //System.out.println("Zoom in!");
                         ofset_hight=0;
                         ofset_width=0;
-                        mazeDisplayer.redrawMaze_with_zoom(1);
+                        mazeDisplayer.redrawMaze_zoom(1);
                     }
-
                     else {
-                        System.out.println("Zoom out!");
+                        //System.out.println("Zoom out!");
                         ofset_hight=0;
                         ofset_width=0;
-                        mazeDisplayer.redrawMaze_with_zoom(-1);
+                        mazeDisplayer.redrawMaze_zoom(-1);
                     }
                 }
-
-
             }
         };
-
-
         scene.setOnScroll(mouseHandler1);
         scene.setOnScrollFinished(mouseHandler1);
         scene.setOnScrollStarted(mouseHandler1);
         scene.setOnMouseClicked(mouseHandler);
-
-
-
         scene.setOnMouseDragged(mouseHandler);
-
-
-
         scene.setOnMousePressed(mouseHandler);
         scene.setOnMouseReleased(mouseHandler);
-
     }
 
     private boolean all_the_picture_draw(double w , double h)
@@ -605,8 +563,7 @@ public class MyViewController implements Observer, IView {
         return (w*mazeDisplayer.maze.getM_columns() <=  stage.getWidth()) &&  (h*mazeDisplayer.maze.getM_rows() <= stage.getHeight()) ;
     }
 
-
-    public  int found_cordinate_row(double value,double ofset_width,double ofset_hight)
+    private  int found_cordinate_row(double value,double ofset_width,double ofset_hight)
     {
        int res=0;
        double temp = 25 + ofset_hight;
@@ -614,15 +571,15 @@ public class MyViewController implements Observer, IView {
        while(temp<mazeDisplayer.getHeight() +25 && found == false)
        {
 
-           if(value>=temp && value<= temp+mazeDisplayer.get_cellHeight())
+           if(value>=temp && value<= temp+mazeDisplayer.getCellHeight())
                break;
            res++;
-           temp = temp+mazeDisplayer.get_cellHeight();
+           temp = temp+mazeDisplayer.getCellHeight();
        }
        return res;
     }
 
-    public  int found_cordinate_col(double value,double ofset_width,double ofset_hight)
+    private  int found_cordinate_col(double value,double ofset_width,double ofset_hight)
     {
         int res=0;
         double temp = 175 + ofset_width;
@@ -630,10 +587,10 @@ public class MyViewController implements Observer, IView {
 
         while(temp<mazeDisplayer.getWidth()+175 && found == false)
         {
-            if(value>=temp && value<= temp+mazeDisplayer.get_cellWidth())
+            if(value>=temp && value<= temp+mazeDisplayer.getCellWidth())
                 break;
             res++;
-            temp=temp+mazeDisplayer.get_cellWidth();
+            temp=temp+mazeDisplayer.getCellWidth();
         }
         return res;
     }
@@ -674,30 +631,13 @@ public class MyViewController implements Observer, IView {
     public StringProperty characterPositionColumn = new SimpleStringProperty();
     public StringProperty steps = new SimpleStringProperty();
 
-
-
     public String getCharacterPositionRow() {
         return characterPositionRow.get();
-    }
-
-    public StringProperty steps() {return characterPositionRow;}
-
-    public String getsteps() {
-        return steps.get();
-    }
-
-    public StringProperty characterPositionRowProperty() {
-        return characterPositionRow;
     }
 
     public String getCharacterPositionColumn() {
         return characterPositionColumn.get();
     }
-
-    public StringProperty characterPositionColumnProperty() {
-        return characterPositionColumn;
-    }
-
 
     //endregion
 

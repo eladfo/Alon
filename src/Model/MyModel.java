@@ -4,14 +4,9 @@ import Server.ServerStrategyGenerateMaze;
 import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
-import javafx.scene.control.Alert;
 import javafx.scene.input.KeyCode;
-
 import java.io.*;
 import java.net.InetAddress;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.Observable;
 import IO.MyDecompressorInputStream;
 import Server.*;
@@ -19,9 +14,9 @@ import Client.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
-
 import java.net.UnknownHostException;
 
+import static java.lang.Thread.sleep;
 
 public class MyModel extends Observable implements IModel {
 
@@ -32,19 +27,24 @@ public class MyModel extends Observable implements IModel {
     private int characterPositionRow = 1;
     private int characterPositionColumn = 1;
     private int steps = 0;
-    public MediaPlayer winPlayer;
-    public MediaPlayer backPlayer;
+    private MediaPlayer[] songPlayers;
+    private int songPlayingNum;
 
     public MyModel() {
         ///Raise the servers
         mazeGeneratingServer = new Server(5400, 1000, new ServerStrategyGenerateMaze());
         solveSearchProblemServer = new Server(5401, 1000, new ServerStrategySolveSearchProblem());
-
-
-       playBackgMusic("  ");
-
-
-       playWinMusic("  ");
+        //Set all the songs for the app
+        songPlayers = new MediaPlayer[7];
+        playMusic("/Sounds/hs.mp3", 0);
+        playMusic("/Sounds/rnm.mp3", 1);
+        playMusic("/Sounds/got.mp3", 2);
+        playMusic("/Sounds/dbz.mp3", 3);
+        playMusic("/Sounds/mario.mp3", 4);
+        playMusic("/Sounds/win.mp3", 5);
+        playMusic("/Sounds/htp.m4a", 6);
+        songPlayingNum = 0;
+        songPlayers[songPlayingNum].play();
     }
 
     public void startServers() {
@@ -254,63 +254,58 @@ public class MyModel extends Observable implements IModel {
         return res;
     }
 
-    private void playWinMusic(String songName) {
-        winPlayer = new MediaPlayer(new Media(getClass().getResource("/Sounds/hs_Win.mp3").toString()));
+    private void playMusic(String songName, int i) {
 
-        winPlayer.setOnEndOfMedia(() -> {
-            winPlayer.seek(Duration.ZERO);
+        songPlayingNum = i;
+        songPlayers[i] = new MediaPlayer ( new Media(getClass().getResource(songName).toString()));
+        songPlayers[i].setOnEndOfMedia(() -> {
+            songPlayers[i].seek(Duration.ZERO);
         });
-        Thread t = new Thread(() -> winPlayer.play());
-        try {
-            t.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        t.start();
-        try {
-            t.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        winPlayer.stop();
-
-    }
-
-    private void playBackgMusic(String songName) {
-
-        backPlayer = new MediaPlayer ( new Media(getClass().getResource("/Sounds/hs_Soundtrack.mp3").toString()));
-
-        backPlayer.setOnEndOfMedia(() -> {
-            backPlayer.seek(Duration.ZERO);
-        });
-        Thread t1 = new Thread(() -> backPlayer.play());
+        Thread t1 = new Thread(() -> songPlayers[i].play());
         try {
             t1.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         t1.start();
+        try {
+            sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        songPlayers[i].stop();
+    }
+
+    public void changeWinMusic(int i) {
+        switch(i) {
+            case 0:
+                songPlayers[songPlayingNum].pause();
+                songPlayers[5].play();
+                break;
+            case 2:
+                songPlayers[5].stop();
+                songPlayers[songPlayingNum].pause();
+                break;
+            case 1:
+                songPlayers[5].stop();
+                songPlayers[songPlayingNum].play();
+                break;
+        }
     }
 
     public void changeMusic(int num) {
-        switch(num) {
-            case 0:
-                backPlayer.stop(); break;
-            case 1:
-                backPlayer.pause();
-                winPlayer.play();
-                break;
-            case 2:
-                winPlayer.stop();
-                backPlayer.play();
-                break;
-            case 3:
-                backPlayer.pause();
-                winPlayer.stop();
-                break;
-            case 4:
-                backPlayer.play(); break;
-            default: break;
+        if(num==111 || num==100)
+        {
+            switch(num) {
+                case 111:
+                    songPlayers[songPlayingNum].pause(); break;
+                case 100:
+                    songPlayers[songPlayingNum].play(); break;
+            }
+        } else{
+            songPlayers[songPlayingNum].stop();
+            songPlayers[num].play();
+            songPlayingNum = num;
         }
     }
 
